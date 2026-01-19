@@ -1,4 +1,11 @@
 package com.example.projeto_turismo.repositorys;
 
-public interface GuideRepository {
+import com.example.projeto_turismo.domains.Guide;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+
+public interface GuideRepository extends JpaRepository<Guide, Long> {
+    boolean existsByLoginIgnoreCase(String login);
+
 }
