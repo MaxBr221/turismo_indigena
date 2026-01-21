@@ -13,15 +13,15 @@ import org.springframework.beans.BeanUtils;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "pontoTuristico")
+@Table(name = "pontoturistico")
 public class PontoTuristico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "nome", nullable = false)
     private String nome;
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Local local;
     @Column(name = "telefone", nullable = false)
     private String telefone;

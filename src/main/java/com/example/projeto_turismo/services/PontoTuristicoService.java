@@ -50,6 +50,9 @@ public class PontoTuristicoService {
                 pontoTuristico.getTelefone());
     }
     public PontoTuristicoDto update(Long id, PontoTuristicoDto dto){
+        if(!id.equals(dto.getId())){
+            throw new EventFullException("Os dois ids são diferentes");
+        }
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto turistico não encotrado."));
 
