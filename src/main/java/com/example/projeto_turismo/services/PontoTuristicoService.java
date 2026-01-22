@@ -17,9 +17,9 @@ public class PontoTuristicoService {
     public PontoTuristicoDto create(PontoTuristicoDto pontoTuristico){
 
         PontoTuristico turistico = new PontoTuristico();
-            turistico.setNome(pontoTuristico.getNome());
-            turistico.setLocal(pontoTuristico.getLocal());
-            turistico.setTelefone(pontoTuristico.getTelefone());
+        turistico.setNome(pontoTuristico.getNome());
+        turistico.setLocal(pontoTuristico.getLocal());
+        turistico.setTelefone(pontoTuristico.getTelefone());
 
         PontoTuristico salvo = repository.save(turistico);
         return new PontoTuristicoDto(
@@ -51,7 +51,7 @@ public class PontoTuristicoService {
     }
     public PontoTuristicoDto update(Long id, PontoTuristicoDto dto){
         if(!id.equals(dto.getId())){
-            throw new EventFullException("Os dois ids são diferentes");
+            throw new EventFullException("Os dois ids não coincidem");
         }
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto turistico não encotrado."));

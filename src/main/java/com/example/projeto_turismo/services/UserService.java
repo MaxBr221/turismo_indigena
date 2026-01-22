@@ -55,6 +55,9 @@ public class UserService {
         userRepository.delete(user);
     }
     public UserDto update(Long id, UserDto userDto){
+        if(!id.equals(userDto.getId())){
+            throw new EventFullException("Os id não coincidem");
+        }
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new EventFullException("Usuário não encontrado"));
 

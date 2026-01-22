@@ -49,6 +49,9 @@ public class GuideService {
                 guide.getLogin());
     }
     public GuideDto update(Long id, GuideDto guideDto){
+        if(!id.equals(guideDto.getId())){
+            throw new EventFullException("Os id não coincidem");
+        }
         Guide guide = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Id não encontrado."));
 
