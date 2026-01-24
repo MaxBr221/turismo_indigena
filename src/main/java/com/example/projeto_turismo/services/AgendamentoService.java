@@ -55,7 +55,7 @@ public class AgendamentoService {
                 .orElseThrow(() -> new EventFullException("Agendamento não encontrado."));
         repository.delete(ag);
     }
-    public AgendamentoDto update(AgendamentoDto ag, Long id){
+    public AgendamentoDto update(Long id, AgendamentoDto ag){
         if (!id.equals(ag.getId())){
             throw new EventFullException("Os Ids não coincidem");
         }

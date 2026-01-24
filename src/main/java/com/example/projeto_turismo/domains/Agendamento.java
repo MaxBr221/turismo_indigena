@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -22,7 +20,7 @@ public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "data", nullable = false)
+    @Column(name = "data_agendamento", nullable = false, unique = true)
     private LocalDateTime data;
     @Column(name = "quantpessoas", nullable = false)
     private int quantPessoas;
