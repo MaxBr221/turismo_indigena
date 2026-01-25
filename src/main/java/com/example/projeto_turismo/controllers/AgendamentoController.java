@@ -42,7 +42,7 @@ public class AgendamentoController {
         AgendamentoDto agendamentoDto = service.update(id, ag);
         return ResponseEntity.ok().body(agendamentoDto);
     }
-    @DeleteMapping
+    @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable Long id){
         logger.info("Apagando Agendamento");
         service.delete(id);

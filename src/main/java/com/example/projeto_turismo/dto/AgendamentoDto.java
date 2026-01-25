@@ -1,7 +1,8 @@
 package com.example.projeto_turismo.dto;
 
-import com.example.projeto_turismo.domains.Agendamento;
-import com.example.projeto_turismo.domains.Status;
+import com.example.projeto_turismo.domains.*;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,9 @@ public class AgendamentoDto {
     private int quantPessoas;
     private Status status;
     private LocalDateTime dataCriacao;
+    private Long user;
+    private Long guide;
+    private Long restaurante;
 
     public AgendamentoDto(Agendamento agendamento){
         BeanUtils.copyProperties(agendamento, this);
