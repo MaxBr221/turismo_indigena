@@ -15,6 +15,7 @@ public class GuideService {
     private GuideRepository repository;
 
     public GuideDto create(GuideDto guideDto){
+        //mudar para usar o findByLogin do UserDetails//
         if(repository.existsByLoginIgnoreCase(guideDto.getLogin())){
             throw new EventFullException("Já existe usuário com esse login.");
         }
@@ -23,9 +24,10 @@ public class GuideService {
         guide.setTelefone(guideDto.getTelefone());
         guide.setLogin(guideDto.getLogin());
         guide.setSenha(guideDto.getSenha());
+        guide.setRole(guideDto.getRole());
         Guide guide1 = repository.save(guide);
 
-        return new GuideDto(guide1.getId(), guide1.getNome(), guide1.getTelefone(), guide1.getLogin());
+        return new GuideDto(guide1.getId(), guide1.getNome(), guide1.getTelefone(), guide1.getLogin(), guide1.getRole());
 
     }
     public List<GuideDto> findAll(){
@@ -35,7 +37,8 @@ public class GuideService {
                         guide.getId(),
                         guide.getNome(),
                         guide.getTelefone(),
-                        guide.getLogin()))
+                        guide.getLogin(),
+                        guide.getRole()))
                 .toList();
     }
     public GuideDto findById(Long id){
@@ -46,7 +49,8 @@ public class GuideService {
                 guide.getId(),
                 guide.getNome(),
                 guide.getTelefone(),
-                guide.getLogin());
+                guide.getLogin(),
+                guide.getRole());
     }
     public GuideDto update(Long id, GuideDto guideDto){
         if(!id.equals(guideDto.getId())){
@@ -70,7 +74,8 @@ public class GuideService {
                 guide1.getId(),
                 guide1.getNome(),
                 guide1.getTelefone(),
-                guide1.getLogin());
+                guide1.getLogin(),
+                guide1.getRole());
     }
     public void delete(Long id){
         Guide guide = repository.findById(id)

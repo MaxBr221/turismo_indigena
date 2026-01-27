@@ -24,9 +24,10 @@ public class UserService {
         user1.setTelefone(userDto.getTelefone());
         user1.setLogin(userDto.getLogin());
         user1.setSenha(userDto.getSenha());
+        user1.setRole(userDto.getRole());
         User salvo = userRepository.save(user1);
 
-        return new UserDto(salvo.getId(), salvo.getNome(), salvo.getTelefone(), salvo.getLogin());
+        return new UserDto(salvo.getId(), salvo.getNome(), salvo.getTelefone(), salvo.getLogin(), salvo.getRole());
     }
     public UserDto findById(Long id){
         User user = userRepository.findById(id)
@@ -36,7 +37,8 @@ public class UserService {
                 user.getId(),
                 user.getNome(),
                 user.getTelefone(),
-                user.getLogin());
+                user.getLogin(),
+                user.getRole());
     }
     public List<UserDto> findAll(){
         return userRepository.findAll()
@@ -45,7 +47,8 @@ public class UserService {
                         user.getId(),
                         user.getNome(),
                         user.getTelefone(),
-                        user.getLogin()
+                        user.getLogin(),
+                        user.getRole()
                 ))
                 .toList();
     }
@@ -78,6 +81,7 @@ public class UserService {
                 salvo.getId(),
                 salvo.getNome(),
                 salvo.getTelefone(),
-                salvo.getLogin());
+                salvo.getLogin(),
+                salvo.getRole());
     }
 }

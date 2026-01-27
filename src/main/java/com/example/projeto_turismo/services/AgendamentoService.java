@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+//Adicionar possiveis verificações mais regras de negocios//
 
 
 @Service
