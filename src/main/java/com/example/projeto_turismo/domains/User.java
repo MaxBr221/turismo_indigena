@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -40,6 +39,7 @@ public class User implements UserDetails {
         BeanUtils.copyProperties(userDto, this);
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.role == Role.ADMIN){
@@ -50,7 +50,9 @@ public class User implements UserDetails {
 
     }
 
-    public User(String login, String senha, Role role) {
+    public User(String nome, String telefone, String login, String senha, Role role) {
+        this.nome = nome;
+        this.telefone = telefone;
         this.login = login;
         this.senha = senha;
         this.role = role;
@@ -63,7 +65,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nome;
+        return login;
     }
 
     @Override
