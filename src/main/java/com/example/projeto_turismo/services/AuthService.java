@@ -1,10 +1,11 @@
-package com.example.projeto_turismo.infra.security;
+package com.example.projeto_turismo.services;
 
 import com.example.projeto_turismo.repositorys.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 
 public class AuthService implements UserDetailsService {
     @Autowired

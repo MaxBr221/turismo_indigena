@@ -32,8 +32,8 @@ public class User implements UserDetails {
     private String login;
     @Column(name = "senha", nullable = false)
     private String senha;
-    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private Role role;
 
     public User(UserDto userDto){
@@ -42,8 +42,18 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        if(this.role == Role.ADMIN){
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        }else{
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
 
+    }
+
+    public User(String login, String senha, Role role) {
+        this.login = login;
+        this.senha = senha;
+        this.role = role;
     }
 
     @Override
