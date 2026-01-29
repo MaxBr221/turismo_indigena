@@ -1,8 +1,7 @@
 package com.example.projeto_turismo.domains;
 
-import com.example.projeto_turismo.dto.UserDto;
+import com.example.projeto_turismo.dto.RegisterDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,8 +34,8 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    public User(UserDto userDto){
-        BeanUtils.copyProperties(userDto, this);
+    public User(RegisterDto dto){
+        BeanUtils.copyProperties(dto, this);
     }
 
 
@@ -55,6 +54,13 @@ public class User implements UserDetails {
         this.telefone = telefone;
         this.login = login;
         this.senha = senha;
+        this.role = role;
+    }
+
+    public User(String nome, String telefone, String login, Role role) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.login = login;
         this.role = role;
     }
 

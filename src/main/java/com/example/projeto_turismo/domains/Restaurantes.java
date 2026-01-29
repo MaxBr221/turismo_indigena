@@ -1,6 +1,6 @@
 package com.example.projeto_turismo.domains;
 
-import com.example.projeto_turismo.dto.RestaurantesDto;
+import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,7 +43,7 @@ public class Restaurantes {
         this.redeSociais = redeSociais;
     }
 
-    public Restaurantes(RestaurantesDto restauranteDto){
+    public Restaurantes(RestaurantesResponseDto restauranteDto){
         BeanUtils.copyProperties(restauranteDto, this);
     }
 

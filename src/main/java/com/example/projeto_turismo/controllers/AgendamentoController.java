@@ -1,6 +1,7 @@
 package com.example.projeto_turismo.controllers;
 
 import com.example.projeto_turismo.dto.AgendamentoDto;
+import com.example.projeto_turismo.dto.AgendamentoUpdateDto;
 import com.example.projeto_turismo.services.AgendamentoService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class AgendamentoController {
         return ResponseEntity.ok().body(ag);
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable Long id, @RequestBody AgendamentoDto ag){
+    public ResponseEntity update(@PathVariable Long id, @RequestBody AgendamentoUpdateDto ag){
         logger.info("Atualizando Agendamento");
         AgendamentoDto agendamentoDto = service.update(id, ag);
         return ResponseEntity.ok().body(agendamentoDto);

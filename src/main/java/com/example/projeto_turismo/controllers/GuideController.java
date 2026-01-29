@@ -1,6 +1,8 @@
 package com.example.projeto_turismo.controllers;
 
+import com.example.projeto_turismo.domains.Guide;
 import com.example.projeto_turismo.dto.GuideDto;
+import com.example.projeto_turismo.dto.GuideResponseDto;
 import com.example.projeto_turismo.services.GuideService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,28 +20,28 @@ public class GuideController {
     private GuideService service;
 
     @PostMapping
-    public ResponseEntity<GuideDto> create(@RequestBody GuideDto guideDto){
+    public ResponseEntity<GuideResponseDto> create(@RequestBody GuideDto guideDto){
         logger.info("Criando guia");
-        GuideDto guide = service.create(guideDto);
+        GuideResponseDto guide = service.create(guideDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(guide);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GuideDto> findById(@PathVariable Long id){
+    public ResponseEntity<GuideResponseDto> findById(@PathVariable Long id){
         logger.info("Buscando guia");
-        GuideDto guide = service.findById(id);
+        GuideResponseDto guide = service.findById(id);
         return ResponseEntity.ok().body(guide);
     }
     @GetMapping
-    public ResponseEntity<List<GuideDto>> findAll(){
+    public ResponseEntity<List<GuideResponseDto>> findAll(){
         logger.info("Listando todos os guias");
-        List<GuideDto> list = service.findAll();
+        List<GuideResponseDto> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<GuideDto> update(@PathVariable Long id, @RequestBody GuideDto guide){
+    public ResponseEntity<GuideResponseDto> update(@PathVariable Long id, @RequestBody GuideDto guide){
         logger.info("Editando guia");
-        GuideDto guideDto = service.update(id, guide);
-        return ResponseEntity.ok().body(guideDto);
+        GuideResponseDto guideResponseDto = service.update(id, guide);
+        return ResponseEntity.ok().body(guideResponseDto);
     }
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable Long id){

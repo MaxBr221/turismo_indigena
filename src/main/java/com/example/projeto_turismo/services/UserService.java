@@ -1,9 +1,11 @@
 package com.example.projeto_turismo.services;
 
 
+import com.example.projeto_turismo.dto.RegisterDto;
+import com.example.projeto_turismo.dto.UserResponseDto;
+import com.example.projeto_turismo.dto.UserUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.domains.User;
-import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,73 +17,47 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDto create(UserDto userDto){
-        if(userRepository.existsByLoginIgnoreCase(userDto.getLogin())){
+    public User create(RegisterDto dto){
+        if(userRepository.existsByLoginIgnoreCase(dto.login())){
             throw new EventFullException("Já existe usuário com esse email");
         }
         User user1 = new User();
-        user1.setNome(userDto.getNome());
-        user1.setTelefone(userDto.getTelefone());
-        user1.setLogin(userDto.getLogin());
-        user1.setSenha(userDto.getSenha());
-        user1.setRole(userDto.getRole());
-        User salvo = userRepository.save(user1);
+        user1.setNome(dto.nome());
+        user1.setTelefone(dto.telefone());
+        user1.setLogin(dto.login());
+        user1.setSenha(dto.senha());
+        user1.setRole(dto.role());
+        return userRepository.save(user1);
 
-        return new UserDto(salvo.getId(), salvo.getNome(), salvo.getTelefone(), salvo.getLogin(), salvo.getRole());
     }
-    public UserDto findById(Long id){
-        User user = userRepository.findById(id)
+    public User findById(Long id){
+        return userRepository.findById(id)
                 .orElseThrow(()-> new EventFullException("Usuário não encontrado."));
 
-        return new UserDto(
-                user.getId(),
-                user.getNome(),
-                user.getTelefone(),
-                user.getLogin(),
-                user.getRole());
     }
-    public List<UserDto> findAll(){
-        return userRepository.findAll()
-                .stream()
-                .map(user -> new UserDto(
-                        user.getId(),
-                        user.getNome(),
-                        user.getTelefone(),
-                        user.getLogin(),
-                        user.getRole()
-                ))
-                .toList();
+    public List<User> findAll(){
+        return userRepository.findAll();
     }
     public void delete(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new EventFullException("Usuário não encontrado"));
         userRepository.delete(user);
     }
-    public UserDto update(Long id, UserDto userDto){
-        if(!id.equals(userDto.getId())){
-            throw new EventFullException("Os id não coincidem");
-        }
+    public UserResponseDto update(Long id, UserUpdateDto dto){
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new EventFullException("Usuário não encontrado"));
 
-        user.setNome(userDto.getNome());
-        user.setTelefone(userDto.getTelefone());
+        user.setNome(dto.nome());
+        user.setTelefone(dto.telefone());
 
-        if (!user.getLogin().equalsIgnoreCase(userDto.getLogin())) {
-            if (userRepository.existsByLoginIgnoreCase(userDto.getLogin())){
+        if (!user.getLogin().equalsIgnoreCase(dto.login())) {
+            if (userRepository.existsByLoginIgnoreCase(dto.login())){
                 throw new EventFullException("Login já existente");
             }
-            user.setLogin(userDto.getLogin());
+            user.setLogin(dto.login());
 
         }
+        return new UserResponseDto(userRepository.save(user));
 
-        User salvo = userRepository.save(user);
-
-        return new UserDto(
-                salvo.getId(),
-                salvo.getNome(),
-                salvo.getTelefone(),
-                salvo.getLogin(),
-                salvo.getRole());
     }
 }

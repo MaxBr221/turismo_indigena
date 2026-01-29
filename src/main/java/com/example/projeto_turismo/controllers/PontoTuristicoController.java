@@ -2,6 +2,7 @@ package com.example.projeto_turismo.controllers;
 
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoDto;
+import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.services.PontoTuristicoService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +21,28 @@ public class PontoTuristicoController {
     private PontoTuristicoService service;
 
     @PostMapping
-    public ResponseEntity<PontoTuristicoDto> create(@RequestBody PontoTuristicoDto pontoTuristicoDto){
+    public ResponseEntity<PontoTuristicoResponseDto> create(@RequestBody PontoTuristicoDto pontoTuristicoDto){
         logger.info("Criando ponto turistico");
-        PontoTuristicoDto pontoTuristicoDto1 = service.create(pontoTuristicoDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pontoTuristicoDto1);
+        PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.create(pontoTuristicoDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pontoTuristicoResponseDto1);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PontoTuristicoDto> findById(@PathVariable Long id){
+    public ResponseEntity<PontoTuristicoResponseDto> findById(@PathVariable Long id){
         logger.info("Buscando ponto turistico");
-        PontoTuristicoDto pontoTuristicoDto = service.findById(id);
-        return ResponseEntity.ok().body(pontoTuristicoDto);
+        PontoTuristicoResponseDto pontoTuristicoResponseDto = service.findById(id);
+        return ResponseEntity.ok().body(pontoTuristicoResponseDto);
     }
     @GetMapping
-    public ResponseEntity<List<PontoTuristicoDto>> findAll(){
+    public ResponseEntity<List<PontoTuristicoResponseDto>> findAll(){
         logger.info("Listando todos os pontos turisticos");
-        List<PontoTuristicoDto> pontoTuristicos = service.findAll();
+        List<PontoTuristicoResponseDto> pontoTuristicos = service.findAll();
         return ResponseEntity.ok().body(pontoTuristicos);
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<PontoTuristicoDto> update(@PathVariable Long id, @RequestBody PontoTuristicoDto pontoTuristicoDto){
+    public ResponseEntity<PontoTuristicoResponseDto> update(@PathVariable Long id, @RequestBody PontoTuristicoDto pontoTuristicoDto){
         logger.info("Atualizando ponto turistico");
-        PontoTuristicoDto pontoTuristicoDto1 = service.update(id, pontoTuristicoDto);
-        return ResponseEntity.ok().body(pontoTuristicoDto1);
+        PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.update(id, pontoTuristicoDto);
+        return ResponseEntity.ok().body(pontoTuristicoResponseDto1);
     }
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable Long id){

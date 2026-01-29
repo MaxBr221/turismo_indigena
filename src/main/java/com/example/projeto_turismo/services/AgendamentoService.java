@@ -5,6 +5,7 @@ import com.example.projeto_turismo.domains.Guide;
 import com.example.projeto_turismo.domains.Restaurantes;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.AgendamentoDto;
+import com.example.projeto_turismo.dto.AgendamentoUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.AgendamentoRepository;
 import com.example.projeto_turismo.repositorys.GuideRepository;
@@ -91,15 +92,12 @@ public class AgendamentoService {
                 .orElseThrow(() -> new EventFullException("Agendamento não encontrado."));
         repository.delete(ag);
     }
-    public AgendamentoDto update(Long id, AgendamentoDto ag){
-        if (!id.equals(ag.getId())){
-            throw new EventFullException("Os Ids não coincidem");
-        }
+    public AgendamentoDto update(Long id, AgendamentoUpdateDto ag){
         Agendamento agendamento = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Agendamento não encontrado."));
-        agendamento.setData(ag.getData());
-        agendamento.setStatus(ag.getStatus());
-        agendamento.setQuantPessoas(ag.getQuantPessoas());
+        agendamento.setData(ag.data());
+        agendamento.setStatus(ag.status());
+        agendamento.setQuantPessoas(ag.quantPessoas());
         Agendamento salvo = repository.save(agendamento);
         return new AgendamentoDto(
                 salvo.getId(),

@@ -2,6 +2,7 @@ package com.example.projeto_turismo.services;
 
 import com.example.projeto_turismo.domains.Restaurantes;
 import com.example.projeto_turismo.dto.RestaurantesDto;
+import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.RestaurantesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +16,20 @@ public class RestaurantesService {
     @Autowired
     private RestaurantesRepository repository;
 
-    public RestaurantesDto create(RestaurantesDto restaurantesDto){
+    public RestaurantesResponseDto create(RestaurantesDto restaurantesDto){
         Restaurantes restaurante = new Restaurantes();
 
-        restaurante.setNome(restaurantesDto.getNome());
-        restaurante.setDescricao(restaurantesDto.getDescricao());
-        restaurante.setTipo(restaurantesDto.getTipo());
-        restaurante.setLocalizacao(restaurantesDto.getLocalizacao());
-        restaurante.setHorarioFuncionamento(restaurantesDto.getHorarioFuncionamento());
-        restaurante.setTelefone(restaurantesDto.getTelefone());
-        restaurante.setRedeSociais(restaurantesDto.getRedeSociais());
+        restaurante.setNome(restaurantesDto.nome());
+        restaurante.setDescricao(restaurantesDto.descricao());
+        restaurante.setTipo(restaurantesDto.tipo());
+        restaurante.setLocalizacao(restaurantesDto.localizacao());
+        restaurante.setHorarioFuncionamento(restaurantesDto.horarioFuncionamento());
+        restaurante.setTelefone(restaurantesDto.telefone());
+        restaurante.setRedeSociais(restaurantesDto.redeSociais());
 
         Restaurantes salvo = repository.save(restaurante);
 
-        return new RestaurantesDto(
+        return new RestaurantesResponseDto(
                 salvo.getId(),
                 salvo.getNome(),
                 salvo.getDescricao(),
@@ -38,11 +39,11 @@ public class RestaurantesService {
                 salvo.getTelefone(),
                 salvo.getRedeSociais());
     }
-    public RestaurantesDto findById(Long id){
+    public RestaurantesResponseDto findById(Long id){
         Restaurantes restaurante = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Restaurante não encontrado."));
 
-        return new RestaurantesDto(
+        return new RestaurantesResponseDto(
                 restaurante.getId(),
                 restaurante.getNome(),
                 restaurante.getDescricao(),
@@ -52,10 +53,10 @@ public class RestaurantesService {
                 restaurante.getTelefone(),
                 restaurante.getRedeSociais());
     }
-    public List<RestaurantesDto> findAll(){
+    public List<RestaurantesResponseDto> findAll(){
         return repository.findAll()
                 .stream()
-                .map(restaurantes -> new RestaurantesDto(
+                .map(restaurantes -> new RestaurantesResponseDto(
                         restaurantes.getId(),
                         restaurantes.getNome(),
                         restaurantes.getDescricao(),
@@ -67,21 +68,18 @@ public class RestaurantesService {
                 ))
                 .toList();
     }
-    public RestaurantesDto update(Long id, RestaurantesDto restaurantesDto){
-        if(!id.equals(restaurantesDto.getId())){
-            throw new EventFullException("Os id não coincidem");
-        }
+    public RestaurantesResponseDto update(Long id, RestaurantesDto restaurantesDto){
         Restaurantes restaurantes = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Restaurante não encontrado"));
-        restaurantes.setNome(restaurantesDto.getNome());
-        restaurantes.setDescricao(restaurantesDto.getDescricao());
-        restaurantes.setTipo(restaurantesDto.getTipo());
-        restaurantes.setLocalizacao(restaurantesDto.getLocalizacao());
-        restaurantes.setHorarioFuncionamento(restaurantesDto.getHorarioFuncionamento());
-        restaurantes.setTelefone(restaurantesDto.getTelefone());
-        restaurantes.setRedeSociais(restaurantesDto.getRedeSociais());
+        restaurantes.setNome(restaurantesDto.nome());
+        restaurantes.setDescricao(restaurantesDto.descricao());
+        restaurantes.setTipo(restaurantesDto.tipo());
+        restaurantes.setLocalizacao(restaurantesDto.localizacao());
+        restaurantes.setHorarioFuncionamento(restaurantesDto.horarioFuncionamento());
+        restaurantes.setTelefone(restaurantesDto.telefone());
+        restaurantes.setRedeSociais(restaurantesDto.redeSociais());
         Restaurantes salvos = repository.save(restaurantes);
-        return new RestaurantesDto(
+        return new RestaurantesResponseDto(
                 salvos.getNome(),
                 salvos.getDescricao(),
                 salvos.getTipo(),

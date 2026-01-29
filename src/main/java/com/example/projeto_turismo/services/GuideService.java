@@ -2,6 +2,7 @@ package com.example.projeto_turismo.services;
 
 import com.example.projeto_turismo.domains.Guide;
 import com.example.projeto_turismo.dto.GuideDto;
+import com.example.projeto_turismo.dto.GuideResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.GuideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,50 +15,47 @@ public class GuideService {
     @Autowired
     private GuideRepository repository;
 
-    public GuideDto create(GuideDto guideDto){
+    public GuideResponseDto create(GuideDto guideDto){
         Guide guide = new Guide();
-        guide.setNome(guideDto.getNome());
-        guide.setTelefone(guideDto.getTelefone());
-        guide.setDescricao(guideDto.getDescricao());
+        guide.setNome(guideDto.nome());
+        guide.setTelefone(guideDto.telefone());
+        guide.setDescricao(guideDto.descricao());
         Guide guide1 = repository.save(guide);
 
-        return new GuideDto(guide1.getId(), guide1.getNome(), guide1.getTelefone(), guide1.getDescricao());
+        return new GuideResponseDto(guide1.getId(), guide1.getNome(), guide1.getTelefone(), guide1.getDescricao());
 
     }
-    public List<GuideDto> findAll(){
+    public List<GuideResponseDto> findAll(){
         return repository.findAll()
                 .stream()
-                .map(guide -> new GuideDto(
+                .map(guide -> new GuideResponseDto(
                         guide.getId(),
                         guide.getNome(),
                         guide.getTelefone(),
                         guide.getDescricao()))
                 .toList();
     }
-    public GuideDto findById(Long id){
+    public GuideResponseDto findById(Long id){
         Guide guide = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Id não encontrado."));
 
-        return new GuideDto(
+        return new GuideResponseDto(
                 guide.getId(),
                 guide.getNome(),
                 guide.getTelefone(),
                 guide.getDescricao());
     }
-    public GuideDto update(Long id, GuideDto guideDto){
-        if(!id.equals(guideDto.getId())){
-            throw new EventFullException("Os id não coincidem");
-        }
+    public GuideResponseDto update(Long id, GuideDto guideDto){
         Guide guide = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Id não encontrado."));
 
-        guide.setNome(guideDto.getNome());
-        guide.setTelefone(guideDto.getTelefone());
-        guide.setDescricao(guideDto.getDescricao());
+        guide.setNome(guideDto.nome());
+        guide.setTelefone(guideDto.telefone());
+        guide.setDescricao(guideDto.descricao());
 
         Guide guide1 = repository.save(guide);
 
-        return new GuideDto(
+        return new GuideResponseDto(
                 guide1.getId(),
                 guide1.getNome(),
                 guide1.getTelefone(),

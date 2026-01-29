@@ -25,6 +25,8 @@ public class AgendamentoDto {
     private Long guide;
     private Long restaurante;
 
+    //alterar para o user não poder definir o tipo do Enum(Status), nem LocalDateTime de dataCriacao//
+
     public AgendamentoDto(Agendamento agendamento){
         BeanUtils.copyProperties(agendamento, this);
     }

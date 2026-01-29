@@ -1,6 +1,6 @@
 package com.example.projeto_turismo.domains;
 
-import com.example.projeto_turismo.dto.PontoTuristicoDto;
+import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +26,8 @@ public class PontoTuristico {
     @Column(name = "telefone", nullable = false)
     private String telefone;
 
-    public PontoTuristico(PontoTuristicoDto pontoTuristicoDto){
-        BeanUtils.copyProperties(pontoTuristicoDto, this);
+    public PontoTuristico(PontoTuristicoResponseDto pontoTuristicoResponseDto){
+        BeanUtils.copyProperties(pontoTuristicoResponseDto, this);
     }
 
     public PontoTuristico(String nome, Local local, String telefone) {

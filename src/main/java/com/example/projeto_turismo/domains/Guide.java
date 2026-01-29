@@ -1,6 +1,6 @@
 package com.example.projeto_turismo.domains;
 
-import com.example.projeto_turismo.dto.GuideDto;
+import com.example.projeto_turismo.dto.GuideResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class Guide{
     private String descricao;
 
 
-    public Guide(GuideDto guideDto) {
-        BeanUtils.copyProperties(guideDto, this);
+    public Guide(GuideResponseDto guideResponseDto) {
+        BeanUtils.copyProperties(guideResponseDto, this);
     }
 }

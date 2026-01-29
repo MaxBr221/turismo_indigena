@@ -1,6 +1,9 @@
 package com.example.projeto_turismo.controllers;
 
-import com.example.projeto_turismo.dto.UserDto;
+import com.example.projeto_turismo.domains.User;
+import com.example.projeto_turismo.dto.RegisterDto;
+import com.example.projeto_turismo.dto.UserResponseDto;
+import com.example.projeto_turismo.dto.UserUpdateDto;
 import com.example.projeto_turismo.services.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,29 +22,32 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDto> create(@RequestBody UserDto userDto){
+    public ResponseEntity<UserResponseDto> create(@RequestBody RegisterDto dto){
         logger.info("Criando usuário");
-        UserDto user = userService.create(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        User user = userService.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponseDto(user));
     }
     @GetMapping
-    public ResponseEntity<List<UserDto>> findAll(){
+    public ResponseEntity<List<UserResponseDto>> findAll(){
         logger.info("Listando todos os usuários");
-        List<UserDto> userDto = userService.findAll();
-        return ResponseEntity.ok().body(userDto);
+        List<UserResponseDto> response = userService.findAll()
+                .stream()
+                .map(UserResponseDto::new)
+                .toList();
+        return ResponseEntity.ok(response);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable Long id){
+    public ResponseEntity<UserResponseDto> findById(@PathVariable Long id){
         logger.info("listando usuário selecionado");
-        UserDto userDto = userService.findById(id);
-        return ResponseEntity.ok().body(userDto);
+        User user = userService.findById(id);
+        return ResponseEntity.ok(new UserResponseDto(user));
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserDto userDto){
+    public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody UserUpdateDto userDto){
         logger.info("Atualizando usuário");
-        UserDto user = userService.findById(id);
+        User user = userService.findById(id);
         userService.update(id, userDto);
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.ok(new UserResponseDto(user));
     }
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable Long id){

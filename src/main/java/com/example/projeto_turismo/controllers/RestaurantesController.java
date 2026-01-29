@@ -1,6 +1,7 @@
 package com.example.projeto_turismo.controllers;
 
 import com.example.projeto_turismo.dto.RestaurantesDto;
+import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.services.RestaurantesService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,27 +20,27 @@ public class RestaurantesController {
     RestaurantesService service;
 
     @PostMapping
-    public ResponseEntity<RestaurantesDto> create(@RequestBody RestaurantesDto restaurantesDto) {
+    public ResponseEntity<RestaurantesResponseDto> create(@RequestBody RestaurantesDto restauranteDto) {
         logger.info("Criando Restaurante");
-        RestaurantesDto restaurante = service.create(restaurantesDto);
+        RestaurantesResponseDto restaurante = service.create(restauranteDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(restaurante);
     }
     @GetMapping
-    public ResponseEntity<List<RestaurantesDto>> findAll(){
+    public ResponseEntity<List<RestaurantesResponseDto>> findAll(){
         logger.info("Listando todos os restaurantes");
-        List<RestaurantesDto> restaurantesDtoList = service.findAll();
-        return ResponseEntity.ok().body(restaurantesDtoList);
+        List<RestaurantesResponseDto> restaurantesResponseDtoList = service.findAll();
+        return ResponseEntity.ok().body(restaurantesResponseDtoList);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<RestaurantesDto> findById(@PathVariable Long id){
+    public ResponseEntity<RestaurantesResponseDto> findById(@PathVariable Long id){
         logger.info("Buscando Restaurante");
-        RestaurantesDto restaurantesDto = service.findById(id);
-        return ResponseEntity.ok().body(restaurantesDto);
+        RestaurantesResponseDto restaurantesResponseDto = service.findById(id);
+        return ResponseEntity.ok().body(restaurantesResponseDto);
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<RestaurantesDto> update(@PathVariable Long id, @RequestBody RestaurantesDto restaurantesDto){
+    public ResponseEntity<RestaurantesResponseDto> update(@PathVariable Long id, @RequestBody RestaurantesDto restauranteDto){
         logger.info("Atualizando restaurante");
-        RestaurantesDto restaurante = service.update(id, restaurantesDto);
+        RestaurantesResponseDto restaurante = service.update(id, restauranteDto);
         return ResponseEntity.ok().body(restaurante);
     }
     @DeleteMapping(value = "/{id}")
