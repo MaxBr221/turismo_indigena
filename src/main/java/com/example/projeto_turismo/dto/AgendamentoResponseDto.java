@@ -1,8 +1,6 @@
 package com.example.projeto_turismo.dto;
 
 import com.example.projeto_turismo.domains.*;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendamentoDto {
+public class AgendamentoResponseDto {
     private Long id;
     private LocalDateTime data;
     private int quantPessoas;
@@ -25,9 +23,8 @@ public class AgendamentoDto {
     private Long guide;
     private Long restaurante;
 
-    //alterar para o user não poder definir o tipo do Enum(Status), nem LocalDateTime de dataCriacao//
-
-    public AgendamentoDto(Agendamento agendamento){
+    //fazer uma logica para não poder adicionar agendamento com data já marcada(mesmo dia e hora)//
+    public AgendamentoResponseDto(Agendamento agendamento){
         BeanUtils.copyProperties(agendamento, this);
     }
 

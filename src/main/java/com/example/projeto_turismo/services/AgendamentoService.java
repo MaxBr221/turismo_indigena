@@ -1,10 +1,8 @@
 package com.example.projeto_turismo.services;
 
-import com.example.projeto_turismo.domains.Agendamento;
-import com.example.projeto_turismo.domains.Guide;
-import com.example.projeto_turismo.domains.Restaurantes;
-import com.example.projeto_turismo.domains.User;
-import com.example.projeto_turismo.dto.AgendamentoDto;
+import com.example.projeto_turismo.domains.*;
+import com.example.projeto_turismo.dto.AgendamentoCreateDto;
+import com.example.projeto_turismo.dto.AgendamentoResponseDto;
 import com.example.projeto_turismo.dto.AgendamentoUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.AgendamentoRepository;
@@ -32,23 +30,26 @@ public class AgendamentoService {
     @Autowired
     private RestaurantesRepository restaurantesRepository;
 
-    public AgendamentoDto create(AgendamentoDto dto) {
-        User user = userRepository.findById(dto.getUser())
+    public AgendamentoResponseDto create(AgendamentoCreateDto dto) {
+        if(repository.findByData(dto.data()) != null){
+            throw new EventFullException("Data já escolhida por outro usuário.");
+        }
+        User user = userRepository.findById(dto.user())
                 .orElseThrow(() -> new EventFullException("User não existente"));
-        Guide guide = guideRepository.findById(dto.getGuide())
+        Guide guide = guideRepository.findById(dto.guide())
                 .orElseThrow(() -> new EventFullException("Guide não existente"));
-        Restaurantes restaurantes = restaurantesRepository.findById(dto.getRestaurante())
+        Restaurantes restaurantes = restaurantesRepository.findById(dto.restaurante())
                 .orElseThrow(() -> new EventFullException("Restaurante não existente"));
         Agendamento agendamento = new Agendamento();
-        agendamento.setData(dto.getData());
-        agendamento.setQuantPessoas(dto.getQuantPessoas());
-        agendamento.setStatus(dto.getStatus());
+        agendamento.setData(dto.data());
+        agendamento.setQuantPessoas(dto.quantPessoas());
+        agendamento.setStatus(Status.AGENDADO);
         agendamento.setDataCriacao(LocalDateTime.now());
         agendamento.setUser(user);
         agendamento.setGuide(guide);
         agendamento.setRestaurante(restaurantes);
         Agendamento ag = repository.save(agendamento);
-        return new AgendamentoDto(
+        return new AgendamentoResponseDto(
                 ag.getId(),
                 ag.getData(),
                 ag.getQuantPessoas(),
@@ -59,10 +60,10 @@ public class AgendamentoService {
                 ag.getRestaurante().getId());
     }
     @Transactional
-    public List<AgendamentoDto> findAll(){
+    public List<AgendamentoResponseDto> findAll(){
         return repository.findAll()
                 .stream()
-                .map(agendamento -> new AgendamentoDto(
+                .map(agendamento -> new AgendamentoResponseDto(
                         agendamento.getId(),
                         agendamento.getData(),
                         agendamento.getQuantPessoas(),
@@ -74,10 +75,10 @@ public class AgendamentoService {
                 ))
                 .toList();
     }
-    public AgendamentoDto findById(Long id){
+    public AgendamentoResponseDto findById(Long id){
         Agendamento agendamento = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Agendamento não encontrado."));
-        return new AgendamentoDto(
+        return new AgendamentoResponseDto(
                 agendamento.getId(),
                 agendamento.getData(),
                 agendamento.getQuantPessoas(),
@@ -92,14 +93,14 @@ public class AgendamentoService {
                 .orElseThrow(() -> new EventFullException("Agendamento não encontrado."));
         repository.delete(ag);
     }
-    public AgendamentoDto update(Long id, AgendamentoUpdateDto ag){
+    public AgendamentoResponseDto update(Long id, AgendamentoUpdateDto ag){
         Agendamento agendamento = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Agendamento não encontrado."));
         agendamento.setData(ag.data());
         agendamento.setStatus(ag.status());
         agendamento.setQuantPessoas(ag.quantPessoas());
         Agendamento salvo = repository.save(agendamento);
-        return new AgendamentoDto(
+        return new AgendamentoResponseDto(
                 salvo.getId(),
                 salvo.getData(),
                 salvo.getQuantPessoas(),

@@ -1,6 +1,7 @@
 package com.example.projeto_turismo.controllers;
 
-import com.example.projeto_turismo.dto.AgendamentoDto;
+import com.example.projeto_turismo.dto.AgendamentoCreateDto;
+import com.example.projeto_turismo.dto.AgendamentoResponseDto;
 import com.example.projeto_turismo.dto.AgendamentoUpdateDto;
 import com.example.projeto_turismo.services.AgendamentoService;
 import org.slf4j.LoggerFactory;
@@ -20,28 +21,28 @@ public class AgendamentoController {
     private AgendamentoService service;
 
     @PostMapping
-    public ResponseEntity<AgendamentoDto> create(@RequestBody AgendamentoDto agendamentoDto){
+    public ResponseEntity<AgendamentoResponseDto> create(@RequestBody AgendamentoCreateDto agendamentoCreateDto){
         logger.info("Criando Agendamento");
-        AgendamentoDto ag = service.create(agendamentoDto);
+        AgendamentoResponseDto ag = service.create(agendamentoCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ag);
     }
     @GetMapping
-    public ResponseEntity<List<AgendamentoDto>> findAll(){
+    public ResponseEntity<List<AgendamentoResponseDto>> findAll(){
         logger.info("Listando todos os agendamentos");
-        List<AgendamentoDto> ag = service.findAll();
+        List<AgendamentoResponseDto> ag = service.findAll();
         return ResponseEntity.ok().body(ag);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AgendamentoDto> findById(@PathVariable Long id){
+    public ResponseEntity<AgendamentoResponseDto> findById(@PathVariable Long id){
         logger.info("Buscando Agendamento");
-        AgendamentoDto ag = service.findById(id);
+        AgendamentoResponseDto ag = service.findById(id);
         return ResponseEntity.ok().body(ag);
     }
     @PutMapping(value = "/{id}")
     public ResponseEntity update(@PathVariable Long id, @RequestBody AgendamentoUpdateDto ag){
         logger.info("Atualizando Agendamento");
-        AgendamentoDto agendamentoDto = service.update(id, ag);
-        return ResponseEntity.ok().body(agendamentoDto);
+        AgendamentoResponseDto agendamentoResponseDto = service.update(id, ag);
+        return ResponseEntity.ok().body(agendamentoResponseDto);
     }
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable Long id){

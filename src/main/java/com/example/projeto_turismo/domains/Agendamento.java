@@ -1,6 +1,6 @@
 package com.example.projeto_turismo.domains;
 
-import com.example.projeto_turismo.dto.AgendamentoDto;
+import com.example.projeto_turismo.dto.AgendamentoResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,14 +41,22 @@ public class Agendamento {
     @JoinColumn(name = "id_restaurantes", nullable = false)
     private Restaurantes restaurante;
 
-    public Agendamento(AgendamentoDto agendamentoDto){
-        BeanUtils.copyProperties(agendamentoDto, this);
+    public Agendamento(AgendamentoResponseDto agendamentoResponseDto){
+        BeanUtils.copyProperties(agendamentoResponseDto, this);
     }
 
     public Agendamento(LocalDateTime data, int quantPessoas, Status status, User user, Guide guide, Restaurantes restaurante) {
         this.data = data;
         this.quantPessoas = quantPessoas;
         this.status = status;
+        this.user = user;
+        this.guide = guide;
+        this.restaurante = restaurante;
+    }
+
+    public Agendamento(LocalDateTime data, int quantPessoas, Status status, LocalDateTime dataCriacao, User user, Guide guide, Restaurantes restaurante) {
+        this.data = data;
+        this.quantPessoas = quantPessoas;
         this.user = user;
         this.guide = guide;
         this.restaurante = restaurante;
