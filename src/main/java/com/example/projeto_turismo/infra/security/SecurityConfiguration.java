@@ -27,7 +27,15 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize-> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/agendamento").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/agendamento").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/agendamento").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/guide").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/guide").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/pontoturistico").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/pontoturistico").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/restaurantes").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/restaurantes").hasRole("ADMIN")
+
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
