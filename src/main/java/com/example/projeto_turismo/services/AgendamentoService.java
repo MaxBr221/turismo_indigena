@@ -29,6 +29,8 @@ public class AgendamentoService {
     private GuideRepository guideRepository;
     @Autowired
     private RestaurantesRepository restaurantesRepository;
+    @Autowired
+    private AuthService authService;
 
 
     public AgendamentoResponseDto create(AgendamentoCreateDto dto) {
@@ -113,22 +115,27 @@ public class AgendamentoService {
                 salvo.getGuide().getId(),
                 salvo.getRestaurante().getId());
     }
-    public AgendamentoResponseDto findByAgendamentUser(Long id){
-        User user = userRepository.findByUser(id);
-        Agendamento ag = repository.findByUser(user.getId());
-        if(!user.getId().equals(ag.getUser().getId())){
-            throw new EventFullException("não existe agendamento referente a esse usuário");
+    public List<AgendamentoResponseDto> findByUserLogado(){
+        User user = authService.getUserLogado();
+
+        List<Agendamento> ag = repository.findByUser(user);
+
+        if(ag.isEmpty()){
+            throw new EventFullException("Não existe agendamento referente a esse usuário");
         }
-        //melhorar o dto futuramente
-        //testar no postman amanha esse metodo.
-        return new AgendamentoResponseDto(
-                ag.getId(),
-                ag.getData(),
-                ag.getQuantPessoas(),
-                ag.getStatus(),
-                ag.getDataCriacao(),
-                ag.getUser().getId(),
-                ag.getGuide().getId(),
-                ag.getRestaurante().getId());
+
+        return repository.findAll()
+                .stream()
+                .map(agendamento -> new AgendamentoResponseDto(
+                        agendamento.getId(),
+                        agendamento.getData(),
+                        agendamento.getQuantPessoas(),
+                        agendamento.getStatus(),
+                        agendamento.getDataCriacao(),
+                        agendamento.getUser().getId(),
+                        agendamento.getGuide().getId(),
+                        agendamento.getRestaurante().getId()
+                ))
+                .toList();
     }
 }
