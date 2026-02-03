@@ -8,4 +8,5 @@ import java.time.LocalDateTime;
 
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
     AgendamentoResponseDto findByData(LocalDateTime data);
+    Agendamento findByUser(Long id);
 }

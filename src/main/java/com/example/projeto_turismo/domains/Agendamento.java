@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "agendamento")
 public class Agendamento {
+    //possivel de alteração o notnull de guide, pois vai ter vezes que os turistas vão agendar sem guide//
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

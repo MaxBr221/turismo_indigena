@@ -49,4 +49,10 @@ public class AgendamentoController {
         logger.info("Apagando Agendamento");
         service.delete(id);
     }
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<AgendamentoResponseDto> findByAgendamentUser(@PathVariable Long id){
+        logger.info("Buscando Agendamentos do usuário");
+        AgendamentoResponseDto ag = service.findByAgendamentUser(id);
+        return ResponseEntity.ok().body(ag);
+    }
 }

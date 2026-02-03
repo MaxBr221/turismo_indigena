@@ -113,4 +113,22 @@ public class AgendamentoService {
                 salvo.getGuide().getId(),
                 salvo.getRestaurante().getId());
     }
+    public AgendamentoResponseDto findByAgendamentUser(Long id){
+        User user = userRepository.findByUser(id);
+        Agendamento ag = repository.findByUser(user.getId());
+        if(!user.getId().equals(ag.getUser().getId())){
+            throw new EventFullException("não existe agendamento referente a esse usuário");
+        }
+        //melhorar o dto futuramente
+        //testar no postman amanha esse metodo.
+        return new AgendamentoResponseDto(
+                ag.getId(),
+                ag.getData(),
+                ag.getQuantPessoas(),
+                ag.getStatus(),
+                ag.getDataCriacao(),
+                ag.getUser().getId(),
+                ag.getGuide().getId(),
+                ag.getRestaurante().getId());
+    }
 }
