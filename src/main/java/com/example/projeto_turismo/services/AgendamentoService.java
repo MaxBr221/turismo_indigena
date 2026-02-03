@@ -30,6 +30,7 @@ public class AgendamentoService {
     @Autowired
     private RestaurantesRepository restaurantesRepository;
 
+
     public AgendamentoResponseDto create(AgendamentoCreateDto dto) {
         if(repository.findByData(dto.data()) != null){
             throw new EventFullException("Data já escolhida por outro usuário.");
@@ -40,6 +41,7 @@ public class AgendamentoService {
                 .orElseThrow(() -> new EventFullException("Guide não existente"));
         Restaurantes restaurantes = restaurantesRepository.findById(dto.restaurante())
                 .orElseThrow(() -> new EventFullException("Restaurante não existente"));
+
         Agendamento agendamento = new Agendamento();
         agendamento.setData(dto.data());
         agendamento.setQuantPessoas(dto.quantPessoas());
@@ -88,6 +90,7 @@ public class AgendamentoService {
                 agendamento.getGuide().getId() ,
                 agendamento.getRestaurante().getId());
     }
+
     public void delete(Long id){
         Agendamento ag = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Agendamento não encontrado."));

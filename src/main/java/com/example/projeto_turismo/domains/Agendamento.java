@@ -1,6 +1,7 @@
 package com.example.projeto_turismo.domains;
 
 import com.example.projeto_turismo.dto.AgendamentoResponseDto;
+import com.example.projeto_turismo.exceptions.EventFullException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,6 +48,9 @@ public class Agendamento {
 
     public Agendamento(LocalDateTime data, int quantPessoas, Status status, User user, Guide guide, Restaurantes restaurante) {
         this.data = data;
+        if(quantPessoas <= 0){
+            throw new EventFullException("É obrigatorio dizer o quantitativo correto de pessoas");
+        }
         this.quantPessoas = quantPessoas;
         this.status = status;
         this.user = user;
@@ -56,6 +60,9 @@ public class Agendamento {
 
     public Agendamento(LocalDateTime data, int quantPessoas, Status status, LocalDateTime dataCriacao, User user, Guide guide, Restaurantes restaurante) {
         this.data = data;
+        if(quantPessoas <= 0){
+            throw new EventFullException("É obrigatorio dizer o quantitativo correto de pessoas");
+        }
         this.quantPessoas = quantPessoas;
         this.user = user;
         this.guide = guide;

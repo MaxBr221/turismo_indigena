@@ -26,7 +26,6 @@ public class RestaurantesService {
         restaurante.setHorarioFuncionamento(restaurantesDto.horarioFuncionamento());
         restaurante.setTelefone(restaurantesDto.telefone());
         restaurante.setRedeSociais(restaurantesDto.redeSociais());
-
         Restaurantes salvo = repository.save(restaurante);
 
         return new RestaurantesResponseDto(

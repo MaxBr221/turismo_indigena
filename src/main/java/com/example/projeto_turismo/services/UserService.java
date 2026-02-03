@@ -21,6 +21,7 @@ public class UserService {
         if(userRepository.existsByLoginIgnoreCase(dto.login())){
             throw new EventFullException("Já existe usuário com esse email");
         }
+
         User user1 = new User();
         user1.setNome(dto.nome());
         user1.setTelefone(dto.telefone());

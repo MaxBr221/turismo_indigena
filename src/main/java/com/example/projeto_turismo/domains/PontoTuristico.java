@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @Table(name = "pontoturistico")
 public class PontoTuristico {
+    //modificar coluna de telefone para "informações adicionais" mais para a frente//
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
