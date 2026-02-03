@@ -115,7 +115,7 @@ public class AgendamentoService {
                 salvo.getGuide().getId(),
                 salvo.getRestaurante().getId());
     }
-    public List<AgendamentoResponseDto> findByUserLogado(){
+    public List<AgendamentoResponseDto> findByAgendamentoUser(){
         User user = authService.getUserLogado();
 
         List<Agendamento> ag = repository.findByUser(user);
@@ -124,9 +124,8 @@ public class AgendamentoService {
             throw new EventFullException("Não existe agendamento referente a esse usuário");
         }
 
-        return repository.findAll()
-                .stream()
-                .map(agendamento -> new AgendamentoResponseDto(
+        return ag.stream()
+                .map(agendamento-> new AgendamentoResponseDto(
                         agendamento.getId(),
                         agendamento.getData(),
                         agendamento.getQuantPessoas(),
@@ -135,6 +134,7 @@ public class AgendamentoService {
                         agendamento.getUser().getId(),
                         agendamento.getGuide().getId(),
                         agendamento.getRestaurante().getId()
+
                 ))
                 .toList();
     }

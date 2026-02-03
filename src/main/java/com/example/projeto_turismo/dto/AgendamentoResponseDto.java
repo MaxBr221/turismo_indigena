@@ -23,7 +23,6 @@ public class AgendamentoResponseDto {
     private Long guide;
     private Long restaurante;
 
-    //fazer uma logica para não poder adicionar agendamento com data já marcada(mesmo dia e hora)//
     public AgendamentoResponseDto(Agendamento agendamento){
         BeanUtils.copyProperties(agendamento, this);
     }

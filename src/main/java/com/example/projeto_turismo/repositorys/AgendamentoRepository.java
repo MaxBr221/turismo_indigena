@@ -10,6 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
-    Optional<Agendamento> findByData(LocalDateTime data);
+    Agendamento findByData(LocalDateTime data);
     List<Agendamento> findByUser(User user);
 }

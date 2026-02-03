@@ -52,6 +52,6 @@ public class AgendamentoController {
     @GetMapping("/meus")
     public ResponseEntity<List<AgendamentoResponseDto>> findByAgendamentUser(){
         logger.info("Buscando Agendamentos do usuário");
-        return ResponseEntity.ok(service.findByUserLogado());
+        return ResponseEntity.ok(service.findByAgendamentoUser());
     }
 }
