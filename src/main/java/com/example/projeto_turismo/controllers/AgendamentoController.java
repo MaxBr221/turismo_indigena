@@ -54,4 +54,14 @@ public class AgendamentoController {
         logger.info("Buscando Agendamentos do usuário");
         return ResponseEntity.ok(service.findByAgendamentoUser());
     }
+    @GetMapping("/agendados")
+    public ResponseEntity<List<AgendamentoResponseDto>> findByAgendamentosAtivo(){
+        logger.info("Buscando agendamentos ativos");
+        return ResponseEntity.ok().body(service.findByAgendamentoAtivos());
+    }
+    @GetMapping("/cancelados")
+    public ResponseEntity<List<AgendamentoResponseDto>> findByAgendamentosCancelados(){
+        logger.info("Buscando agendamentos cancelados");
+        return ResponseEntity.ok().body(service.findByAgendamentosCancelados());
+    }
 }

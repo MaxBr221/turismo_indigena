@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//Adicionar possiveis verificações mais regras de negocios//
-
 
 @Service
 public class AgendamentoService {
@@ -137,5 +135,41 @@ public class AgendamentoService {
 
                 ))
                 .toList();
+    }
+    public List<AgendamentoResponseDto> findByAgendamentoAtivos(){
+        List<Agendamento> ag = repository.findByStatus(Status.AGENDADO);
+        if(ag.isEmpty()){
+            throw new EventFullException("Lista de agendamentos agendados vazia");
+        }
+        return ag
+                .stream()
+                .map(agendamento -> new AgendamentoResponseDto(
+                agendamento.getId(),
+                agendamento.getData(),
+                agendamento.getQuantPessoas(),
+                agendamento.getStatus(),
+                agendamento.getDataCriacao(),
+                agendamento.getUser().getId(),
+                agendamento.getGuide().getId(),
+                agendamento.getRestaurante().getId()
+        )).toList();
+
+    }
+    public List<AgendamentoResponseDto> findByAgendamentosCancelados(){
+        List<Agendamento> ag = repository.findByStatus(Status.CANCELADO);
+
+        if(ag.isEmpty()){
+            throw new EventFullException("Não há nenhum agendamento cancelado");
+        }
+        return ag.stream().map(agendamento -> new AgendamentoResponseDto(
+                agendamento.getId(),
+                agendamento.getData(),
+                agendamento.getQuantPessoas(),
+                agendamento.getStatus(),
+                agendamento.getDataCriacao(),
+                agendamento.getUser().getId(),
+                agendamento.getGuide().getId(),
+                agendamento.getRestaurante().getId()
+        )).toList();
     }
 }
