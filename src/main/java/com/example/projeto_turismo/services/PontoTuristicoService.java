@@ -5,15 +5,17 @@ import com.example.projeto_turismo.dto.PontoTuristicoDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.PontoTuristicoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class PontoTuristicoService {
-    @Autowired
     private PontoTuristicoRepository repository;
+
+    public PontoTuristicoService(PontoTuristicoRepository repository) {
+        this.repository = repository;
+    }
 
     public PontoTuristicoResponseDto create(PontoTuristicoDto pontoTuristico){
 

@@ -5,16 +5,17 @@ import com.example.projeto_turismo.dto.RestaurantesDto;
 import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.RestaurantesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class RestaurantesService {
-
-    @Autowired
     private RestaurantesRepository repository;
+
+    public RestaurantesService(RestaurantesRepository repository) {
+        this.repository = repository;
+    }
 
     public RestaurantesResponseDto create(RestaurantesDto restaurantesDto){
         Restaurantes restaurante = new Restaurantes();

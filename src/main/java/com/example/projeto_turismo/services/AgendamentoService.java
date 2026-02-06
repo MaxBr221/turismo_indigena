@@ -9,7 +9,6 @@ import com.example.projeto_turismo.repositorys.AgendamentoRepository;
 import com.example.projeto_turismo.repositorys.GuideRepository;
 import com.example.projeto_turismo.repositorys.RestaurantesRepository;
 import com.example.projeto_turismo.repositorys.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,17 +18,19 @@ import java.util.List;
 
 @Service
 public class AgendamentoService {
-    @Autowired
     private AgendamentoRepository repository;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private GuideRepository guideRepository;
-    @Autowired
     private RestaurantesRepository restaurantesRepository;
-    @Autowired
     private AuthService authService;
 
+    public AgendamentoService(AgendamentoRepository repository, UserRepository userRepository, GuideRepository guideRepository, RestaurantesRepository restaurantesRepository, AuthService authService) {
+        this.repository = repository;
+        this.userRepository = userRepository;
+        this.guideRepository = guideRepository;
+        this.restaurantesRepository = restaurantesRepository;
+        this.authService = authService;
+    }
 
     public AgendamentoResponseDto create(AgendamentoCreateDto dto) {
         if(repository.findByData(dto.data()) != null){

@@ -1,6 +1,5 @@
 package com.example.projeto_turismo.services;
 
-
 import com.example.projeto_turismo.dto.RegisterDto;
 import com.example.projeto_turismo.dto.UserResponseDto;
 import com.example.projeto_turismo.dto.UserUpdateDto;
