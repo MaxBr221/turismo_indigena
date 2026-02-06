@@ -22,10 +22,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class UserServiceTest {
     @InjectMocks
     private UserService userService;
-
     @Mock
     private UserRepository userRepository;
-
     //operacao_estado_retorno
     @Test
     public void createUser_WithValidData_ReturnUser(){
@@ -33,9 +31,7 @@ public class UserServiceTest {
 
         User user = userService.create(REGISTER_DTO);
 
-        assertThat(user.getLogin()).isEqualTo(REGISTER_DTO.login());
-        assertThat(user.getTelefone()).isEqualTo(REGISTER_DTO.telefone());
-        assertThat(user.getNome()).isEqualTo(REGISTER_DTO.nome());
+        assertThat(user).isEqualTo(USER);
     }
     @Test
     public void createUser_WithInvalidData_ThrowsExeption(){
