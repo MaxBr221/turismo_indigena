@@ -7,15 +7,17 @@ import com.example.projeto_turismo.dto.UserUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.repositorys.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
-    @Autowired
     private UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public User create(RegisterDto dto){
         if(userRepository.existsByLoginIgnoreCase(dto.login())){
