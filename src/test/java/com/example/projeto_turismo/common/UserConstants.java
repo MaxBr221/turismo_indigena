@@ -10,4 +10,6 @@ public class UserConstants {
     public static final User USER = new User("maxsuel", "83-99171-0731", "maxsuel.lima@dcx", "max123", Role.USER);
 
     public static final RegisterDto INVALID_USER = new RegisterDto(" ", " ", " ", " ", Role.USER);
+
+
 }

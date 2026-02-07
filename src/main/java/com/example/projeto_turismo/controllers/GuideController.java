@@ -1,9 +1,10 @@
 package com.example.projeto_turismo.controllers;
 
-import com.example.projeto_turismo.dto.GuideDto;
+import com.example.projeto_turismo.dto.GuideCreateDto;
 import com.example.projeto_turismo.dto.GuideResponseDto;
 import com.example.projeto_turismo.services.GuideService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,9 +32,9 @@ public class GuideController {
             @ApiResponse(responseCode = "403", description = "Acesso não permitido")
     })
     @PostMapping
-    public ResponseEntity<GuideResponseDto> create(@RequestBody GuideDto guideDto){
+    public ResponseEntity<GuideResponseDto> create(@RequestBody GuideCreateDto guideCreateDto){
         logger.info("Criando guia");
-        GuideResponseDto guide = service.create(guideDto);
+        GuideResponseDto guide = service.create(guideCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(guide);
     }
     @Operation(summary = "Buscando guide")
@@ -41,7 +42,7 @@ public class GuideController {
             @ApiResponse(responseCode = "200", description = "Buscando Guide"),
             @ApiResponse(responseCode = "400", description = "Dados Inválidos")})
     @GetMapping(value = "/{id}")
-    public ResponseEntity<GuideResponseDto> findById(@PathVariable Long id){
+    public ResponseEntity<GuideResponseDto> findById(@Parameter(description = "Id do Guide que deseja Buscar", example = "1")@PathVariable Long id){
         logger.info("Buscando guia");
         GuideResponseDto guide = service.findById(id);
         return ResponseEntity.ok().body(guide);
@@ -62,7 +63,7 @@ public class GuideController {
 
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<GuideResponseDto> update(@PathVariable Long id, @RequestBody GuideDto guide){
+    public ResponseEntity<GuideResponseDto> update(@Parameter(description = "Id do Guide que deseja editar", example = "1")@PathVariable Long id, @RequestBody GuideCreateDto guide){
         logger.info("Editando guia");
         GuideResponseDto guideResponseDto = service.update(id, guide);
         return ResponseEntity.ok().body(guideResponseDto);
@@ -70,7 +71,7 @@ public class GuideController {
     @Operation(summary = "Deletando Guide")
     @ApiResponse(responseCode = "200", description = "Deletando Guide")
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@Parameter(description = "Id do Guide que deseja deletar", example = "1")@PathVariable Long id){
         logger.info("Apagando guia");
         service.delete(id);
     }

@@ -1,10 +1,11 @@
 package com.example.projeto_turismo.controllers;
 
 import com.example.projeto_turismo.domains.PontoTuristico;
-import com.example.projeto_turismo.dto.PontoTuristicoDto;
+import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.services.PontoTuristicoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,9 +33,9 @@ public class PontoTuristicoController {
             @ApiResponse(responseCode = "400", description = "Dados incorretos")
     })
     @PostMapping
-    public ResponseEntity<PontoTuristicoResponseDto> create(@RequestBody PontoTuristicoDto pontoTuristicoDto){
+    public ResponseEntity<PontoTuristicoResponseDto> create(@RequestBody PontoTuristicoCreateDto pontoTuristicoCreateDto){
         logger.info("Criando ponto turistico");
-        PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.create(pontoTuristicoDto);
+        PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.create(pontoTuristicoCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(pontoTuristicoResponseDto1);
     }
     @Operation(summary = "Buscando PontoTurisitico")
@@ -44,7 +45,7 @@ public class PontoTuristicoController {
     })
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PontoTuristicoResponseDto> findById(@PathVariable Long id){
+    public ResponseEntity<PontoTuristicoResponseDto> findById(@Parameter(description = "Id do PontoTuristico que deseja buscar", example = "1")@PathVariable Long id){
         logger.info("Buscando ponto turistico");
         PontoTuristicoResponseDto pontoTuristicoResponseDto = service.findById(id);
         return ResponseEntity.ok().body(pontoTuristicoResponseDto);
@@ -62,14 +63,14 @@ public class PontoTuristicoController {
             @ApiResponse(responseCode = "400", description = "Dados incorretos")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<PontoTuristicoResponseDto> update(@PathVariable Long id, @RequestBody PontoTuristicoDto pontoTuristicoDto){
+    public ResponseEntity<PontoTuristicoResponseDto> update(@Parameter(description = "Id do PontoTuristico que deseja editar", example = "1")@PathVariable Long id, @RequestBody PontoTuristicoCreateDto pontoTuristicoCreateDto){
         logger.info("Atualizando ponto turistico");
-        PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.update(id, pontoTuristicoDto);
+        PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.update(id, pontoTuristicoCreateDto);
         return ResponseEntity.ok().body(pontoTuristicoResponseDto1);
     }
     @Operation(summary = "Deletando PontoTurisitico")
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@Parameter(description = "Id do PontoTuristico que deseja deletar", example = "1")@PathVariable Long id){
         logger.info("Deletando ponto turistico");
         service.delete(id);
     }

@@ -1,7 +1,7 @@
 package com.example.projeto_turismo.services;
 
 import com.example.projeto_turismo.domains.PontoTuristico;
-import com.example.projeto_turismo.dto.PontoTuristicoDto;
+import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.PontoTuristicoRepository;
@@ -17,19 +17,19 @@ public class PontoTuristicoService {
         this.repository = repository;
     }
 
-    public PontoTuristicoResponseDto create(PontoTuristicoDto pontoTuristico){
+    public PontoTuristicoResponseDto create(PontoTuristicoCreateDto pontoTuristico){
 
         PontoTuristico turistico = new PontoTuristico();
         turistico.setNome(pontoTuristico.nome());
         turistico.setLocal(pontoTuristico.local());
-        turistico.setTelefone(pontoTuristico.telefone());
+        turistico.setInformacoes(pontoTuristico.informacoes());
 
         PontoTuristico salvo = repository.save(turistico);
         return new PontoTuristicoResponseDto(
                 salvo.getId(),
                 salvo.getNome(),
                 salvo.getLocal(),
-                salvo.getTelefone());
+                salvo.getInformacoes());
     }
     public List<PontoTuristicoResponseDto> findAll(){
         return repository.findAll()
@@ -38,7 +38,7 @@ public class PontoTuristicoService {
                         pontoTuristico1.getId(),
                         pontoTuristico1.getNome(),
                         pontoTuristico1.getLocal(),
-                        pontoTuristico1.getTelefone())
+                        pontoTuristico1.getInformacoes())
                 ))
                 .toList();
 
@@ -50,15 +50,15 @@ public class PontoTuristicoService {
                 pontoTuristico.getId(),
                 pontoTuristico.getNome(),
                 pontoTuristico.getLocal(),
-                pontoTuristico.getTelefone());
+                pontoTuristico.getInformacoes());
     }
-    public PontoTuristicoResponseDto update(Long id, PontoTuristicoDto dto){
+    public PontoTuristicoResponseDto update(Long id, PontoTuristicoCreateDto dto){
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto turistico não encotrado."));
 
         pontoTuristico.setNome(dto.nome());
         pontoTuristico.setLocal(dto.local());
-        pontoTuristico.setTelefone(dto.telefone());
+        pontoTuristico.setInformacoes(dto.informacoes());
 
         PontoTuristico pontoTuristico1 = repository.save(pontoTuristico);
 
@@ -66,7 +66,7 @@ public class PontoTuristicoService {
                 pontoTuristico1.getId(),
                 pontoTuristico1.getNome(),
                 pontoTuristico1.getLocal(),
-                pontoTuristico1.getTelefone());
+                pontoTuristico1.getInformacoes());
     }
     public void delete(Long id){
         PontoTuristico pontoTuristico = repository.findById(id)

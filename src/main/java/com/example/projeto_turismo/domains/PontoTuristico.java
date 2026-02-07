@@ -15,7 +15,7 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @Table(name = "pontoturistico")
 public class PontoTuristico {
-    //modificar coluna de telefone para "informações adicionais" mais para a frente//
+    //modificar coluna de informacoes para "informações adicionais" mais para a frente//
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,16 +24,16 @@ public class PontoTuristico {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Local local;
-    @Column(name = "telefone", nullable = false)
-    private String telefone;
+    @Column(name = "informacoes", nullable = false)
+    private String informacoes;
 
     public PontoTuristico(PontoTuristicoResponseDto pontoTuristicoResponseDto){
         BeanUtils.copyProperties(pontoTuristicoResponseDto, this);
     }
 
-    public PontoTuristico(String nome, Local local, String telefone) {
+    public PontoTuristico(String nome, Local local, String informacoes) {
         this.nome = nome;
         this.local = local;
-        this.telefone = telefone;
+        this.informacoes = informacoes;
     }
 }

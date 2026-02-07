@@ -6,6 +6,7 @@ import com.example.projeto_turismo.dto.UserResponseDto;
 import com.example.projeto_turismo.dto.UserUpdateDto;
 import com.example.projeto_turismo.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -54,7 +55,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Busca feita com sucesso")
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserResponseDto> findById(@PathVariable Long id){
+    public ResponseEntity<UserResponseDto> findById(@Parameter(description = "Id do User que deseja buscar", example = "1")@PathVariable Long id){
         logger.info("listando usuário selecionado");
         User user = userService.findById(id);
         return ResponseEntity.ok(new UserResponseDto(user));
@@ -66,7 +67,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Edição feita com sucesso")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody UserUpdateDto userDto){
+    public ResponseEntity<UserResponseDto> update(@Parameter(description = "Id do User que deseja Editar", example = "1")@PathVariable Long id, @RequestBody UserUpdateDto userDto){
         logger.info("Atualizando usuário");
         User user = userService.findById(id);
         userService.update(id, userDto);
@@ -74,7 +75,7 @@ public class UserController {
     }
     @Operation(summary = "Deletando users")
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@Parameter(description = "Id do User que deseja deletar", example = "1")@PathVariable Long id){
         logger.info("Deletando usuário");
         userService.delete(id);
     }

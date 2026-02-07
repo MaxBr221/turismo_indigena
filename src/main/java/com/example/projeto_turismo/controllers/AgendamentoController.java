@@ -5,6 +5,7 @@ import com.example.projeto_turismo.dto.AgendamentoResponseDto;
 import com.example.projeto_turismo.dto.AgendamentoUpdateDto;
 import com.example.projeto_turismo.services.AgendamentoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,7 +50,7 @@ public class AgendamentoController {
             @ApiResponse(responseCode = "400", description = "dados inválidos"),
             @ApiResponse(responseCode = "200", description = "Busca feita com sucesso")})
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AgendamentoResponseDto> findById(@PathVariable Long id){
+    public ResponseEntity<AgendamentoResponseDto> findById(@Parameter(description = "Id do Agendamento", example = "1") @PathVariable Long id){
         logger.info("Buscando Agendamento");
         AgendamentoResponseDto ag = service.findById(id);
         return ResponseEntity.ok().body(ag);
@@ -60,14 +61,14 @@ public class AgendamentoController {
         @ApiResponse(responseCode = "dados inválidos"),
         @ApiResponse(responseCode = "403", description = "Acesso proibido")})
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable Long id, @RequestBody AgendamentoUpdateDto ag){
+    public ResponseEntity update(@Parameter(description = "Id do agendamento que deseja editar", example = "1")@PathVariable Long id, @RequestBody AgendamentoUpdateDto ag){
         logger.info("Atualizando Agendamento");
         AgendamentoResponseDto agendamentoResponseDto = service.update(id, ag);
         return ResponseEntity.ok().body(agendamentoResponseDto);
     }
     @Operation(summary = "Deletando Agendamento")
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@Parameter(description = "Id do agendamento que deseja deletar", example = "1")@PathVariable Long id){
         logger.info("Apagando Agendamento");
         service.delete(id);
     }

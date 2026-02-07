@@ -1,7 +1,7 @@
 package com.example.projeto_turismo.services;
 
 import com.example.projeto_turismo.domains.Guide;
-import com.example.projeto_turismo.dto.GuideDto;
+import com.example.projeto_turismo.dto.GuideCreateDto;
 import com.example.projeto_turismo.dto.GuideResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.GuideRepository;
@@ -18,11 +18,11 @@ public class GuideService {
         this.repository = repository;
     }
 
-    public GuideResponseDto create(GuideDto guideDto){
+    public GuideResponseDto create(GuideCreateDto guideCreateDto){
         Guide guide = new Guide();
-        guide.setNome(guideDto.nome());
-        guide.setTelefone(guideDto.telefone());
-        guide.setDescricao(guideDto.descricao());
+        guide.setNome(guideCreateDto.nome());
+        guide.setTelefone(guideCreateDto.telefone());
+        guide.setDescricao(guideCreateDto.descricao());
         Guide guide1 = repository.save(guide);
 
         return new GuideResponseDto(guide1.getId(), guide1.getNome(), guide1.getTelefone(), guide1.getDescricao());
@@ -48,13 +48,13 @@ public class GuideService {
                 guide.getTelefone(),
                 guide.getDescricao());
     }
-    public GuideResponseDto update(Long id, GuideDto guideDto){
+    public GuideResponseDto update(Long id, GuideCreateDto guideCreateDto){
         Guide guide = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Id não encontrado."));
 
-        guide.setNome(guideDto.nome());
-        guide.setTelefone(guideDto.telefone());
-        guide.setDescricao(guideDto.descricao());
+        guide.setNome(guideCreateDto.nome());
+        guide.setTelefone(guideCreateDto.telefone());
+        guide.setDescricao(guideCreateDto.descricao());
 
         Guide guide1 = repository.save(guide);
 

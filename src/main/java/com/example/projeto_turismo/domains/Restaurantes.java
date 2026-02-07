@@ -28,7 +28,7 @@ public class Restaurantes {
     private String localizacao;
     @Column(name = "horariofuncionamento", nullable = false)
     private String horarioFuncionamento;
-    @Column(name = "telefone", nullable = false)
+    @Column(name = "informacoes", nullable = false)
     private String telefone;
     @Column(name = "redesociais", nullable = false)
     private String redeSociais;
