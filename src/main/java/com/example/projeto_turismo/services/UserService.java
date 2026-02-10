@@ -14,14 +14,12 @@ import java.util.List;
 public class UserService {
     private UserRepository userRepository;
 
-    //adicionar novos dtoresponse dps//
-
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     //colocar um verificação se o Role == USER
-    public User create(RegisterDto dto){
+    public UserResponseDto create(RegisterDto dto){
         if(userRepository.existsByLoginIgnoreCase(dto.login())){
             throw new EventFullException("Já existe usuário com esse email");
         }
@@ -32,16 +30,39 @@ public class UserService {
         user1.setLogin(dto.login());
         user1.setSenha(dto.senha());
         user1.setRole(dto.role());
-        return userRepository.save(user1);
+        User salvo = userRepository.save(user1);
+        return new UserResponseDto(
+                salvo.getId(),
+                salvo.getNome(),
+                salvo.getTelefone(),
+                salvo.getLogin(),
+                salvo.getRole());
 
     }
-    public User findById(Long id){
-        return userRepository.findById(id)
+    //retornar dto aqui
+    public UserResponseDto findById(Long id){
+        User user = userRepository.findById(id)
                 .orElseThrow(()-> new EventFullException("Usuário não encontrado."));
+        return new UserResponseDto(
+                user.getId(),
+                user.getNome(),
+                user.getTelefone(),
+                user.getLogin(),
+                user.getRole()
+        );
 
     }
-    public List<User> findAll(){
-        return userRepository.findAll();
+    public List<UserResponseDto> findAll(){
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserResponseDto(
+                        user.getId(),
+                        user.getNome(),
+                        user.getTelefone(),
+                        user.getLogin(),
+                        user.getRole()
+                ))
+                .toList();
     }
     public void delete(Long id){
         User user = userRepository.findById(id)

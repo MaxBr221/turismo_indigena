@@ -13,6 +13,7 @@ import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.UserResponseDto;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import com.example.projeto_turismo.services.UserService;
+import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -56,6 +57,6 @@ public class UserServiceTest {
 
         User user = userService.findById(1L);
 
-        assertThat(user).isEmpty();
+        assertThat(user).isNull();
     }
 }

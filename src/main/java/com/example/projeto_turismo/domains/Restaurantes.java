@@ -22,12 +22,11 @@ public class Restaurantes {
     private String nome;
     @Column(name = "descricao")
     private String descricao;
-
     @Column(name = "localizacao", nullable = false)
     private String localizacao;
     @Column(name = "horariofuncionamento", nullable = false)
     private String horarioFuncionamento;
-    @Column(name = "informacoes", nullable = false)
+    @Column(name = "telefone", nullable = false)
     private String telefone;
     @Column(name = "redesociais", nullable = false)
     private String redeSociais;

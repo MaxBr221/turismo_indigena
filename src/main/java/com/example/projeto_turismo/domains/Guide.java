@@ -20,7 +20,7 @@ public class Guide{
     private Long id;
     @Column(name = "nome", nullable = false)
     private String nome;
-    @Column(name = "informacoes", nullable = false)
+    @Column(name = "telefone", nullable = false)
     private String telefone;
     @Column(name = "descricao")
     private String descricao;

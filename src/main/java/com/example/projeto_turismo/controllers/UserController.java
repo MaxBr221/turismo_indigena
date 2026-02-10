@@ -1,6 +1,5 @@
 package com.example.projeto_turismo.controllers;
 
-import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.RegisterDto;
 import com.example.projeto_turismo.dto.UserResponseDto;
 import com.example.projeto_turismo.dto.UserUpdateDto;
@@ -36,18 +35,15 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserResponseDto> create(@RequestBody RegisterDto dto){
         logger.info("Criando usuário");
-        User user = userService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponseDto(user));
+        UserResponseDto user = userService.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
     @Operation(summary = "Buscando users")
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findAll(){
         logger.info("Listando todos os usuários");
-        List<UserResponseDto> response = userService.findAll()
-                .stream()
-                .map(UserResponseDto::new)
-                .toList();
-        return ResponseEntity.ok(response);
+        List<UserResponseDto> listaUsers = userService.findAll();
+        return ResponseEntity.ok().body(listaUsers);
     }
     @Operation(summary = "Buscando users")
     @ApiResponses({
@@ -57,8 +53,8 @@ public class UserController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserResponseDto> findById(@Parameter(description = "Id do User que deseja buscar", example = "1")@PathVariable Long id){
         logger.info("listando usuário selecionado");
-        User user = userService.findById(id);
-        return ResponseEntity.ok(new UserResponseDto(user));
+        UserResponseDto user = userService.findById(id);
+        return ResponseEntity.ok().body(user);
     }
     @Operation(summary = "Editando users")
     @ApiResponses({
@@ -69,9 +65,9 @@ public class UserController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<UserResponseDto> update(@Parameter(description = "Id do User que deseja Editar", example = "1")@PathVariable Long id, @RequestBody UserUpdateDto userDto){
         logger.info("Atualizando usuário");
-        User user = userService.findById(id);
+        UserResponseDto user = userService.findById(id);
         userService.update(id, userDto);
-        return ResponseEntity.ok(new UserResponseDto(user));
+        return ResponseEntity.ok().body(user);
     }
     @Operation(summary = "Deletando users")
     @DeleteMapping(value = "/{id}")
