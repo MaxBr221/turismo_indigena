@@ -22,7 +22,6 @@ public class RestaurantesService {
 
         restaurante.setNome(restaurantesDto.nome());
         restaurante.setDescricao(restaurantesDto.descricao());
-        restaurante.setTipo(restaurantesDto.tipo());
         restaurante.setLocalizacao(restaurantesDto.localizacao());
         restaurante.setHorarioFuncionamento(restaurantesDto.horarioFuncionamento());
         restaurante.setTelefone(restaurantesDto.telefone());
@@ -33,7 +32,6 @@ public class RestaurantesService {
                 salvo.getId(),
                 salvo.getNome(),
                 salvo.getDescricao(),
-                salvo.getTipo(),
                 salvo.getLocalizacao(),
                 salvo.getHorarioFuncionamento(),
                 salvo.getTelefone(),
@@ -47,7 +45,6 @@ public class RestaurantesService {
                 restaurante.getId(),
                 restaurante.getNome(),
                 restaurante.getDescricao(),
-                restaurante.getTipo(),
                 restaurante.getLocalizacao(),
                 restaurante.getHorarioFuncionamento(),
                 restaurante.getTelefone(),
@@ -60,7 +57,6 @@ public class RestaurantesService {
                         restaurantes.getId(),
                         restaurantes.getNome(),
                         restaurantes.getDescricao(),
-                        restaurantes.getTipo(),
                         restaurantes.getLocalizacao(),
                         restaurantes.getHorarioFuncionamento(),
                         restaurantes.getTelefone(),
@@ -73,7 +69,6 @@ public class RestaurantesService {
                 .orElseThrow(()-> new EventFullException("Restaurante não encontrado"));
         restaurantes.setNome(restaurantesDto.nome());
         restaurantes.setDescricao(restaurantesDto.descricao());
-        restaurantes.setTipo(restaurantesDto.tipo());
         restaurantes.setLocalizacao(restaurantesDto.localizacao());
         restaurantes.setHorarioFuncionamento(restaurantesDto.horarioFuncionamento());
         restaurantes.setTelefone(restaurantesDto.telefone());
@@ -82,7 +77,6 @@ public class RestaurantesService {
         return new RestaurantesResponseDto(
                 salvos.getNome(),
                 salvos.getDescricao(),
-                salvos.getTipo(),
                 salvos.getLocalizacao(),
                 salvos.getHorarioFuncionamento(),
                 salvos.getTelefone(),

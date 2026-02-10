@@ -1,4 +1,9 @@
 package com.example.projeto_turismo.dto;
 
-public record UserUpdateDto(String nome, String telefone, String login) {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Dados de Editar Usuários")
+public record UserUpdateDto(@Schema(description = "Nome do Usuário") String nome,
+                            @Schema(description = "Telefone do Usuário") String telefone,
+                            @Schema(description = "Login do Usuário") String login) {
 }

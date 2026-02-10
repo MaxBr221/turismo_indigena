@@ -14,10 +14,10 @@ public enum Role {
         return role;
     }
     @JsonCreator
-    public static Role converter(String role){
+    public static String converter(String role){
         for (Role r: values()){
             if (r.role.equalsIgnoreCase(role)){
-                return r;
+                return role;
             }
         }throw new EventFullException("Role não indetificado");
     }

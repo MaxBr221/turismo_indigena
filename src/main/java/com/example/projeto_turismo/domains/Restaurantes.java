@@ -22,8 +22,7 @@ public class Restaurantes {
     private String nome;
     @Column(name = "descricao")
     private String descricao;
-    @Column(name = "tipo", nullable = false)
-    private String tipo;
+
     @Column(name = "localizacao", nullable = false)
     private String localizacao;
     @Column(name = "horariofuncionamento", nullable = false)
@@ -33,10 +32,9 @@ public class Restaurantes {
     @Column(name = "redesociais", nullable = false)
     private String redeSociais;
 
-    public Restaurantes(String nome, String descricao, String tipo, String localizacao, String horarioFuncionamento, String telefone, String redeSociais) {
+    public Restaurantes(String nome, String descricao, String localizacao, String horarioFuncionamento, String telefone, String redeSociais) {
         this.nome = nome;
         this.descricao = descricao;
-        this.tipo = tipo;
         this.localizacao = localizacao;
         this.horarioFuncionamento = horarioFuncionamento;
         this.telefone = telefone;

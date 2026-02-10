@@ -1,6 +1,7 @@
 package com.example.projeto_turismo.infra.security;
 
 import com.example.projeto_turismo.repositorys.UserRepository;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,14 +15,19 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
+
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
-
-    @Autowired
     private TokenService tokenService;
-
-    @Autowired
     private UserRepository userRepository;
+
+
+    public SecurityFilter(TokenService tokenService, UserRepository userRepository) {
+        this.tokenService = tokenService;
+        this.userRepository = userRepository;
+    }
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -32,6 +38,10 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            var path = request.getRequestURI();
+
+            if(path.startsWith("/v3/api-docs")
+                    || path.startsWith("/swagger-ui.html"));
         }filterChain.doFilter(request, response);
     }
     private String recoverToken(HttpServletRequest request){

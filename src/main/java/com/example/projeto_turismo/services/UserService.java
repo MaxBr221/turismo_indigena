@@ -20,6 +20,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    //colocar um verificação se o Role == USER
     public User create(RegisterDto dto){
         if(userRepository.existsByLoginIgnoreCase(dto.login())){
             throw new EventFullException("Já existe usuário com esse email");

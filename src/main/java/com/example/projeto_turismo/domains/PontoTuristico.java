@@ -15,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @Table(name = "pontoturistico")
 public class PontoTuristico {
-    //modificar coluna de informacoes para "informações adicionais" mais para a frente//
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +23,7 @@ public class PontoTuristico {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Local local;
+    //descobrir o b.o disso
     @Column(name = "informacoes", nullable = false)
     private String informacoes;
 
