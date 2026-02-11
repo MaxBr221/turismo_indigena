@@ -1,5 +1,6 @@
 package com.example.projeto_turismo.services;
 
+import com.example.projeto_turismo.domains.Local;
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
@@ -73,5 +74,21 @@ public class PontoTuristicoService {
                 .orElseThrow(()-> new EventFullException("Ponto turistico não encotrado."));
         repository.delete(pontoTuristico);
 
+    }
+    public List<PontoTuristicoResponseDto> findByLocal(Local local){
+        List<PontoTuristico> pontoTuristico = repository.findByLocal(local);
+
+        if (pontoTuristico.isEmpty()){
+            throw new EventFullException("Não existe esse ponto turistico");
+        }
+        return pontoTuristico
+                .stream()
+                .map(ponto -> new PontoTuristicoResponseDto(
+                        ponto.getId(),
+                        ponto.getNome(),
+                        ponto.getLocal(),
+                        ponto.getInformacoes()
+                ))
+                .toList();
     }
 }

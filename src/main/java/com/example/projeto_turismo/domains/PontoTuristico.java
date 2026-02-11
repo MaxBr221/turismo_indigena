@@ -20,8 +20,8 @@ public class PontoTuristico {
     private Long id;
     @Column(name = "nome", nullable = false)
     private String nome;
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(name = "local")
     private Local local;
     @Column(name = "informacoes", nullable = false)
     private String informacoes;

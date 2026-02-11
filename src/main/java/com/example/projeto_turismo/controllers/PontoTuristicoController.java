@@ -1,5 +1,6 @@
 package com.example.projeto_turismo.controllers;
 
+import com.example.projeto_turismo.domains.Local;
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
@@ -74,5 +75,15 @@ public class PontoTuristicoController {
         logger.info("Deletando ponto turistico");
         service.delete(id);
     }
-
+    @Operation(summary = "Buscando PontoTuristico aparti de local escolhido")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Listando todos os ponto turisticos"),
+            @ApiResponse(responseCode = "500", description = "Ponto turistico com local não existente")
+    })
+    @GetMapping("/locais")
+    public ResponseEntity<List<PontoTuristicoResponseDto>> findByLocal(@RequestParam Local local){
+        logger.info("Buscando Ponto turistico a parti do local");
+        List<PontoTuristicoResponseDto> dto = service.findByLocal(local);
+        return ResponseEntity.ok().body(dto);
+    }
 }
