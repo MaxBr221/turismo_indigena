@@ -1,255 +1,251 @@
-🌍 Projeto Turismo API
+# 🌍 Projeto Turismo API
 
-API REST desenvolvida com Spring Boot para gerenciamento de usuários, autenticação JWT e cadastro de pontos turísticos, restaurantes, guias e agendamentos.
+API REST desenvolvida com Spring Boot para gerenciamento de:
+
+- Usuários  
+- Autenticação JWT  
+- Pontos turísticos  
+- Restaurantes  
+- Guias  
+- Agendamentos  
 
 Projeto focado em:
 
-Arquitetura em camadas
+- Arquitetura em camadas  
+- Boas práticas REST  
+- Uso de DTOs  
+- Tratamento global de exceções  
+- Segurança com Spring Security + JWT  
+- Testes unitários com Mockito  
+- Documentação com Swagger  
 
-Boas práticas REST
+---
 
-DTOs
+# 🚀 Tecnologias Utilizadas
 
-Tratamento global de exceções
+- Java 21  
+- Spring Boot 3.3.x  
+- Spring Security  
+- Spring Data JPA  
+- Hibernate  
+- MySQL  
+- Flyway  
+- Swagger / Springdoc OpenAPI  
+- JUnit 5  
+- Mockito  
+- AssertJ  
+- Maven  
 
-Segurança com Spring Security + JWT
+---
 
-Testes unitários com Mockito
+# 📂 Estrutura do Projeto
 
-Documentação com Swagger
-
-🚀 Tecnologias Utilizadas
-
-Java 21
-
-Spring Boot 3.3.x
-
-Spring Security
-
-Spring Data JPA
-
-Hibernate
-
-MySQL
-
-Flyway 
-
-Swagger / Springdoc OpenAPI
-
-JUnit 5
-
-Mockito
-
-AssertJ
-
-Maven
-
-📂 Estrutura do Projeto
+```
 src/main/java/com/example/projeto_turismo
 
-├── controller        → Endpoints REST
-├── service           → Regras de negócio
-├── repository        → Acesso a dados
-├── dto               → Objetos de transferência
-├── mapper            → Conversão Entity ↔ DTO
-├── entity            → Entidades JPA
-├── infra             → Tratamento de exceções
-├── security          → Configuração JWT e filtros
+├── controller   → Endpoints REST  
+├── service      → Regras de negócio  
+├── repository   → Acesso a dados  
+├── dto          → Objetos de transferência  
+├── mapper       → Conversão Entity ↔ DTO  
+├── entity       → Entidades JPA  
+├── infra        → Tratamento de exceções  
+├── security     → Configuração JWT e filtros  
+```
 
+Arquitetura tradicional em camadas, com separação clara de responsabilidades.
 
-Arquitetura tradicional em camadas, separando responsabilidades corretamente.
+---
 
-🔐 Autenticação
+# 🔐 Autenticação
 
 A API utiliza JWT (JSON Web Token).
 
 Fluxo:
 
-Usuário realiza login
+- Usuário realiza login  
+- API gera o token JWT  
+- Token deve ser enviado no header:
 
-API gera token JWT
-
-Token deve ser enviado no header:
-
+```
 Authorization: Bearer SEU_TOKEN_AQUI
+```
 
-📘 Documentação da API (Swagger)
+---
 
-Após iniciar a aplicação:
+# 📘 Documentação da API (Swagger)
 
+Após iniciar a aplicação, acessar:
+
+```
 http://localhost:8080/swagger-ui/index.html
-
+```
 
 O Swagger permite:
 
-Testar endpoints
+- Testar endpoints  
+- Gerar token  
+- Autorizar via botão "Authorize"  
+- Visualizar modelos DTO  
 
-Gerar token
+---
 
-Autorizar via botão "Authorize"
+# 🗄️ Banco de Dados
 
-Visualizar modelos DTO
+Banco utilizado:
 
-🗄️ Banco de Dados
+- MySQL  
 
-Banco utilizado: MySQL
+Exemplo de configuração no `application.properties`:
 
-Exemplo de configuração no application.properties:
-
+```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/projeto_turismo
 spring.datasource.username=root
 spring.datasource.password=senha
 
 spring.jpa.hibernate.ddl-auto=validate
 spring.jpa.show-sql=true
+```
 
+Boas práticas:
 
-Recomenda-se usar migrations (Flyway) em vez de ddl-auto=update.
+- Utilizar Flyway para migrations  
+- Evitar `ddl-auto=update` em ambiente produtivo  
 
-🧱 Principais Entidades
+---
 
-User
+# 🧱 Principais Entidades
 
-PontoTuristico
-
-Restaurante
-
-Guia
-
-Agendamento
+- User  
+- PontoTuristico  
+- Restaurante  
+- Guia  
+- Agendamento  
 
 Relacionamentos mapeados com JPA.
 
-🧠 Regras de Negócio Implementadas
+---
 
-Login único (case insensitive)
+# 🧠 Regras de Negócio Implementadas
 
-Controle de permissões por ROLE
+- Login único (case insensitive)  
+- Controle de permissões por ROLE  
+- Tratamento global de exceções com `@ControllerAdvice`  
+- Validações de criação e autenticação  
+- Controle de acesso baseado em perfil (USER / ADMIN)  
 
-Tratamento global de exceções com @ControllerAdvice
+---
 
-Validações de criação e autenticação
-
-Controle de acesso baseado em perfil (USER / ADMIN)
-
-🧪 Testes
+# 🧪 Testes
 
 Testes unitários utilizando:
 
-Mockito para mock de dependências
+- Mockito para mock de dependências  
+- AssertJ para validações  
+- JUnit 5  
 
-AssertJ para validações
+Cenários testados:
 
-JUnit 5
-
-Exemplo de cenário testado:
-
-Exceção quando login já existe
-
-Conversão Entity → DTO
-
-Comportamento do Service isolado do banco
+- Exceção quando login já existe  
+- Conversão Entity → DTO  
+- Comportamento do Service isolado do banco  
 
 Executar testes:
 
+```
 mvn test
+```
 
-🛡️ Segurança
+---
 
-Configuração via SecurityFilterChain:
+# 🛡️ Segurança
+
+Configuração via `SecurityFilterChain`.
 
 Endpoints públicos:
 
-/auth/login
-
-/auth/register
-
-Swagger
+- `/auth/login`  
+- `/auth/register`  
+- Swagger  
 
 Endpoints protegidos por ROLE:
 
-USER
-
-ADMIN
+- USER  
+- ADMIN  
 
 Autenticação stateless com JWT.
 
-▶️ Como Executar o Projeto
+---
 
-Clonar o repositório
+# ▶️ Como Executar o Projeto
 
-Configurar banco MySQL
+Passos:
 
-Ajustar application.properties
+- Clonar o repositório  
+- Configurar banco MySQL  
+- Ajustar `application.properties`  
+- Executar:
 
-Executar:
-
+```
 mvn clean install
 mvn spring-boot:run
+```
 
-📌 Endpoints Principais
-Autenticação
+---
 
-POST /auth/login
+# 📌 Endpoints Principais
 
-POST /auth/register
+## Autenticação
 
-Ponto Turístico
+- `POST /auth/login`  
+- `POST /auth/register`  
 
-POST /pontoturistico
+## Ponto Turístico
 
-DELETE /pontoturistico
+- `POST /pontoturistico`  
+- `DELETE /pontoturistico`  
 
-Guia
+## Guia
 
-POST /guide
+- `POST /guide`  
+- `DELETE /guide`  
 
-DELETE /guide
+## Restaurante
 
-Restaurante
+- `POST /restaurantes`  
+- `DELETE /restaurantes`  
 
-POST /restaurantes
+## Agendamento
 
-DELETE /restaurantes
+- `POST /agendamento`  
+- `DELETE /agendamento`  
 
-Agendamento
+---
 
-POST /agendamento
+# 📈 Melhorias Futuras
 
-DELETE /agendamento
+- Paginação  
+- Filtros dinâmicos  
+- Upload de imagens  
+- Cache com Redis  
+- Testes de integração  
+- Dockerização  
+- CI/CD  
 
-📈 Melhorias Futuras
+---
 
-Paginação
+# 📚 Conceitos Aplicados
 
-Filtros dinâmicos
+- Separação de responsabilidades  
+- Injeção de dependência  
+- DTO Pattern  
+- Mapper Pattern  
+- Tratamento centralizado de erros  
+- Testes unitários isolados  
+- Segurança stateless  
 
-Upload de imagens
+---
 
-Cache com Redis
+# 👨‍💻 Autor
 
-Testes de integração
-
-Dockerização
-
-CI/CD
-
-📚 Conceitos Aplicados
-
-Separação de responsabilidades
-
-Injeção de dependência
-
-DTO Pattern
-
-Mapper Pattern
-
-Tratamento centralizado de erros
-
-Testes unitários isolados
-
-Segurança stateless
-
-👨‍💻 Autor
-
-Desenvolvido como projeto de estudo focado em backend com Spring Boot e arquitetura limpa.
+Projeto desenvolvido como prática de backend com Spring Boot, focando em arquitetura limpa, segurança e boas práticas.
