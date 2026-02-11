@@ -1,7 +1,7 @@
 package com.example.projeto_turismo.controllers;
 
 import com.example.projeto_turismo.dto.RegisterDto;
-import com.example.projeto_turismo.dto.UserResponseDto;
+import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.dto.UserUpdateDto;
 import com.example.projeto_turismo.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,16 +33,16 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Acesso proibido")
     })
     @PostMapping
-    public ResponseEntity<UserResponseDto> create(@RequestBody RegisterDto dto){
+    public ResponseEntity<UserDto> create(@RequestBody RegisterDto dto){
         logger.info("Criando usuário");
-        UserResponseDto user = userService.create(dto);
+        UserDto user = userService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
     @Operation(summary = "Buscando users")
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> findAll(){
+    public ResponseEntity<List<UserDto>> findAll(){
         logger.info("Listando todos os usuários");
-        List<UserResponseDto> listaUsers = userService.findAll();
+        List<UserDto> listaUsers = userService.findAll();
         return ResponseEntity.ok().body(listaUsers);
     }
     @Operation(summary = "Buscando users")
@@ -51,9 +51,9 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Busca feita com sucesso")
     })
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserResponseDto> findById(@Parameter(description = "Id do User que deseja buscar", example = "1")@PathVariable Long id){
+    public ResponseEntity<UserDto> findById(@Parameter(description = "Id do User que deseja buscar", example = "1")@PathVariable Long id){
         logger.info("listando usuário selecionado");
-        UserResponseDto user = userService.findById(id);
+        UserDto user = userService.findById(id);
         return ResponseEntity.ok().body(user);
     }
     @Operation(summary = "Editando users")
@@ -63,9 +63,9 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Edição feita com sucesso")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserResponseDto> update(@Parameter(description = "Id do User que deseja Editar", example = "1")@PathVariable Long id, @RequestBody UserUpdateDto userDto){
+    public ResponseEntity<UserDto> update(@Parameter(description = "Id do User que deseja Editar", example = "1")@PathVariable Long id, @RequestBody UserUpdateDto userDto){
         logger.info("Atualizando usuário");
-        UserResponseDto user = userService.findById(id);
+        UserDto user = userService.findById(id);
         userService.update(id, userDto);
         return ResponseEntity.ok().body(user);
     }

@@ -23,7 +23,6 @@ public class PontoTuristico {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Local local;
-    //descobrir o b.o disso
     @Column(name = "informacoes", nullable = false)
     private String informacoes;
 
