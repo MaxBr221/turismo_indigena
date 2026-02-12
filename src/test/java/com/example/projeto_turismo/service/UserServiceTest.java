@@ -54,20 +54,18 @@ public class UserServiceTest {
     }
     @Test
     public void getUser_ByUnexistingId_ReturnsEmpty(){
-        when(userRepository.findById(1L)).thenReturn(Optional.of(USER));
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-        UserDto user = userService.findById(1L);
-
-        assertThat(user).isNotNull();
-        assertThat(user.id()).isEqualTo(1L);
+        assertThatThrownBy(()-> userService.findById(1L)).isInstanceOf(EventFullException.class);
     }
     @Test
     public void getByLoginUser_WithLoginEqualsUser_ReturnsException(){
         when(userRepository.existsByLoginIgnoreCase(USER.getLogin())).thenReturn(true);
 
-
         assertThatThrownBy(()-> userService.create(REGISTER_DTO)).isInstanceOf(EventFullException.class);
-
     }
+    //test de update e delete
+
+
 
 }
