@@ -86,4 +86,15 @@ public class PontoTuristicoController {
         List<PontoTuristicoResponseDto> dto = service.findByLocal(local);
         return ResponseEntity.ok().body(dto);
     }
+    @GetMapping("/pontos")
+    public ResponseEntity<?> listarPontos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nome") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        var response = service.listaPaginado();
+        return response;
+    }
+
 }

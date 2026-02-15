@@ -91,4 +91,8 @@ public class PontoTuristicoService {
                 ))
                 .toList();
     }
+    //refactorar
+    public void listaPaginado(){
+
+    }
 }
