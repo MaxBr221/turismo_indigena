@@ -93,8 +93,8 @@ public class PontoTuristicoController {
             @RequestParam(defaultValue = "nome") String sortBy,
             @RequestParam(defaultValue = "asc") String direction
     ) {
-        var response = service.listaPaginado();
-        return response;
+        var response = service.listaPaginado(page, size, sortBy, direction);
+        return ResponseEntity.ok(response);
     }
 
 }

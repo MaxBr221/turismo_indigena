@@ -1,11 +1,16 @@
 package com.example.projeto_turismo.services;
 
 import com.example.projeto_turismo.domains.Local;
+import com.example.projeto_turismo.domains.PageResponse;
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.PontoTuristicoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -91,8 +96,26 @@ public class PontoTuristicoService {
                 ))
                 .toList();
     }
-    //refactorar
-    public void listaPaginado(){
+    public PageResponse<PontoTuristicoResponseDto> listaPaginado(int page, int size, String sortBy, String direction){
+        Sort sort = direction.equalsIgnoreCase("desc") ?
+                Sort.by(sortBy).descending() :
+                Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<PontoTuristico> pageResult = repository.findAll(pageable);
+
+        List<PontoTuristicoResponseDto> content = pageResult
+                .getContent()
+                .stream()
+                .map(PontoTuristicoResponseDto::new)
+                .toList();
+
+        return new PageResponse<>(
+                content,
+                pageResult.getNumber(),
+                pageResult.getTotalElements(),
+                pageResult.getTotalPages());
 
     }
 }
