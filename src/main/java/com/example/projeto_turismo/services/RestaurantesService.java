@@ -1,10 +1,15 @@
 package com.example.projeto_turismo.services;
 
+import com.example.projeto_turismo.domains.PageResponse;
 import com.example.projeto_turismo.domains.Restaurantes;
 import com.example.projeto_turismo.dto.RestaurantesDto;
 import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.RestaurantesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -86,5 +91,23 @@ public class RestaurantesService {
         Restaurantes restaurante = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Restaurante não encontrado."));
         repository.delete(restaurante);
+    }
+    public PageResponse<RestaurantesResponseDto> listaPaginada(int page, int size, String sortBy, String direction){
+        Sort sort = direction.equalsIgnoreCase("desc") ?
+                    Sort.by(sortBy).descending() :
+                    Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Restaurantes> pageResult = repository.findAll(pageable);
+        List<RestaurantesResponseDto> content = pageResult
+                .getContent()
+                .stream()
+                .map(RestaurantesResponseDto::new)
+                .toList();
+        return new PageResponse<>(
+                content,
+                pageResult.getNumber(),
+                pageResult.getTotalElements(),
+                pageResult.getTotalPages());
     }
 }

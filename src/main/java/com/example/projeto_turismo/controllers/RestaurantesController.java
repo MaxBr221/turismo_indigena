@@ -73,5 +73,15 @@ public class RestaurantesController {
         logger.info("Apagando Restaurante");
         service.delete(id);
     }
+    @GetMapping("/pontos")
+    public ResponseEntity<?> listarPaginas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nome") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction){
+
+        var response = service.listaPaginada(page, size, sortBy, direction);
+        return ResponseEntity.ok(response);
+    }
 
 }
