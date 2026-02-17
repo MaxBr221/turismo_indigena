@@ -101,6 +101,12 @@ public class AgendamentoService {
         Agendamento agendamento = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Agendamento não encontrado."));
         agendamento.setData(ag.data());
+        //testar essa funcionalidade depois
+        Agendamento agCancel = repository.findByData(ag.data());
+        LocalDateTime data = LocalDateTime.now().plusHours(24);
+        if(agCancel.getData().isAfter(data)){
+            throw new EventFullException("Não é possivel cancelar o agendamento após 24 horas");
+        }
         agendamento.setStatus(ag.status());
         agendamento.setQuantPessoas(ag.quantPessoas());
         Agendamento salvo = repository.save(agendamento);
