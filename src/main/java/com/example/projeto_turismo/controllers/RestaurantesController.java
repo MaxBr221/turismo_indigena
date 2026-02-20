@@ -73,7 +73,7 @@ public class RestaurantesController {
         logger.info("Apagando Restaurante");
         service.delete(id);
     }
-    @GetMapping("/pontos")
+    @GetMapping("/restaurantePaginacao")
     public ResponseEntity<?> listarPaginas(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
