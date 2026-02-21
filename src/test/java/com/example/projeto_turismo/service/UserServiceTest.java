@@ -1,17 +1,17 @@
 package com.example.projeto_turismo.service;
 
-import static com.example.projeto_turismo.common.UserConstants.REGISTER_DTO;
-import static com.example.projeto_turismo.common.UserConstants.USER;
-import static com.example.projeto_turismo.common.UserConstants.INVALID_USER;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static com.example.projeto_turismo.common.UserConstants.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.InstanceOfAssertFactories.LONG;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+import com.example.projeto_turismo.common.UserConstants;
 import com.example.projeto_turismo.domains.Status;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.UserDto;
+import com.example.projeto_turismo.dto.UserUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import com.example.projeto_turismo.services.UserService;
@@ -65,7 +65,29 @@ public class UserServiceTest {
         assertThatThrownBy(()-> userService.create(REGISTER_DTO)).isInstanceOf(EventFullException.class);
     }
     //test de update e delete
+    @Test
+    public void updateUser_WithValueValid_ReturnUserValid(){
+        //chamado no metodo update
+        when(userRepository.findById(id)).thenReturn(Optional.of(USER));
 
+        when(userRepository.save(any(User.class))).thenReturn(USER);
+        //chamado depois de alterado o user
 
+        UserDto atualizado = userService.update(id, UPDATE_DTO);
+        //salvo
 
+        assertThat("novoNome").isEqualTo(atualizado.nome());
+        assertThat("novoLogin").isEqualTo(atualizado.login());
+        assertThat("92111111").isEqualTo(atualizado.telefone());
+    }
+    @Test
+    public void deleteUser_WithValueValid_ReturnNoContet(){
+        when(userRepository.findById(id)).thenReturn(Optional.of(USER));
+
+        doNothing().when(userRepository).delete(USER);
+
+        userService.delete(id);
+        verify(userRepository, times(1)).delete(USER);
+
+    }
 }
