@@ -92,7 +92,6 @@ public class RestaurantesService {
                 .orElseThrow(()-> new EventFullException("Restaurante não encontrado."));
         repository.delete(restaurante);
     }
-    //debugar esse metodo
     public PageResponse<RestaurantesResponseDto> listaPaginada(int page, int size, String sortBy, String direction){
         Sort sort = direction.equalsIgnoreCase("desc") ?
                     Sort.by(sortBy).descending() :

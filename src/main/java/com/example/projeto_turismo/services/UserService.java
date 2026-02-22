@@ -18,7 +18,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    //colocar um verificação se o Role == USER
     public UserDto create(RegisterDto dto){
         if(userRepository.existsByLoginIgnoreCase(dto.login())){
             throw new EventFullException("Já existe usuário com esse email");
@@ -39,7 +38,6 @@ public class UserService {
                 salvo.getRole());
 
     }
-    //retornar dto aqui
     public UserDto findById(Long id){
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new EventFullException("Usuário não encontrado."));
@@ -83,7 +81,14 @@ public class UserService {
             user.setLogin(dto.login());
 
         }
-        return new UserDto(userRepository.save(user));
+        User user1 = userRepository.save(user);
+        return new UserDto(
+                user1.getId(),
+                user1.getNome(),
+                user1.getTelefone(),
+                user1.getLogin(),
+                user1.getRole()
+        );
 
     }
 }
