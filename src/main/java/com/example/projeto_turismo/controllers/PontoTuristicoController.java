@@ -10,11 +10,19 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.tomcat.util.file.ConfigurationSource;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.MalformedParameterizedTypeException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Tag(name = "pontoturistico", description = "Endpoints PontoTuristico")
@@ -95,6 +103,19 @@ public class PontoTuristicoController {
     ) {
         var response = service.listaPaginado(page, size, sortBy, direction);
         return ResponseEntity.ok(response);
+    }
+    @PostMapping("/{id}/imagem")
+    public ResponseEntity<?> uploadImagem(@PathVariable Long id, @RequestParam("file")MultipartFile file){
+        service.salvarImagem(id, file);
+        return ResponseEntity.ok("Imagem criada com sucesso!");
+    }
+    @GetMapping("/imagens/{nome}")
+    public ResponseEntity<Resource> carregarImagem(@PathVariable String nome) throws MalformedURLException {
+        Path caminho = Paths.get("uploads").resolve(nome);
+        Resource resource = new UrlResource(caminho.toUri());
+        return ResponseEntity.ok().body(resource);
+
+
     }
 
 }

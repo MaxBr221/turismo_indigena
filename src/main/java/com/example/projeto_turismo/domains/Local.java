@@ -15,10 +15,10 @@ public enum Local {
     }
 
     @JsonCreator
-    public static Local converte(String local){
+    public static String converte(String local){
         for (Local l: values()){
-            if(l.getLocal().equalsIgnoreCase(local)){
-                return l;
+            if(l.local.equalsIgnoreCase(local)){
+                return local;
             }
         }
         throw new EventFullException("Local inválido: " + local);

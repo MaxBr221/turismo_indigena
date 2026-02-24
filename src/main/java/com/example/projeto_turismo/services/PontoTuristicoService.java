@@ -12,8 +12,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PontoTuristicoService {
@@ -118,4 +125,27 @@ public class PontoTuristicoService {
                 pageResult.getTotalPages());
 
     }
+    public void salvarImagem(Long id, MultipartFile file){
+        PontoTuristico ponto = repository.findById(id)
+                .orElseThrow(()-> new EventFullException("Ponto Turistico não existente"));
+
+        if(!file.getContentType().startsWith("image/")){
+            throw new EventFullException("Arquivo inválido");
+        }
+        try{
+            Path pasta = Paths.get("uploads");
+            if(!Files.exists(pasta)){
+                Files.createDirectories(pasta);
+            }
+            String nomeArquivo = UUID.randomUUID() + ".jpg";
+            Path caminho = pasta.resolve(nomeArquivo);
+
+            Files.copy(file.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
+            ponto.setImagem(nomeArquivo);
+            repository.save(ponto);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao salvar imagem");
+        }
+    }
+
 }

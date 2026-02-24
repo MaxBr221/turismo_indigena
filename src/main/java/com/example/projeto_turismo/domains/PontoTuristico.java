@@ -25,6 +25,8 @@ public class PontoTuristico {
     private Local local;
     @Column(name = "informacoes", nullable = false)
     private String informacoes;
+    @Column(name = "imagem")
+    private String imagem;
 
     public PontoTuristico(PontoTuristicoResponseDto pontoTuristicoResponseDto){
         BeanUtils.copyProperties(pontoTuristicoResponseDto, this);

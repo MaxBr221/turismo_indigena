@@ -1,17 +1,12 @@
-package com.example.projeto_turismo.service;
+package com.example.projeto_turismo.domains;
 
 import static com.example.projeto_turismo.common.UserConstants.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.InstanceOfAssertFactories.LONG;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
-import com.example.projeto_turismo.common.UserConstants;
-import com.example.projeto_turismo.domains.Status;
-import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.UserDto;
-import com.example.projeto_turismo.dto.UserUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import com.example.projeto_turismo.services.UserService;
