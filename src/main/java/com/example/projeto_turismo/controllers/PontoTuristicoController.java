@@ -106,11 +106,13 @@ public class PontoTuristicoController {
     }
     @PostMapping("/{id}/imagem")
     public ResponseEntity<?> uploadImagem(@PathVariable Long id, @RequestParam("file")MultipartFile file){
+        logger.info("Criando Imagem de Ponto Turistico");
         service.salvarImagem(id, file);
         return ResponseEntity.ok("Imagem criada com sucesso!");
     }
-    @GetMapping("/imagens/{nome}")
+    @GetMapping("/imagem/{nome}")
     public ResponseEntity<Resource> carregarImagem(@PathVariable String nome) throws MalformedURLException {
+        logger.info("Buscando Imagem de Ponto Turistico");
         Path caminho = Paths.get("uploads").resolve(nome);
         Resource resource = new UrlResource(caminho.toUri());
         return ResponseEntity.ok().body(resource);
