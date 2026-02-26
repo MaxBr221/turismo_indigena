@@ -19,10 +19,11 @@ public class UserRepositoryTest {
     public void createUser_withValidData_ReturnsUser(){
         User user = userRepository.save(USER);
         User user1 = testEntityManager.find(User.class, user.getId());
+        //arrumar o b.o
 
         assertThat(user1).isNotNull();
-//        assertThat(user1.getNome()).isEqualTo(user.getNome());
-//        assertThat(user1.getLogin()).isEqualTo(user.getLogin());
-//        assertThat(user1.getTelefone()).isEqualTo(user.getTelefone());
+        assertThat(user1.getNome()).isEqualTo(user.getNome());
+        assertThat(user1.getLogin()).isEqualTo(user.getLogin());
+        assertThat(user1.getTelefone()).isEqualTo(user.getTelefone());
     }
 }

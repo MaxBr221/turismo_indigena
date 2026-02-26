@@ -15,7 +15,7 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @Table(name = "pontoturistico")
 public class PontoTuristico {
-    //adicionar latitude e longitude (gps) depois
+    //adicionar latitude e longitude nos dtos depois
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +28,10 @@ public class PontoTuristico {
     private String informacoes;
     @Column(name = "imagem")
     private String imagem;
+    @Column(name = "latitude")
+    private String latitude;
+    @Column(name = "longitude")
+    private String longitude;
 
     public PontoTuristico(PontoTuristicoResponseDto pontoTuristicoResponseDto){
         BeanUtils.copyProperties(pontoTuristicoResponseDto, this);
