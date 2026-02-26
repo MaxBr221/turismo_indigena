@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @Table(name = "pontoturistico")
 public class PontoTuristico {
+    //adicionar latitude e longitude (gps) depois
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

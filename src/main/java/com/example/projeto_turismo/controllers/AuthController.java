@@ -4,6 +4,7 @@ import com.example.projeto_turismo.dto.AuthUserDto;
 import com.example.projeto_turismo.dto.LoginDto;
 import com.example.projeto_turismo.dto.RegisterDto;
 import com.example.projeto_turismo.domains.User;
+import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.infra.security.TokenService;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,14 +36,15 @@ public class AuthController {
     public ResponseEntity login(@RequestBody @Validated AuthUserDto authUserDto){
         var userNamePassword = new UsernamePasswordAuthenticationToken(authUserDto.login(), authUserDto.senha());
         var auth = this.authenticationManager.authenticate(userNamePassword);
-
         var token = tokenService.generateToken((User)auth.getPrincipal());
         return ResponseEntity.ok(new LoginDto(token));
     }
+
+
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Validated RegisterDto registerDto){
         if (repository.findByLogin(registerDto.login())!= null){
-            return ResponseEntity.badRequest().build();
+            throw new EventFullException("Login de usuário já existente");
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.senha());
         User user = new User(registerDto.nome(), registerDto.telefone(), registerDto.login(), encryptedPassword, registerDto.role());
