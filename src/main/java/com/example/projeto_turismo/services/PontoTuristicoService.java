@@ -36,13 +36,17 @@ public class PontoTuristicoService {
         turistico.setNome(pontoTuristico.nome());
         turistico.setLocal(pontoTuristico.local());
         turistico.setInformacoes(pontoTuristico.informacoes());
+        turistico.setLatitude(pontoTuristico.latitude());
+        turistico.setLongitude(pontoTuristico.longitude());
 
         PontoTuristico salvo = repository.save(turistico);
         return new PontoTuristicoResponseDto(
                 salvo.getId(),
                 salvo.getNome(),
                 salvo.getLocal(),
-                salvo.getInformacoes());
+                salvo.getInformacoes(),
+                salvo.getLatitude(),
+                salvo.getLongitude());
     }
     public List<PontoTuristicoResponseDto> findAll(){
         return repository.findAll()
@@ -51,7 +55,10 @@ public class PontoTuristicoService {
                         pontoTuristico1.getId(),
                         pontoTuristico1.getNome(),
                         pontoTuristico1.getLocal(),
-                        pontoTuristico1.getInformacoes())
+                        pontoTuristico1.getInformacoes(),
+                        pontoTuristico1.getLatitude(),
+                        pontoTuristico1.getLongitude())
+
                 ))
                 .toList();
 
@@ -63,7 +70,9 @@ public class PontoTuristicoService {
                 pontoTuristico.getId(),
                 pontoTuristico.getNome(),
                 pontoTuristico.getLocal(),
-                pontoTuristico.getInformacoes());
+                pontoTuristico.getInformacoes(),
+                pontoTuristico.getLatitude(),
+                pontoTuristico.getLongitude());
     }
     public PontoTuristicoResponseDto update(Long id, PontoTuristicoCreateDto dto){
         PontoTuristico pontoTuristico = repository.findById(id)
@@ -79,7 +88,9 @@ public class PontoTuristicoService {
                 pontoTuristico1.getId(),
                 pontoTuristico1.getNome(),
                 pontoTuristico1.getLocal(),
-                pontoTuristico1.getInformacoes());
+                pontoTuristico1.getInformacoes(),
+                pontoTuristico1.getLatitude(),
+                pontoTuristico1.getLongitude());
     }
     public void delete(Long id){
         PontoTuristico pontoTuristico = repository.findById(id)
@@ -99,7 +110,9 @@ public class PontoTuristicoService {
                         ponto.getId(),
                         ponto.getNome(),
                         ponto.getLocal(),
-                        ponto.getInformacoes()
+                        ponto.getInformacoes(),
+                        ponto.getLatitude(),
+                        ponto.getLongitude()
                 ))
                 .toList();
     }

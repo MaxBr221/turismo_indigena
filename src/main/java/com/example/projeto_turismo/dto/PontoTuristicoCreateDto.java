@@ -9,5 +9,5 @@ public record PontoTuristicoCreateDto(@Schema(description = "Nome do PontoTurist
                                       @Schema(description = "Local do PontoTuristico", example = "PRAIA")
                                       Local local,
                                       @Schema(description = "Mais informações do PontoTuristico", example = "Vistas linda dos mar com área ventilada")
-                                      String informacoes) {
+                                      String informacoes, String latitude, String longitude) {
 }

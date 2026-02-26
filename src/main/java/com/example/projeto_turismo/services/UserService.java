@@ -20,7 +20,7 @@ public class UserService {
 
     public UserDto create(RegisterDto dto){
         if(userRepository.existsByLoginIgnoreCase(dto.login())){
-            throw new EventFullException("Já existe usuário com esse email");
+            throw new EventFullException("Já existe usuário com esse login");
         }
 
         User user1 = new User();

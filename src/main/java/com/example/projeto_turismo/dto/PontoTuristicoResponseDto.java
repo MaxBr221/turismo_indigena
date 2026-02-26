@@ -23,6 +23,8 @@ public class PontoTuristicoResponseDto {
     private Local local;
     @Schema(description = "Mais informações do PontoTuristico", example = "Vistas linda dos mar com área ventilada")
     private String informacoes;
+    private String latitude;
+    private String longitude;
 
     public PontoTuristicoResponseDto(PontoTuristico pontoTuristico){
         BeanUtils.copyProperties(pontoTuristico, this);
