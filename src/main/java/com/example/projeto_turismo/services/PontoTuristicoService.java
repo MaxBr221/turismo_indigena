@@ -4,6 +4,7 @@ import com.example.projeto_turismo.domains.Local;
 import com.example.projeto_turismo.domains.PageResponse;
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
+import com.example.projeto_turismo.dto.PontoTuristicoDtoLocalizacao;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.PontoTuristicoRepository;
@@ -78,6 +79,7 @@ public class PontoTuristicoService {
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto turistico não encotrado."));
 
+        //colocar opção de editar latitude e longitude
         pontoTuristico.setNome(dto.nome());
         pontoTuristico.setLocal(dto.local());
         pontoTuristico.setInformacoes(dto.informacoes());
@@ -159,6 +161,26 @@ public class PontoTuristicoService {
         } catch (IOException e) {
             throw new RuntimeException("Erro ao salvar imagem");
         }
+    }
+    public PontoTuristicoResponseDto adicionarLocalizacao(Long id, PontoTuristicoDtoLocalizacao dtoLocalizacao){
+        PontoTuristico pontoTuristico = repository.findById(id)
+                .orElseThrow(()-> new EventFullException("Ponto Turistico não existente"));
+
+        if(pontoTuristico.getLatitude() != null || pontoTuristico.getLongitude() != null) {
+            throw new EventFullException("Localização já existente");
+        }
+        pontoTuristico.setLatitude(dtoLocalizacao.latitude());
+        pontoTuristico.setLongitude(dtoLocalizacao.longitude());
+
+        PontoTuristico ponto = repository.save(pontoTuristico);
+
+        return new PontoTuristicoResponseDto(
+                ponto.getId(),
+                ponto.getNome(),
+                ponto.getLocal(),
+                ponto.getInformacoes(),
+                ponto.getLatitude(),
+                ponto.getLongitude());
     }
 
 }

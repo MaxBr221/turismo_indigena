@@ -3,6 +3,7 @@ package com.example.projeto_turismo.controllers;
 import com.example.projeto_turismo.domains.Local;
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
+import com.example.projeto_turismo.dto.PontoTuristicoDtoLocalizacao;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.services.PontoTuristicoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -116,8 +117,11 @@ public class PontoTuristicoController {
         Path caminho = Paths.get("uploads").resolve(nome);
         Resource resource = new UrlResource(caminho.toUri());
         return ResponseEntity.ok().body(resource);
-
-
     }
-
+    @PostMapping("/{id}/localizacao")
+    public ResponseEntity<PontoTuristicoResponseDto> addLocalizacao(@PathVariable Long id, @RequestParam PontoTuristicoDtoLocalizacao dtoLocalizacao){
+        logger.info("Adicionando Localização");
+        PontoTuristicoResponseDto dto = service.adicionarLocalizacao(id, dtoLocalizacao);
+        return ResponseEntity.ok().body(dto);
+    }
 }
