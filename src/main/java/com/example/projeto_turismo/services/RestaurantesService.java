@@ -11,8 +11,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class RestaurantesService {
@@ -109,5 +116,19 @@ public class RestaurantesService {
                 pageResult.getNumber(),
                 pageResult.getTotalElements(),
                 pageResult.getTotalPages());
+    }
+    public void salvarImagem(Long id, MultipartFile file){
+        Restaurantes restaurante = repository.findById(id)
+                .orElseThrow(()-> new EventFullException("Restaurante não existente"));
+        try{
+            String nomeArquivo = UUID.randomUUID() + ".jpg";
+            Path caminho = Paths.get("uploads/restaurante/" + nomeArquivo);
+
+            Files.copy(file.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
+            restaurante.setImagem(nomeArquivo);
+            repository.save(restaurante);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

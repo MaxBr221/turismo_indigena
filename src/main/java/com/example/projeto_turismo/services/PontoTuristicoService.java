@@ -148,7 +148,7 @@ public class PontoTuristicoService {
             throw new EventFullException("Arquivo inválido");
         }
         try{
-            Path pasta = Paths.get("uploads");
+            Path pasta = Paths.get("uploads/pontoTuristico/");
             if(!Files.exists(pasta)){
                 Files.createDirectories(pasta);
             }

@@ -9,9 +9,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Tag(name = "restaurantes", description = "Endpoits Restaurantes")
@@ -82,6 +89,19 @@ public class RestaurantesController {
 
         var response = service.listaPaginada(page, size, sortBy, direction);
         return ResponseEntity.ok(response);
+    }
+    @PostMapping("/{id}/imagem")
+    public ResponseEntity<?> uploadImagem(@PathVariable Long id, @RequestParam("file") MultipartFile file){
+        logger.info("Criando imagem de Restaurante");
+        service.salvarImagem(id, file);
+        return ResponseEntity.ok("Imagem crianda com sucesso");
+    }
+    @GetMapping("imagem/{nome}")
+    public ResponseEntity<Resource> buscarImagem(@RequestParam String nome) throws MalformedURLException {
+        logger.info("Buscando imagem de Restaurante");
+        Path caminho = Paths.get("uploads/restaurante").resolve(nome);
+        Resource resource = new UrlResource(caminho.toUri());
+        return ResponseEntity.ok().body(resource);
     }
 
 }
