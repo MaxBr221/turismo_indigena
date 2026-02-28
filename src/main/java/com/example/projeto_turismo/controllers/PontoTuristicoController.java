@@ -119,9 +119,9 @@ public class PontoTuristicoController {
         return ResponseEntity.ok().body(resource);
     }
     @PostMapping("/{id}/localizacao")
-    public ResponseEntity<PontoTuristicoResponseDto> addLocalizacao(@PathVariable Long id, @RequestParam PontoTuristicoDtoLocalizacao dtoLocalizacao){
+    public ResponseEntity<PontoTuristicoResponseDto> addLocalizacao(@PathVariable Long id, @RequestParam Double latitude, @RequestParam Double longitude){
         logger.info("Adicionando Localização");
-        PontoTuristicoResponseDto dto = service.adicionarLocalizacao(id, dtoLocalizacao);
+        PontoTuristicoResponseDto dto = service.adicionarLocalizacao(id, latitude, longitude);
         return ResponseEntity.ok().body(dto);
     }
 }

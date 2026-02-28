@@ -162,15 +162,15 @@ public class PontoTuristicoService {
             throw new RuntimeException("Erro ao salvar imagem");
         }
     }
-    public PontoTuristicoResponseDto adicionarLocalizacao(Long id, PontoTuristicoDtoLocalizacao dtoLocalizacao){
+    public PontoTuristicoResponseDto adicionarLocalizacao(Long id, Double latitude, Double longitude){
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto Turistico não existente"));
 
         if(pontoTuristico.getLatitude() != null || pontoTuristico.getLongitude() != null) {
             throw new EventFullException("Localização já existente");
         }
-        pontoTuristico.setLatitude(dtoLocalizacao.latitude());
-        pontoTuristico.setLongitude(dtoLocalizacao.longitude());
+        pontoTuristico.setLatitude(latitude);
+        pontoTuristico.setLongitude(longitude);
 
         PontoTuristico ponto = repository.save(pontoTuristico);
 
