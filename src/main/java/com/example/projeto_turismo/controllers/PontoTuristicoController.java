@@ -114,7 +114,7 @@ public class PontoTuristicoController {
     @GetMapping("/imagem/{nome}")
     public ResponseEntity<Resource> carregarImagem(@PathVariable String nome) throws MalformedURLException {
         logger.info("Buscando Imagem de Ponto Turistico");
-        Path caminho = Paths.get("uploads").resolve(nome);
+        Path caminho = Paths.get("uploads/pontoTuristico/").resolve(nome);
         Resource resource = new UrlResource(caminho.toUri());
         return ResponseEntity.ok().body(resource);
     }

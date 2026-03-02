@@ -96,10 +96,10 @@ public class RestaurantesController {
         service.salvarImagem(id, file);
         return ResponseEntity.ok("Imagem crianda com sucesso");
     }
-    @GetMapping("imagem/{nome}")
-    public ResponseEntity<Resource> buscarImagem(@RequestParam String nome) throws MalformedURLException {
+    @GetMapping("/imagem/{nome}")
+    public ResponseEntity<Resource> buscarImagem(@PathVariable String nome) throws MalformedURLException {
         logger.info("Buscando imagem de Restaurante");
-        Path caminho = Paths.get("uploads/restaurante").resolve(nome);
+        Path caminho = Paths.get("uploads/restaurante/").resolve(nome);
         Resource resource = new UrlResource(caminho.toUri());
         return ResponseEntity.ok().body(resource);
     }

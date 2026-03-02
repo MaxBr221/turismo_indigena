@@ -31,7 +31,7 @@ public class RestaurantesService {
 
     public RestaurantesResponseDto create(RestaurantesDto restaurantesDto){
         Restaurantes restaurante = new Restaurantes();
-
+        //adicionar o atributo de imagem (em um dto também talvez)
         restaurante.setNome(restaurantesDto.nome());
         restaurante.setDescricao(restaurantesDto.descricao());
         restaurante.setLocalizacao(restaurantesDto.localizacao());
