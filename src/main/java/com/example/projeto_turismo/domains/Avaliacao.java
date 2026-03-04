@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -29,6 +31,8 @@ public class Avaliacao {
     @ManyToOne
     @JoinColumn(name = "restaurante_id")
     private Restaurantes restaurante;
+
+    private LocalDateTime dataAvaliacao = LocalDateTime.now();
 
     public Avaliacao(AvaliacaoDto avaliacaoDto){
         BeanUtils.copyProperties(avaliacaoDto, this);
