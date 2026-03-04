@@ -23,7 +23,7 @@ public class Avaliacao {
     private Integer nota;
     private String comentario;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @ManyToOne
     @JoinColumn(name = "ponto_id")
