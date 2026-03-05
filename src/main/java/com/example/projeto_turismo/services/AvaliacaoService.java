@@ -7,6 +7,7 @@ import com.example.projeto_turismo.domains.Restaurantes;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.AvaliacaoDto;
 import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
+import com.example.projeto_turismo.dto.AvaliacaoUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.AvaliacaoRepository;
 import com.example.projeto_turismo.repositorys.PontoTuristicoRepository;
@@ -30,7 +31,7 @@ public class AvaliacaoService {
 
     public AvaliacaoResponseDto create(AvaliacaoDto avaliacaoDto){
         if(avaliacaoDto.idPonto() == null && avaliacaoDto.idRestaurante() == null){
-            throw new EventFullException("É necessário que você avalia pelo menos um");
+            throw new EventFullException("É necessário que você avalie pelo menos um");
         }
         if(avaliacaoDto.idPonto() != null && avaliacaoDto.idRestaurante() != null){
             throw new EventFullException("Não é permitido ter duas avaliações com o mesmo destino");
@@ -64,6 +65,36 @@ public class AvaliacaoService {
                 avaliacao.getDataAvaliacao());
     }
     public AvaliacaoResponseDto update(Long id, AvaliacaoUpdateDto avaliacaoUpdateDto){
+        Avaliacao avaliacao = avaliacaoRepository.findById(id)
+                .orElseThrow(()-> new EventFullException("Essa avaliação não existe"));
 
+        if(avaliacaoUpdateDto.pontoId() != null && avaliacaoUpdateDto.restauranteId() != null){
+            throw new EventFullException("Não é permitido alterar ponto turistico e restaurante junto");
+        }
+
+        PontoTuristico ponto = null;
+        if(avaliacaoUpdateDto.pontoId() != null) {
+            ponto = pontoTuristicoRepository.findById(avaliacaoUpdateDto.pontoId())
+                    .orElseThrow(() -> new EventFullException("Esse ponto turistico não existe"));
+        }
+        Restaurantes restaurantes = null;
+        if(avaliacaoUpdateDto.pontoId() != null) {
+            restaurantes = restaurantesRepository.findById(avaliacaoUpdateDto.restauranteId())
+                    .orElseThrow(() -> new EventFullException("Esse restaurante não existe"));
+        }
+        avaliacao.setNota(avaliacaoUpdateDto.nota());
+        avaliacao.setComentario(avaliacaoUpdateDto.comentario());
+        avaliacao.setPontoTuristico(ponto);
+        avaliacao.setRestaurante(restaurantes);
+
+        Avaliacao salvo = avaliacaoRepository.save(avaliacao);
+
+        return new AvaliacaoResponseDto(
+                salvo.getNota(),
+                salvo.getComentario(),
+                salvo.getUser().getId(),
+                salvo.getPontoTuristico().getId(),
+                salvo.getRestaurante().getId(),
+                salvo.getDataAvaliacao());
     }
 }
