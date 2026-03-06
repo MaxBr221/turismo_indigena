@@ -12,6 +12,8 @@ import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AvaliacaoService {
 
@@ -99,7 +101,7 @@ public class AvaliacaoService {
     }
     public AvaliacaoResponseDto findById(Long id){
         Avaliacao avaliacao = avaliacaoRepository.findById(id)
-                .orElseThrow(()-> new EventFullException("Avaliação desse Ponto Turistico não existente"))
+                .orElseThrow(()-> new EventFullException("Avaliação desse Ponto Turistico não existente"));
 
 
         return new AvaliacaoResponseDto(
@@ -111,7 +113,27 @@ public class AvaliacaoService {
                 avaliacao.getDataAvaliacao());
 
     }
-    public AvaliacaoResponseDto findAll(){
+    public List<AvaliacaoResponseDto> findAll(){
+        List<Avaliacao> avaliacaos = avaliacaoRepository.findAll();
 
+        if (avaliacaos.isEmpty()){
+            throw new EventFullException("Avaliações inexistente");
+        }
+        return avaliacaos
+                .stream()
+                .map(avaliacao -> new AvaliacaoResponseDto(
+                        avaliacao.getNota(),
+                        avaliacao.getComentario(),
+                        avaliacao.getUser().getId(),
+                        avaliacao.getPontoTuristico().getId(),
+                        avaliacao.getRestaurante().getId(),
+                        avaliacao.getDataAvaliacao()))
+                .toList();
+    }
+
+    public void delete(Long id){
+        Avaliacao avaliacao = avaliacaoRepository.findById(id)
+                .orElseThrow(()->new EventFullException("Essa avaliação não existe"));
+        avaliacaoRepository.delete(avaliacao);
     }
 }
