@@ -94,4 +94,5 @@ public class UserService {
         );
 
     }
+    //add funcionalidade onde o user pode ver todas as suas avaliações
 }

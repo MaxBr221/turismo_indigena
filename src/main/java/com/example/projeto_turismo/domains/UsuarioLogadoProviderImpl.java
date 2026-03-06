@@ -1,6 +1,5 @@
 package com.example.projeto_turismo.domains;
 
-import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.UsuarioLogadoProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,8 +14,8 @@ public class UsuarioLogadoProviderImpl implements UsuarioLogadoProvider {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = (User) authentication.getPrincipal();
             return user;
-        }catch (EventFullException e){
-            throw new EventFullException("Usuário inválido");
+        }catch (RuntimeException e){
+            throw new RuntimeException("Usuário inválido", e);
         }
     }
 }

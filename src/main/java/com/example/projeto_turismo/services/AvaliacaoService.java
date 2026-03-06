@@ -9,10 +9,7 @@ import com.example.projeto_turismo.dto.AvaliacaoDto;
 import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
 import com.example.projeto_turismo.dto.AvaliacaoUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
-import com.example.projeto_turismo.repositorys.AvaliacaoRepository;
-import com.example.projeto_turismo.repositorys.PontoTuristicoRepository;
-import com.example.projeto_turismo.repositorys.RestaurantesRepository;
-import com.example.projeto_turismo.repositorys.UserRepository;
+import com.example.projeto_turismo.repositorys.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,11 +19,14 @@ public class AvaliacaoService {
     private PontoTuristicoRepository pontoTuristicoRepository;
     private RestaurantesRepository restaurantesRepository;
     private UserRepository userRepository;
+    private UsuarioLogadoProvider usuarioLogadoProvider;
 
-    public AvaliacaoService(AvaliacaoRepository avaliacaoRepository, PontoTuristicoRepository pontoTuristicoRepository, RestaurantesRepository restaurantesRepository) {
+    public AvaliacaoService(AvaliacaoRepository avaliacaoRepository, PontoTuristicoRepository pontoTuristicoRepository, RestaurantesRepository restaurantesRepository, UserRepository userRepository, UsuarioLogadoProvider usuarioLogadoProvider) {
         this.avaliacaoRepository = avaliacaoRepository;
         this.pontoTuristicoRepository = pontoTuristicoRepository;
         this.restaurantesRepository = restaurantesRepository;
+        this.userRepository = userRepository;
+        this.usuarioLogadoProvider = usuarioLogadoProvider;
     }
 
     public AvaliacaoResponseDto create(AvaliacaoDto avaliacaoDto){
@@ -96,5 +96,22 @@ public class AvaliacaoService {
                 salvo.getPontoTuristico().getId(),
                 salvo.getRestaurante().getId(),
                 salvo.getDataAvaliacao());
+    }
+    public AvaliacaoResponseDto findById(Long id){
+        Avaliacao avaliacao = avaliacaoRepository.findById(id)
+                .orElseThrow(()-> new EventFullException("Avaliação desse Ponto Turistico não existente"))
+
+
+        return new AvaliacaoResponseDto(
+                avaliacao.getNota(),
+                avaliacao.getComentario(),
+                avaliacao.getUser().getId(),
+                avaliacao.getPontoTuristico().getId(),
+                avaliacao.getRestaurante().getId(),
+                avaliacao.getDataAvaliacao());
+
+    }
+    public AvaliacaoResponseDto findAll(){
+
     }
 }
