@@ -6,6 +6,7 @@ import com.example.projeto_turismo.dto.UserUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.repositorys.UserRepository;
+import com.example.projeto_turismo.repositorys.UsuarioLogadoProvider;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +14,14 @@ import java.util.List;
 @Service
 public class UserService {
     private UserRepository userRepository;
+    private UsuarioLogadoProvider usuarioLogadoProvider;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UsuarioLogadoProvider usuarioLogadoProvider) {
         this.userRepository = userRepository;
+        this.usuarioLogadoProvider = usuarioLogadoProvider;
     }
+
+
 
     public UserDto create(RegisterDto dto){
         if(userRepository.existsByLoginIgnoreCase(dto.login())){
@@ -38,9 +43,8 @@ public class UserService {
                 salvo.getRole());
 
     }
-    public UserDto findById(Long id){
-        User user = userRepository.findById(id)
-                .orElseThrow(()-> new EventFullException("Usuário não encontrado."));
+    public UserDto findById(){
+        User user = usuarioLogadoProvider.pegarUsuarioLogado();
         return new UserDto(
                 user.getId(),
                 user.getNome(),
@@ -62,14 +66,13 @@ public class UserService {
                 ))
                 .toList();
     }
-    public void delete(Long id){
-        User user = userRepository.findById(id)
-                .orElseThrow(()-> new EventFullException("Usuário não encontrado"));
+    public void delete(){
+        User user = usuarioLogadoProvider.pegarUsuarioLogado();
         userRepository.delete(user);
     }
-    public UserDto update(Long id, UserUpdateDto dto){
-        User user = userRepository.findById(id)
-                .orElseThrow(()-> new EventFullException("Usuário não encontrado"));
+    public UserDto update(UserUpdateDto dto){
+
+        User user = usuarioLogadoProvider.pegarUsuarioLogado();
 
         user.setNome(dto.nome());
         user.setTelefone(dto.telefone());

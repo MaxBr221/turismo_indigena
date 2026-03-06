@@ -3,6 +3,7 @@ package com.example.projeto_turismo.controllers;
 import com.example.projeto_turismo.dto.RegisterDto;
 import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.dto.UserUpdateDto;
+import com.example.projeto_turismo.repositorys.UsuarioLogadoProvider;
 import com.example.projeto_turismo.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,6 +22,7 @@ import java.util.List;
 public class UserController {
     private org.slf4j.Logger logger = LoggerFactory.getLogger(UserController.class.getName());
     private UserService userService;
+    private UsuarioLogadoProvider usuarioLogadoProvider;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -50,10 +52,10 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),
             @ApiResponse(responseCode = "200", description = "Busca feita com sucesso")
     })
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDto> findById(@Parameter(description = "Id do User que deseja buscar", example = "1")@PathVariable Long id){
+    @GetMapping(value = "/me")
+    public ResponseEntity<UserDto> findById(){
         logger.info("listando usuário selecionado");
-        UserDto user = userService.findById(id);
+        UserDto user = userService.findById();
         return ResponseEntity.ok().body(user);
     }
     @Operation(summary = "Editando users")
@@ -62,17 +64,17 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Acesso proibido"),
             @ApiResponse(responseCode = "200", description = "Edição feita com sucesso")
     })
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDto> update(@Parameter(description = "Id do User que deseja Editar", example = "1")@PathVariable Long id, @RequestBody UserUpdateDto userDto){
+    @PutMapping(value = "/me")
+    public ResponseEntity<UserDto> update(@RequestBody UserUpdateDto userDto){
         logger.info("Atualizando usuário");
-        UserDto user = userService.findById(id);
-        userService.update(id, userDto);
+        UserDto user = userService.findById();
+        userService.update(userDto);
         return ResponseEntity.ok().body(user);
     }
     @Operation(summary = "Deletando users")
-    @DeleteMapping(value = "/{id}")
-    public void delete(@Parameter(description = "Id do User que deseja deletar", example = "1")@PathVariable Long id){
+    @DeleteMapping(value = "/me")
+    public void delete(){
         logger.info("Deletando usuário");
-        userService.delete(id);
+        userService.delete();
     }
 }
