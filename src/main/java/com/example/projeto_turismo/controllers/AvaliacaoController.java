@@ -53,4 +53,14 @@ public class AvaliacaoController {
         logger.info("deletando avaliação");
         avaliacaoService.delete(id);
     }
+    @PostMapping("/avaliarRestaurante")
+    public void avaliarRestaurante(@RequestBody AvaliacaoDto avaliacaoDto){
+        logger.info("Avaliando Restaurante");
+        avaliacaoService.avaliarRestaurante(avaliacaoDto);
+    }
+    @PostMapping("/avaliarPontoTuristico")
+    public void avaliarPontoTuristico(@RequestBody AvaliacaoDto avaliacaoDto){
+        logger.info("Avaliando Ponto Turistico");
+        avaliacaoService.avaliarPontoTuristico(avaliacaoDto);
+    }
 }
