@@ -1,10 +1,13 @@
 package com.example.projeto_turismo.services;
 
+import com.example.projeto_turismo.domains.Avaliacao;
+import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
 import com.example.projeto_turismo.dto.RegisterDto;
 import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.dto.UserUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.domains.User;
+import com.example.projeto_turismo.repositorys.AvaliacaoRepository;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import com.example.projeto_turismo.repositorys.UsuarioLogadoProvider;
 import org.springframework.stereotype.Service;
@@ -15,13 +18,13 @@ import java.util.List;
 public class UserService {
     private UserRepository userRepository;
     private UsuarioLogadoProvider usuarioLogadoProvider;
+    private AvaliacaoRepository avaliacaoRepository;
 
-    public UserService(UserRepository userRepository, UsuarioLogadoProvider usuarioLogadoProvider) {
+    public UserService(UserRepository userRepository, UsuarioLogadoProvider usuarioLogadoProvider, AvaliacaoRepository avaliacaoRepository) {
         this.userRepository = userRepository;
         this.usuarioLogadoProvider = usuarioLogadoProvider;
+        this.avaliacaoRepository = avaliacaoRepository;
     }
-
-
 
     public UserDto create(RegisterDto dto){
         if(userRepository.existsByLoginIgnoreCase(dto.login())){
@@ -94,5 +97,23 @@ public class UserService {
         );
 
     }
-    //add funcionalidade onde o user pode ver todas as suas avaliações
+    public List<AvaliacaoResponseDto> findMyAvaliacao(){
+        User user = usuarioLogadoProvider.pegarUsuarioLogado();
+
+        List<Avaliacao> avaliacoes = avaliacaoRepository.findByUser(user);
+
+        if(avaliacoes.isEmpty()){
+            throw new EventFullException("Esse usuário não avaliou nada");
+        }
+        return avaliacoes
+                .stream()
+                .map(avaliacao -> new AvaliacaoResponseDto(
+                    avaliacao.getNota(),
+                    avaliacao.getComentario(),
+                    avaliacao.getUser().getId(),
+                    avaliacao.getPontoTuristico().getId(),
+                    avaliacao.getRestaurante().getId(),
+                    avaliacao.getDataAvaliacao()))
+                .toList();
+    }
 }

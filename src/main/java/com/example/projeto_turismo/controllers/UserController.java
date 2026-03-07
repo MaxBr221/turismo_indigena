@@ -1,5 +1,6 @@
 package com.example.projeto_turismo.controllers;
 
+import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
 import com.example.projeto_turismo.dto.RegisterDto;
 import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.dto.UserUpdateDto;
@@ -22,7 +23,6 @@ import java.util.List;
 public class UserController {
     private org.slf4j.Logger logger = LoggerFactory.getLogger(UserController.class.getName());
     private UserService userService;
-    private UsuarioLogadoProvider usuarioLogadoProvider;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -76,5 +76,11 @@ public class UserController {
     public void delete(){
         logger.info("Deletando usuário");
         userService.delete();
+    }
+    @GetMapping(value = "/meAvaliacoes")
+    public ResponseEntity<List<AvaliacaoResponseDto>> findMyAvaliacao(){
+        logger.info("Buscando minhas avaliações");
+        List<AvaliacaoResponseDto> avaliacoes = userService.findMyAvaliacao();
+        return ResponseEntity.ok().body(avaliacoes);
     }
 }

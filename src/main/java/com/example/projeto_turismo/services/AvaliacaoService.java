@@ -136,4 +136,5 @@ public class AvaliacaoService {
                 .orElseThrow(()->new EventFullException("Essa avaliação não existe"));
         avaliacaoRepository.delete(avaliacao);
     }
+
 }
