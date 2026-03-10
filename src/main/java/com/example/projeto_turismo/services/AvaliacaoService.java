@@ -8,8 +8,10 @@ import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.AvaliacaoDto;
 import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
 import com.example.projeto_turismo.dto.AvaliacaoUpdateDto;
+import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.*;
+import org.springframework.aop.support.DelegatingIntroductionInterceptor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -170,4 +172,26 @@ public class AvaliacaoService {
         avaliacao.setUser(user);
         avaliacaoRepository.save(avaliacao);
     }
+    public double calculaMedia(Long id) {
+        if (!restaurantesRepository.findById(id).isEmpty()){
+            List<Avaliacao> avaliacaos = avaliacaoRepository.findByRestauranteId(id);
+            return avaliacaos.stream().mapToInt(Avaliacao::getNota)
+                .average()
+                .orElseThrow(() -> new EventFullException("Valor incorreto"));
+        } else if (!pontoTuristicoRepository.findById(id).isEmpty()) {
+            List<Avaliacao> avaliacaos = avaliacaoRepository.findByPontoTuristicoId(id);
+            return avaliacaos.stream()
+                    .mapToInt(Avaliacao::getNota)
+                    .average()
+                    .orElseThrow(()->new EventFullException("Valor incorreto"));
+        }else {
+            throw new EventFullException("Id não identificado");
+        }
+
+
+
+
+    }//ter atributo media, onde cada avaliação/ponto/restaurante vai ter sua media
+    //criar funcionalidade de calcular media das notas
+    //criar funcionalidade de listar os ponto/restaurantes com maiores medias de notas
 }
