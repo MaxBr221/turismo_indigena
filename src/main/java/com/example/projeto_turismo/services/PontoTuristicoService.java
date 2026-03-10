@@ -5,6 +5,7 @@ import com.example.projeto_turismo.domains.PageResponse;
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
 import com.example.projeto_turismo.dto.PontoTuristicoDtoLocalizacao;
+import com.example.projeto_turismo.dto.PontoTuristicoMediaDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.PontoTuristicoRepository;
@@ -20,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +44,6 @@ public class PontoTuristicoService {
 
         PontoTuristico salvo = repository.save(turistico);
         return new PontoTuristicoResponseDto(
-                salvo.getId(),
                 salvo.getNome(),
                 salvo.getLocal(),
                 salvo.getInformacoes(),
@@ -53,7 +54,6 @@ public class PontoTuristicoService {
         return repository.findAll()
                 .stream()
                 .map((pontoTuristico1 -> new PontoTuristicoResponseDto(
-                        pontoTuristico1.getId(),
                         pontoTuristico1.getNome(),
                         pontoTuristico1.getLocal(),
                         pontoTuristico1.getInformacoes(),
@@ -68,7 +68,6 @@ public class PontoTuristicoService {
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto turistico não encotrado."));
         return new PontoTuristicoResponseDto(
-                pontoTuristico.getId(),
                 pontoTuristico.getNome(),
                 pontoTuristico.getLocal(),
                 pontoTuristico.getInformacoes(),
@@ -87,7 +86,6 @@ public class PontoTuristicoService {
         PontoTuristico pontoTuristico1 = repository.save(pontoTuristico);
 
         return new PontoTuristicoResponseDto(
-                pontoTuristico1.getId(),
                 pontoTuristico1.getNome(),
                 pontoTuristico1.getLocal(),
                 pontoTuristico1.getInformacoes(),
@@ -109,7 +107,6 @@ public class PontoTuristicoService {
         return pontoTuristico
                 .stream()
                 .map(ponto -> new PontoTuristicoResponseDto(
-                        ponto.getId(),
                         ponto.getNome(),
                         ponto.getLocal(),
                         ponto.getInformacoes(),
@@ -175,12 +172,28 @@ public class PontoTuristicoService {
         PontoTuristico ponto = repository.save(pontoTuristico);
 
         return new PontoTuristicoResponseDto(
-                ponto.getId(),
                 ponto.getNome(),
                 ponto.getLocal(),
                 ponto.getInformacoes(),
                 ponto.getLatitude(),
                 ponto.getLongitude());
+    }
+    public PontoTuristicoMediaDto pontoTuristicoMaiorMedia(){
+        List<PontoTuristico> pontoTuristicos = repository.findAll();
+
+        return pontoTuristicos
+                .stream()
+                .max(Comparator.comparing(PontoTuristico::getMedia))
+                .map(pontoTuristico -> new PontoTuristicoMediaDto(
+                        pontoTuristico.getNome(),
+                        pontoTuristico.getLocal(),
+                        pontoTuristico.getInformacoes(),
+                        pontoTuristico.getImagem(),
+                        pontoTuristico.getLatitude(),
+                        pontoTuristico.getLongitude(),
+                        pontoTuristico.getMedia()
+                ))
+                .orElse(null);
     }
 
 }

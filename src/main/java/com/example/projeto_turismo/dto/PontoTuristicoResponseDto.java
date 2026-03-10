@@ -15,8 +15,6 @@ import org.springframework.beans.BeanUtils;
 @Setter
 @Schema(description = "Saida de dados de PontoTuristico")
 public class PontoTuristicoResponseDto {
-    @Schema(description = "Id de PontoTuristico", example = "1")
-    private Long id;
     @Schema(description = "Nome do PontoTuristico", example = "Praia das Valas")
     private String nome;
     @Schema(description = "Tipo de Local do PontoTuristico", example = "PRAIA")

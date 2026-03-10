@@ -172,26 +172,8 @@ public class AvaliacaoService {
         avaliacao.setUser(user);
         avaliacaoRepository.save(avaliacao);
     }
-    public double calculaMedia(Long id) {
-        if (!restaurantesRepository.findById(id).isEmpty()){
-            List<Avaliacao> avaliacaos = avaliacaoRepository.findByRestauranteId(id);
-            return avaliacaos.stream().mapToInt(Avaliacao::getNota)
-                .average()
-                .orElseThrow(() -> new EventFullException("Valor incorreto"));
-        } else if (!pontoTuristicoRepository.findById(id).isEmpty()) {
-            List<Avaliacao> avaliacaos = avaliacaoRepository.findByPontoTuristicoId(id);
-            return avaliacaos.stream()
-                    .mapToInt(Avaliacao::getNota)
-                    .average()
-                    .orElseThrow(()->new EventFullException("Valor incorreto"));
-        }else {
-            throw new EventFullException("Id não identificado");
-        }
 
 
-
-
-    }//ter atributo media, onde cada avaliação/ponto/restaurante vai ter sua media
-    //criar funcionalidade de calcular media das notas
+    //ter atributo media, onde cada avaliação/ponto/restaurante vai ter sua media
     //criar funcionalidade de listar os ponto/restaurantes com maiores medias de notas
 }

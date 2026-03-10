@@ -1,10 +1,12 @@
 package com.example.projeto_turismo.services;
 
+import com.example.projeto_turismo.domains.Avaliacao;
 import com.example.projeto_turismo.domains.PageResponse;
 import com.example.projeto_turismo.domains.Restaurantes;
 import com.example.projeto_turismo.dto.RestaurantesDto;
 import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
+import com.example.projeto_turismo.repositorys.AvaliacaoRepository;
 import com.example.projeto_turismo.repositorys.RestaurantesRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,15 +20,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class RestaurantesService {
     private RestaurantesRepository repository;
+    private AvaliacaoService avaliacaoService;
 
-    public RestaurantesService(RestaurantesRepository repository) {
+    public RestaurantesService(RestaurantesRepository repository, AvaliacaoService avaliacaoService) {
         this.repository = repository;
+        this.avaliacaoService = avaliacaoService;
     }
 
     public RestaurantesResponseDto create(RestaurantesDto restaurantesDto){
@@ -130,5 +135,19 @@ public class RestaurantesService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public RestaurantesResponseDto restauranteMaiorMedia(){
+        List<Restaurantes> restaurantes = repository.findAll();
+
+        return restaurantes.stream()
+                .max(Comparator.comparing(Restaurantes:: getMedia))
+                .map(restaurantes1 -> new RestaurantesResponseDto(
+                        restaurantes1.getNome(),
+                        restaurantes1.getDescricao(),
+                        restaurantes1.getLocalizacao(),
+                        restaurantes1.getHorarioFuncionamento(),
+                        restaurantes1.getTelefone(),
+                        restaurantes1.getRedeSociais()))
+                .orElse(null);
     }
 }

@@ -31,6 +31,8 @@ public class PontoTuristico {
     private Double latitude;
     @Column(name = "longitude")
     private Double longitude;
+    @Column(name = "media")
+    private Double media;
 
     public PontoTuristico(PontoTuristicoResponseDto pontoTuristicoResponseDto){
         BeanUtils.copyProperties(pontoTuristicoResponseDto, this);
