@@ -31,7 +31,6 @@ public class Avaliacao {
     @ManyToOne
     @JoinColumn(name = "restaurante_id")
     private Restaurantes restaurante;
-
     private LocalDateTime dataAvaliacao = LocalDateTime.now();
 
     public Avaliacao(AvaliacaoDto avaliacaoDto){

@@ -50,8 +50,8 @@ public class AvaliacaoService {
             restaurante = restaurantesRepository.findById(avaliacaoDto.idRestaurante())
                     .orElseThrow(()-> new EventFullException("Restaurante não existente para avaliação"));
         }
-        User user = userRepository.findById(avaliacaoDto.idUser())
-                .orElseThrow(()-> new EventFullException("Usuário não existente, não é possivel fazer a avaliação"));
+
+        User user = usuarioLogadoProvider.pegarUsuarioLogado();
 
         Avaliacao avaliacao = new Avaliacao();
         avaliacao.setNota(avaliacaoDto.nota());
@@ -151,6 +151,7 @@ public class AvaliacaoService {
 
         avaliacao.setRestaurante(restaurantes);
         avaliacao.setNota(avaliacaoDto.nota());
+        restaurantes.setMedia(avaliacaoDto.nota().doubleValue());
         avaliacao.setComentario(avaliacaoDto.comentario());
         avaliacao.setUser(user);
         avaliacaoRepository.save(avaliacao);
@@ -168,12 +169,13 @@ public class AvaliacaoService {
         Avaliacao avaliacao = new Avaliacao();
         avaliacao.setPontoTuristico(pontoTuristico);
         avaliacao.setNota(avaliacaoDto.nota());
+        pontoTuristico.setMedia(avaliacaoDto.nota().doubleValue());
         avaliacao.setComentario(avaliacaoDto.comentario());
         avaliacao.setUser(user);
         avaliacaoRepository.save(avaliacao);
     }
 
 
-    //ter atributo media, onde cada avaliação/ponto/restaurante vai ter sua media
-    //criar funcionalidade de listar os ponto/restaurantes com maiores medias de notas
+
+    //verificar se o atributo media está recebendo os valores real
 }

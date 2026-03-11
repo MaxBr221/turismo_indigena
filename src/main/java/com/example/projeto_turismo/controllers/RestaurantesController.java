@@ -1,5 +1,6 @@
 package com.example.projeto_turismo.controllers;
 
+import com.example.projeto_turismo.dto.RestauranteMediaDto;
 import com.example.projeto_turismo.dto.RestaurantesDto;
 import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.services.RestaurantesService;
@@ -102,6 +103,12 @@ public class RestaurantesController {
         Path caminho = Paths.get("uploads/restaurante/").resolve(nome);
         Resource resource = new UrlResource(caminho.toUri());
         return ResponseEntity.ok().body(resource);
+    }
+    @GetMapping("/melhorAvaliado")
+    public ResponseEntity<RestauranteMediaDto> RestauranteMelhorAvaliado(){
+        logger.info("Buscando o Restaurante melhor avaliado");
+        RestauranteMediaDto restauranteMediaDto = service.restauranteMaiorMedia();
+        return ResponseEntity.ok().body(restauranteMediaDto);
     }
 
 }

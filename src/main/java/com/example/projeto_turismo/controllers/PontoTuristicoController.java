@@ -4,6 +4,7 @@ import com.example.projeto_turismo.domains.Local;
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
 import com.example.projeto_turismo.dto.PontoTuristicoDtoLocalizacao;
+import com.example.projeto_turismo.dto.PontoTuristicoMediaDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.services.PontoTuristicoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -123,5 +124,11 @@ public class PontoTuristicoController {
         logger.info("Adicionando Localização");
         PontoTuristicoResponseDto dto = service.adicionarLocalizacao(id, latitude, longitude);
         return ResponseEntity.ok().body(dto);
+    }
+    @GetMapping("/melhorAvaliados")
+    public ResponseEntity<PontoTuristicoMediaDto> maiorMedia(){
+        logger.info("Buscando o melhor avaliado");
+        PontoTuristicoMediaDto pontoTuristicoMediaDto = service.pontoTuristicoMaiorMedia();
+        return ResponseEntity.ok().body(pontoTuristicoMediaDto);
     }
 }

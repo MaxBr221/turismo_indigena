@@ -3,6 +3,7 @@ package com.example.projeto_turismo.services;
 import com.example.projeto_turismo.domains.Avaliacao;
 import com.example.projeto_turismo.domains.PageResponse;
 import com.example.projeto_turismo.domains.Restaurantes;
+import com.example.projeto_turismo.dto.RestauranteMediaDto;
 import com.example.projeto_turismo.dto.RestaurantesDto;
 import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
@@ -136,18 +137,20 @@ public class RestaurantesService {
             throw new RuntimeException(e);
         }
     }
-    public RestaurantesResponseDto restauranteMaiorMedia(){
+    public RestauranteMediaDto restauranteMaiorMedia(){
         List<Restaurantes> restaurantes = repository.findAll();
 
+        //corrigir bug do Double null
         return restaurantes.stream()
                 .max(Comparator.comparing(Restaurantes:: getMedia))
-                .map(restaurantes1 -> new RestaurantesResponseDto(
+                .map(restaurantes1 -> new RestauranteMediaDto(
                         restaurantes1.getNome(),
                         restaurantes1.getDescricao(),
                         restaurantes1.getLocalizacao(),
                         restaurantes1.getHorarioFuncionamento(),
                         restaurantes1.getTelefone(),
-                        restaurantes1.getRedeSociais()))
+                        restaurantes1.getRedeSociais(),
+                        restaurantes1.getMedia()))
                 .orElse(null);
     }
 }
