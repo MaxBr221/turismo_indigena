@@ -110,5 +110,4 @@ public class RestaurantesController {
         RestauranteMediaDto restauranteMediaDto = service.restauranteMaiorMedia();
         return ResponseEntity.ok().body(restauranteMediaDto);
     }
-
 }

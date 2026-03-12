@@ -191,7 +191,8 @@ public class PontoTuristicoService {
                         pontoTuristico.getImagem(),
                         pontoTuristico.getLatitude(),
                         pontoTuristico.getLongitude(),
-                        pontoTuristico.getMedia()
+                        pontoTuristico.getMedia(),
+                        pontoTuristico.getComentario()
                 ))
                 .orElse(null);
     }

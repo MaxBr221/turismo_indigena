@@ -137,10 +137,11 @@ public class RestaurantesService {
             throw new RuntimeException(e);
         }
     }
+    //adicionar atributo comentário no restaurante e ponto turistico
     public RestauranteMediaDto restauranteMaiorMedia(){
         List<Restaurantes> restaurantes = repository.findAll();
 
-        //corrigir bug do Double null
+        //filtrar só os que tem media != null
         return restaurantes.stream()
                 .max(Comparator.comparing(Restaurantes:: getMedia))
                 .map(restaurantes1 -> new RestauranteMediaDto(
@@ -150,7 +151,8 @@ public class RestaurantesService {
                         restaurantes1.getHorarioFuncionamento(),
                         restaurantes1.getTelefone(),
                         restaurantes1.getRedeSociais(),
-                        restaurantes1.getMedia()))
+                        restaurantes1.getMedia(),
+                        restaurantes1.getComentario()))
                 .orElse(null);
     }
 }

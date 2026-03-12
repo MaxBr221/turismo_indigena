@@ -153,6 +153,7 @@ public class AvaliacaoService {
         avaliacao.setNota(avaliacaoDto.nota());
         restaurantes.setMedia(avaliacaoDto.nota().doubleValue());
         avaliacao.setComentario(avaliacaoDto.comentario());
+        restaurantes.setComentario(avaliacaoDto.comentario());
         avaliacao.setUser(user);
         avaliacaoRepository.save(avaliacao);
     }
