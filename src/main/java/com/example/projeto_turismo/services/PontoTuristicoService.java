@@ -178,6 +178,8 @@ public class PontoTuristicoService {
                 ponto.getLatitude(),
                 ponto.getLongitude());
     }
+
+    //adicionar latitude e longitude no resturante em breve
     public PontoTuristicoMediaDto pontoTuristicoMaiorMedia(){
         List<PontoTuristico> pontoTuristicos = repository.findAll();
 

@@ -141,8 +141,7 @@ public class RestaurantesService {
     public RestauranteMediaDto restauranteMaiorMedia(){
         List<Restaurantes> restaurantes = repository.findAll();
 
-        //filtrar só os que tem media != null
-        return restaurantes.stream()
+        return restaurantes.stream().filter(restaurantes1 -> restaurantes1.getMedia() != null)
                 .max(Comparator.comparing(Restaurantes:: getMedia))
                 .map(restaurantes1 -> new RestauranteMediaDto(
                         restaurantes1.getNome(),
