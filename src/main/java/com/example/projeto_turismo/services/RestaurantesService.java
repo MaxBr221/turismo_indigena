@@ -28,11 +28,9 @@ import java.util.UUID;
 @Service
 public class RestaurantesService {
     private RestaurantesRepository repository;
-    private AvaliacaoService avaliacaoService;
 
-    public RestaurantesService(RestaurantesRepository repository, AvaliacaoService avaliacaoService) {
+    public RestaurantesService(RestaurantesRepository repository) {
         this.repository = repository;
-        this.avaliacaoService = avaliacaoService;
     }
 
     public RestaurantesResponseDto create(RestaurantesDto restaurantesDto){
@@ -47,38 +45,41 @@ public class RestaurantesService {
         Restaurantes salvo = repository.save(restaurante);
 
         return new RestaurantesResponseDto(
-                salvo.getId(),
                 salvo.getNome(),
                 salvo.getDescricao(),
                 salvo.getLocalizacao(),
                 salvo.getHorarioFuncionamento(),
                 salvo.getTelefone(),
-                salvo.getRedeSociais());
+                salvo.getRedeSociais(),
+                salvo.getLatitude(),
+                salvo.getLongitude());
     }
     public RestaurantesResponseDto findById(Long id){
         Restaurantes restaurante = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Restaurante não encontrado."));
 
         return new RestaurantesResponseDto(
-                restaurante.getId(),
                 restaurante.getNome(),
                 restaurante.getDescricao(),
                 restaurante.getLocalizacao(),
                 restaurante.getHorarioFuncionamento(),
                 restaurante.getTelefone(),
-                restaurante.getRedeSociais());
+                restaurante.getRedeSociais(),
+                restaurante.getLatitude(),
+                restaurante.getLongitude());
     }
     public List<RestaurantesResponseDto> findAll(){
         return repository.findAll()
                 .stream()
                 .map(restaurantes -> new RestaurantesResponseDto(
-                        restaurantes.getId(),
                         restaurantes.getNome(),
                         restaurantes.getDescricao(),
                         restaurantes.getLocalizacao(),
                         restaurantes.getHorarioFuncionamento(),
                         restaurantes.getTelefone(),
-                        restaurantes.getRedeSociais()
+                        restaurantes.getRedeSociais(),
+                        restaurantes.getLatitude(),
+                        restaurantes.getLongitude()
                 ))
                 .toList();
     }
@@ -91,6 +92,8 @@ public class RestaurantesService {
         restaurantes.setHorarioFuncionamento(restaurantesDto.horarioFuncionamento());
         restaurantes.setTelefone(restaurantesDto.telefone());
         restaurantes.setRedeSociais(restaurantesDto.redeSociais());
+        restaurantes.setLatitude(restaurantesDto.latitude());
+        restaurantes.setLongitude(restaurantesDto.longitude());
         Restaurantes salvos = repository.save(restaurantes);
         return new RestaurantesResponseDto(
                 salvos.getNome(),
@@ -98,7 +101,9 @@ public class RestaurantesService {
                 salvos.getLocalizacao(),
                 salvos.getHorarioFuncionamento(),
                 salvos.getTelefone(),
-                salvos.getRedeSociais());
+                salvos.getRedeSociais(),
+                salvos.getLatitude(),
+                salvos.getLongitude());
     }
     public void delete(Long id){
         Restaurantes restaurante = repository.findById(id)
@@ -137,7 +142,6 @@ public class RestaurantesService {
             throw new RuntimeException(e);
         }
     }
-    //adicionar atributo comentário no restaurante e ponto turistico
     public RestauranteMediaDto restauranteMaiorMedia(){
         List<Restaurantes> restaurantes = repository.findAll();
 

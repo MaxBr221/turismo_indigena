@@ -14,8 +14,6 @@ import org.springframework.beans.BeanUtils;
 @Setter
 @Schema(description = "Dto de Saida de dados do Restaurante")
 public class RestaurantesResponseDto {
-    @Schema(description = "Identificador do Restaurante", example = "1")
-    private Long id;
     @Schema(description = "Nome do Restaurante", example = "Restaurante do Tingo")
     private String nome;
     @Schema(description = "Descrição do Restaurante", example = "Restaurante com comidas tipicas e etc")
@@ -28,6 +26,8 @@ public class RestaurantesResponseDto {
     private String telefone;
     @Schema(description = "Redes Sociais do Restaurante", example = "Link da Rede Social")
     private String redeSociais;
+    private String latitude;
+    private String longitude;
 
     public RestaurantesResponseDto(String nome, String descricao, String localizacao, String horarioFuncionamento, String telefone, String redeSociais) {
         this.nome = nome;

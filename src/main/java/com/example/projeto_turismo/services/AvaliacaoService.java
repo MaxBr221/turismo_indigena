@@ -8,10 +8,8 @@ import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.AvaliacaoDto;
 import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
 import com.example.projeto_turismo.dto.AvaliacaoUpdateDto;
-import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.*;
-import org.springframework.aop.support.DelegatingIntroductionInterceptor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +22,7 @@ public class AvaliacaoService {
     private RestaurantesRepository restaurantesRepository;
     private UserRepository userRepository;
     private UsuarioLogadoProvider usuarioLogadoProvider;
+    private RestaurantesService restaurantesService;
 
     public AvaliacaoService(AvaliacaoRepository avaliacaoRepository, PontoTuristicoRepository pontoTuristicoRepository, RestaurantesRepository restaurantesRepository, UserRepository userRepository, UsuarioLogadoProvider usuarioLogadoProvider) {
         this.avaliacaoRepository = avaliacaoRepository;
@@ -140,7 +139,7 @@ public class AvaliacaoService {
     }
     public void avaliarRestaurante(AvaliacaoDto avaliacaoDto){
         Restaurantes restaurantes = restaurantesRepository.findById(avaliacaoDto.idRestaurante())
-                .orElseThrow(()-> new EventFullException("Esse Restauarente não existe"));
+                .orElseThrow(()-> new EventFullException("Esse Restaurante não existe"));
 
         if(avaliacaoDto.idPonto() != null){
             throw new EventFullException("Essa avaliação só é permitida para Restaurante");
@@ -149,13 +148,17 @@ public class AvaliacaoService {
 
         Avaliacao avaliacao = new Avaliacao();
 
+        //corrigir bug que não salva a media no restaurante
+        //criar um metodo private onde monta a avaliação
         avaliacao.setRestaurante(restaurantes);
         avaliacao.setNota(avaliacaoDto.nota());
-        restaurantes.setMedia(avaliacaoDto.nota().doubleValue());
         avaliacao.setComentario(avaliacaoDto.comentario());
-        restaurantes.setComentario(avaliacaoDto.comentario());
         avaliacao.setUser(user);
         avaliacaoRepository.save(avaliacao);
+
+        recalcularMediaRestaurante(restaurantes.getId());
+
+
     }
     public void avaliarPontoTuristico(AvaliacaoDto avaliacaoDto){
         PontoTuristico pontoTuristico = pontoTuristicoRepository.findById(avaliacaoDto.idPonto())
@@ -175,8 +178,17 @@ public class AvaliacaoService {
         avaliacao.setUser(user);
         avaliacaoRepository.save(avaliacao);
     }
+    public void recalcularMediaRestaurante(Long id){
+        Restaurantes restaurantes = restaurantesRepository.findById(id)
+                .orElseThrow(()-> new EventFullException("Restaurante não existe"));
 
+        Double media = avaliacaoRepository.findByRestauranteId(restaurantes.getId())
+                .stream().mapToDouble(avaliacao -> avaliacao.getNota())
+                .average()
+                .orElse(0.0);
 
+        restaurantes.setMedia(media);
+        restaurantesRepository.save(restaurantes);
 
-    //verificar se o atributo media está recebendo os valores real
+    }
 }

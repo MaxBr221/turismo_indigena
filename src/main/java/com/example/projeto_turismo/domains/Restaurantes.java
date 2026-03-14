@@ -35,6 +35,8 @@ public class Restaurantes {
     @Column(name = "media")
     private Double media;
     private String comentario;
+    private String latitude;
+    private String longitude;
 
     public Restaurantes(String nome, String descricao, String localizacao, String horarioFuncionamento, String telefone, String redeSociais) {
         this.nome = nome;

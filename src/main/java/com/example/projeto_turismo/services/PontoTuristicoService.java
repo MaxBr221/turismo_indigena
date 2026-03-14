@@ -179,12 +179,11 @@ public class PontoTuristicoService {
                 ponto.getLongitude());
     }
 
-    //adicionar latitude e longitude no resturante em breve
     public PontoTuristicoMediaDto pontoTuristicoMaiorMedia(){
         List<PontoTuristico> pontoTuristicos = repository.findAll();
 
         return pontoTuristicos
-                .stream()
+                .stream().filter(pontoTuristico -> pontoTuristico.getMedia() != null)
                 .max(Comparator.comparing(PontoTuristico::getMedia))
                 .map(pontoTuristico -> new PontoTuristicoMediaDto(
                         pontoTuristico.getNome(),

@@ -8,5 +8,7 @@ public record RestaurantesDto(@Schema(description = "Nome do Restaurante", examp
                               @Schema(description = "Local do Restaurante", example = "Localizado na aldeia Silva") String localizacao,
                               @Schema(description = "Horario de funcionamento do Restaurante", example = "08:00 as 15:00") String horarioFuncionamento,
                               @Schema(description = "Telefone do Restaurante", example = "830029233") String telefone,
-                              @Schema(description = "Redes Sociais do Restaurante", example = "Link da Rede Social") String redeSociais) {
+                              @Schema(description = "Redes Sociais do Restaurante", example = "Link da Rede Social") String redeSociais,
+                              String latitude,
+                              String longitude) {
 }
