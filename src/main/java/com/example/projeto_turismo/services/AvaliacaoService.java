@@ -148,7 +148,6 @@ public class AvaliacaoService {
 
         Avaliacao avaliacao = new Avaliacao();
 
-        //corrigir bug que não salva a media no restaurante
         //criar um metodo private onde monta a avaliação
         avaliacao.setRestaurante(restaurantes);
         avaliacao.setNota(avaliacaoDto.nota());
@@ -177,6 +176,7 @@ public class AvaliacaoService {
         avaliacao.setComentario(avaliacaoDto.comentario());
         avaliacao.setUser(user);
         avaliacaoRepository.save(avaliacao);
+        recalcularMediaPontoTuristico(pontoTuristico.getId());
     }
     public void recalcularMediaRestaurante(Long id){
         Restaurantes restaurantes = restaurantesRepository.findById(id)
@@ -190,5 +190,17 @@ public class AvaliacaoService {
         restaurantes.setMedia(media);
         restaurantesRepository.save(restaurantes);
 
+    }
+    public void recalcularMediaPontoTuristico(Long id){
+        PontoTuristico pontoTuristico = pontoTuristicoRepository.findById(id)
+                .orElseThrow(()-> new EventFullException("ponto turistico não existente"));
+
+        Double media = avaliacaoRepository.findByPontoTuristicoId(pontoTuristico.getId())
+                .stream().mapToDouble(avaliacao -> avaliacao.getNota())
+                .average()
+                .orElse(0.0);
+
+        pontoTuristico.setMedia(media);
+        pontoTuristicoRepository.save(pontoTuristico);
     }
 }
