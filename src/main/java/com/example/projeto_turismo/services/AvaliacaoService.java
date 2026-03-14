@@ -137,47 +137,48 @@ public class AvaliacaoService {
                 .orElseThrow(()->new EventFullException("Essa avaliação não existe"));
         avaliacaoRepository.delete(avaliacao);
     }
-    public void avaliarRestaurante(AvaliacaoDto avaliacaoDto){
-        Restaurantes restaurantes = restaurantesRepository.findById(avaliacaoDto.idRestaurante())
-                .orElseThrow(()-> new EventFullException("Esse Restaurante não existe"));
 
-        if(avaliacaoDto.idPonto() != null){
-            throw new EventFullException("Essa avaliação só é permitida para Restaurante");
-        }
+    public void avaliarRestaurante(AvaliacaoDto avaliacaoDto){
+        avaliar(avaliacaoDto);
+    }
+
+    private void avaliar(AvaliacaoDto avaliacaoDto){
+        Avaliacao avaliacao = new Avaliacao();
         User user = usuarioLogadoProvider.pegarUsuarioLogado();
 
-        Avaliacao avaliacao = new Avaliacao();
+        if(avaliacaoDto.idRestaurante() != null && avaliacaoDto.idPonto() != null){
+            throw new EventFullException("Só é permitido avaliar um por vez");
+        }
 
-        //criar um metodo private onde monta a avaliação
-        avaliacao.setRestaurante(restaurantes);
-        avaliacao.setNota(avaliacaoDto.nota());
-        avaliacao.setComentario(avaliacaoDto.comentario());
-        avaliacao.setUser(user);
-        avaliacaoRepository.save(avaliacao);
+        if(avaliacaoDto.idRestaurante() != null){
+            Restaurantes restaurantes = restaurantesRepository.findById(avaliacaoDto.idRestaurante())
+                    .orElseThrow(()-> new EventFullException("Restaurante não existente"));
 
-        recalcularMediaRestaurante(restaurantes.getId());
+            avaliacao.setRestaurante(restaurantes);
+            avaliacao.setNota(avaliacaoDto.nota());
+            avaliacao.setComentario(avaliacaoDto.comentario());
+            avaliacao.setUser(user);
+            avaliacaoRepository.save(avaliacao);
+            recalcularMediaRestaurante(restaurantes.getId());
+        }
 
+        if(avaliacaoDto.idPonto() != null){
+            PontoTuristico pontoTuristico = pontoTuristicoRepository.findById(avaliacaoDto.idPonto())
+                    .orElseThrow(()-> new EventFullException("Ponto Turistico não existente"));
+
+            avaliacao.setPontoTuristico(pontoTuristico);
+            avaliacao.setNota(avaliacaoDto.nota());
+            avaliacao.setComentario(avaliacaoDto.comentario());
+            avaliacao.setUser(user);
+            avaliacaoRepository.save(avaliacao);
+            recalcularMediaPontoTuristico(pontoTuristico.getId());
+        }
 
     }
     public void avaliarPontoTuristico(AvaliacaoDto avaliacaoDto){
-        PontoTuristico pontoTuristico = pontoTuristicoRepository.findById(avaliacaoDto.idPonto())
-                .orElseThrow(()-> new EventFullException("Ponto Turistico não existente"));
-
-        if(avaliacaoDto.idRestaurante() != null){
-            throw new EventFullException("Não é permitido avaliar restaurantes juntos com ponto turisticos");
-        }
-
-        User user = usuarioLogadoProvider.pegarUsuarioLogado();
-
-        Avaliacao avaliacao = new Avaliacao();
-        avaliacao.setPontoTuristico(pontoTuristico);
-        avaliacao.setNota(avaliacaoDto.nota());
-        pontoTuristico.setMedia(avaliacaoDto.nota().doubleValue());
-        avaliacao.setComentario(avaliacaoDto.comentario());
-        avaliacao.setUser(user);
-        avaliacaoRepository.save(avaliacao);
-        recalcularMediaPontoTuristico(pontoTuristico.getId());
+        avaliar(avaliacaoDto);
     }
+
     public void recalcularMediaRestaurante(Long id){
         Restaurantes restaurantes = restaurantesRepository.findById(id)
                 .orElseThrow(()-> new EventFullException("Restaurante não existe"));
