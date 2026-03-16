@@ -37,6 +37,7 @@ public class Restaurantes {
     private String comentario;
     private String latitude;
     private String longitude;
+    private int avaliacoes;
 
     public Restaurantes(String nome, String descricao, String localizacao, String horarioFuncionamento, String telefone, String redeSociais) {
         this.nome = nome;

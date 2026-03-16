@@ -193,7 +193,8 @@ public class PontoTuristicoService {
                         pontoTuristico.getLatitude(),
                         pontoTuristico.getLongitude(),
                         pontoTuristico.getMedia(),
-                        pontoTuristico.getComentario()
+                        pontoTuristico.getComentario(),
+                        pontoTuristico.getAvaliacoes()
                 ))
                 .orElse(null);
     }

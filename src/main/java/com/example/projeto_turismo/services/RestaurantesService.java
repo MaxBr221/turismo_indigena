@@ -155,7 +155,8 @@ public class RestaurantesService {
                         restaurantes1.getTelefone(),
                         restaurantes1.getRedeSociais(),
                         restaurantes1.getMedia(),
-                        restaurantes1.getComentario()))
+                        restaurantes1.getComentario(),
+                        restaurantes1.getAvaliacoes()))
                 .orElse(null);
     }
 }

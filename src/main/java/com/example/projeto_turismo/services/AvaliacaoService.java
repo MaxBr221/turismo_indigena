@@ -154,6 +154,8 @@ public class AvaliacaoService {
             Restaurantes restaurantes = restaurantesRepository.findById(avaliacaoDto.idRestaurante())
                     .orElseThrow(()-> new EventFullException("Restaurante não existente"));
 
+            int cont = restaurantes.getAvaliacoes() + 1;
+            restaurantes.setAvaliacoes(cont);
             avaliacao.setRestaurante(restaurantes);
             avaliacao.setNota(avaliacaoDto.nota());
             avaliacao.setComentario(avaliacaoDto.comentario());
