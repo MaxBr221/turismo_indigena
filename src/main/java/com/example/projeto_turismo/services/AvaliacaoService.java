@@ -168,6 +168,9 @@ public class AvaliacaoService {
             PontoTuristico pontoTuristico = pontoTuristicoRepository.findById(avaliacaoDto.idPonto())
                     .orElseThrow(()-> new EventFullException("Ponto Turistico não existente"));
 
+
+            int contAvaliacoes = pontoTuristico.getAvaliacoes() + 1;
+            pontoTuristico.setAvaliacoes(contAvaliacoes);
             avaliacao.setPontoTuristico(pontoTuristico);
             avaliacao.setNota(avaliacaoDto.nota());
             avaliacao.setComentario(avaliacaoDto.comentario());
