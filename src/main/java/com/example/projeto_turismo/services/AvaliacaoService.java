@@ -146,9 +146,7 @@ public class AvaliacaoService {
         Avaliacao avaliacao = new Avaliacao();
         User user = usuarioLogadoProvider.pegarUsuarioLogado();
 
-        //finalizar funcionalidade de localização
-        // refactorar esses ifs futuramente
-
+        //finalizar funcionalidade de localização quando estiver fazendo o front
         if(avaliacaoDto.idRestaurante() != null && avaliacaoDto.idPonto() == null){
 
             Avaliacao avaliacao1 = avaliacaoRepository.findByUserAndRestauranteId(user, avaliacaoDto.idRestaurante());

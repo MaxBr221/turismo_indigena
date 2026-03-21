@@ -3,7 +3,6 @@ package com.example.projeto_turismo.controllers;
 import com.example.projeto_turismo.domains.Local;
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
-import com.example.projeto_turismo.dto.PontoTuristicoDtoLocalizacao;
 import com.example.projeto_turismo.dto.PontoTuristicoMediaDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.services.PontoTuristicoService;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.tomcat.util.file.ConfigurationSource;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.MalformedParameterizedTypeException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -120,9 +117,9 @@ public class PontoTuristicoController {
         return ResponseEntity.ok().body(resource);
     }
     @PostMapping("/{id}/localizacao")
-    public ResponseEntity<PontoTuristicoResponseDto> addLocalizacao(@PathVariable Long id, @RequestParam Double latitude, @RequestParam Double longitude){
-        logger.info("Adicionando Localização");
-        PontoTuristicoResponseDto dto = service.adicionarLocalizacao(id, latitude, longitude);
+    public ResponseEntity<PontoTuristicoResponseDto> buscarLocalizacao(@PathVariable Long id){
+        logger.info("Buscando Localização");
+        PontoTuristicoResponseDto dto = service.buscarLocalizacaoPonto(id);
         return ResponseEntity.ok().body(dto);
     }
     @GetMapping("/melhorAvaliados")

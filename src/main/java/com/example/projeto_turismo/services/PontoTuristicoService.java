@@ -4,7 +4,6 @@ import com.example.projeto_turismo.domains.Local;
 import com.example.projeto_turismo.domains.PageResponse;
 import com.example.projeto_turismo.domains.PontoTuristico;
 import com.example.projeto_turismo.dto.PontoTuristicoCreateDto;
-import com.example.projeto_turismo.dto.PontoTuristicoDtoLocalizacao;
 import com.example.projeto_turismo.dto.PontoTuristicoMediaDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
@@ -159,24 +158,16 @@ public class PontoTuristicoService {
             throw new RuntimeException("Erro ao salvar imagem");
         }
     }
-    public PontoTuristicoResponseDto adicionarLocalizacao(Long id, Double latitude, Double longitude){
+    public PontoTuristicoResponseDto buscarLocalizacaoPonto(Long id){
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto Turistico não existente"));
 
-        if(pontoTuristico.getLatitude() != null || pontoTuristico.getLongitude() != null) {
-            throw new EventFullException("Localização já existente");
-        }
-        pontoTuristico.setLatitude(latitude);
-        pontoTuristico.setLongitude(longitude);
-
-        PontoTuristico ponto = repository.save(pontoTuristico);
-
         return new PontoTuristicoResponseDto(
-                ponto.getNome(),
-                ponto.getLocal(),
-                ponto.getInformacoes(),
-                ponto.getLatitude(),
-                ponto.getLongitude());
+                pontoTuristico.getNome(),
+                pontoTuristico.getLocal(),
+                pontoTuristico.getInformacoes(),
+                pontoTuristico.getLatitude(),
+                pontoTuristico.getLongitude());
     }
 
     public PontoTuristicoMediaDto pontoTuristicoMaiorMedia(){

@@ -110,4 +110,10 @@ public class RestaurantesController {
         RestauranteMediaDto restauranteMediaDto = service.restauranteMaiorMedia();
         return ResponseEntity.ok().body(restauranteMediaDto);
     }
+    @GetMapping("/{id}/localizacao")
+    public ResponseEntity<RestaurantesResponseDto> buscarLocalizacao(@PathVariable Long id){
+        logger.info("Buscando Localização de Restaurante");
+        RestaurantesResponseDto restaurantesResponseDto = service.buscarLocalizacaoRestaurante(id);
+        return ResponseEntity.ok().body(restaurantesResponseDto);
+    }
 }

@@ -159,4 +159,19 @@ public class RestaurantesService {
                         restaurantes1.getAvaliacoes()))
                 .orElse(null);
     }
+    public RestaurantesResponseDto buscarLocalizacaoRestaurante(Long id) {
+        Restaurantes restaurante = repository.findById(id)
+                .orElseThrow(() -> new EventFullException("Restaurante não existente"));
+
+        return new RestaurantesResponseDto(
+                restaurante.getNome(),
+                restaurante.getDescricao(),
+                restaurante.getLocalizacao(),
+                restaurante.getHorarioFuncionamento(),
+                restaurante.getTelefone(),
+                restaurante.getRedeSociais(),
+                restaurante.getLatitude(),
+                restaurante.getLongitude());
+    }
+
 }
