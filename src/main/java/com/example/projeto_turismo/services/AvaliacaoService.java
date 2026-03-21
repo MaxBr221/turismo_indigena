@@ -148,24 +148,14 @@ public class AvaliacaoService {
 
         //finalizar funcionalidade de localização
         // refactorar esses ifs futuramente
-        if(avaliacaoDto.idRestaurante() != null){
+
+        if(avaliacaoDto.idRestaurante() != null && avaliacaoDto.idPonto() == null){
+
             Avaliacao avaliacao1 = avaliacaoRepository.findByUserAndRestauranteId(user, avaliacaoDto.idRestaurante());
             if(avaliacao1 != null) {
                 throw new EventFullException("Esse usuário já avaliou esse Restaurante");
             }
-        }
-        if(avaliacaoDto.idPonto() != null){
-            Avaliacao avaliacao2 = avaliacaoRepository.findByUserAndPontoTuristicoId(user, avaliacaoDto.idPonto());
-            if(avaliacao2 != null){
-                throw new EventFullException("Esse usuário já avaliou esse Ponto Turistico");
-            }
-        }
 
-        if(avaliacaoDto.idRestaurante() != null && avaliacaoDto.idPonto() != null){
-            throw new EventFullException("Só é permitido avaliar um por vez");
-        }
-
-        if(avaliacaoDto.idRestaurante() != null){
             Restaurantes restaurantes = restaurantesRepository.findById(avaliacaoDto.idRestaurante())
                     .orElseThrow(()-> new EventFullException("Restaurante não existente"));
 
@@ -177,9 +167,16 @@ public class AvaliacaoService {
             avaliacao.setUser(user);
             avaliacaoRepository.save(avaliacao);
             recalcularMediaRestaurante(restaurantes.getId());
+
         }
 
-        if(avaliacaoDto.idPonto() != null){
+        if(avaliacaoDto.idPonto() != null && avaliacaoDto.idRestaurante() == null){
+
+            Avaliacao avaliacao2 = avaliacaoRepository.findByUserAndPontoTuristicoId(user, avaliacaoDto.idPonto());
+            if(avaliacao2 != null){
+                throw new EventFullException("Esse usuário já avaliou esse Ponto Turistico");
+            }
+
             PontoTuristico pontoTuristico = pontoTuristicoRepository.findById(avaliacaoDto.idPonto())
                     .orElseThrow(()-> new EventFullException("Ponto Turistico não existente"));
 
@@ -192,6 +189,9 @@ public class AvaliacaoService {
             avaliacao.setUser(user);
             avaliacaoRepository.save(avaliacao);
             recalcularMediaPontoTuristico(pontoTuristico.getId());
+        }
+        if(avaliacaoDto.idRestaurante() != null && avaliacaoDto.idPonto() != null){
+            throw new EventFullException("Não é possivel avaliar os dois ao mesmo tempo");
         }
 
     }
