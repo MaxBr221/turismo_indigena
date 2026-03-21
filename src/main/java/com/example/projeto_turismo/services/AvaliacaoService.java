@@ -146,15 +146,19 @@ public class AvaliacaoService {
         Avaliacao avaliacao = new Avaliacao();
         User user = usuarioLogadoProvider.pegarUsuarioLogado();
 
-        //fazer uma verificação para não permitir que o usuário que já avaliou o restaurante/ponto não possa avaliar o mesmo dnv
         //finalizar funcionalidade de localização
-
-
-        if(avaliacaoRepository.findByUser(user) != null && avaliacaoRepository.findByRestauranteId(avaliacaoDto.idRestaurante()) != null){
-            throw new EventFullException("Não é possivel avaliar um Restaurante já avaliado novamente");
+        // refactorar esses ifs futuramente
+        if(avaliacaoDto.idRestaurante() != null){
+            Avaliacao avaliacao1 = avaliacaoRepository.findByUserAndRestauranteId(user, avaliacaoDto.idRestaurante());
+            if(avaliacao1 != null) {
+                throw new EventFullException("Esse usuário já avaliou esse Restaurante");
+            }
         }
-        if(avaliacaoRepository.findByUser(user) != null && avaliacaoRepository.findByPontoTuristicoId(avaliacaoDto.idPonto()) != null){
-            throw new EventFullException("Não é possivel avaliar um Ponto Turistico já avaliado novamente");
+        if(avaliacaoDto.idPonto() != null){
+            Avaliacao avaliacao2 = avaliacaoRepository.findByUserAndPontoTuristicoId(user, avaliacaoDto.idPonto());
+            if(avaliacao2 != null){
+                throw new EventFullException("Esse usuário já avaliou esse Ponto Turistico");
+            }
         }
 
         if(avaliacaoDto.idRestaurante() != null && avaliacaoDto.idPonto() != null){

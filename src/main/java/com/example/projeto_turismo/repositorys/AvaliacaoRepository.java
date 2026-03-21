@@ -11,5 +11,7 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
     List<Avaliacao> findByPontoTuristicoId(Long pontoId);
     List<Avaliacao> findByRestauranteId(Long restauranteId);
     List<Avaliacao> findByUser(User user);
+    Avaliacao findByUserAndRestauranteId(User user, Long restauranteId);
+    Avaliacao findByUserAndPontoTuristicoId(User user, Long pontoId);
 
 }
