@@ -9,11 +9,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +41,7 @@ public class RestaurantesController {
             @ApiResponse(responseCode = "400", description = "Dados incorretos")
     })
     @PostMapping
-    public ResponseEntity<RestaurantesResponseDto> create(@RequestBody RestaurantesDto restauranteDto) {
+    public ResponseEntity<RestaurantesResponseDto> create(@RequestBody @Valid RestaurantesDto restauranteDto) {
         logger.info("Criando Restaurante");
         RestaurantesResponseDto restaurante = service.create(restauranteDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(restaurante);
@@ -69,7 +71,7 @@ public class RestaurantesController {
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<RestaurantesResponseDto> update(@Parameter(description = "Id do Restaurante que deseja editar", example = "1")@PathVariable Long id, @RequestBody RestaurantesDto restauranteDto){
+    public ResponseEntity<RestaurantesResponseDto> update(@Parameter(description = "Id do Restaurante que deseja editar", example = "1")@PathVariable Long id, @RequestBody @Valid RestaurantesDto restauranteDto){
         logger.info("Atualizando restaurante");
         RestaurantesResponseDto restaurante = service.update(id, restauranteDto);
         return ResponseEntity.ok().body(restaurante);

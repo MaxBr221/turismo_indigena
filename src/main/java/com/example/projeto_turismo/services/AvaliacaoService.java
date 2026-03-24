@@ -147,7 +147,7 @@ public class AvaliacaoService {
         User user = usuarioLogadoProvider.pegarUsuarioLogado();
 
         //finalizar funcionalidade de localização quando estiver fazendo o front
-        //conectar uma tela com o back hj
+        //conectar uma tela com o back
 
         if(avaliacaoDto.idRestaurante() != null && avaliacaoDto.idPonto() == null){
 

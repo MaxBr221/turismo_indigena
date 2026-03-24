@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class AgendamentoController {
             @ApiResponse(responseCode = "400", description = "dados inválidos"),
             @ApiResponse(responseCode = "403", description = "Acesso proibido")})
     @PostMapping
-    public ResponseEntity<AgendamentoResponseDto> create(@RequestBody AgendamentoCreateDto agendamentoCreateDto){
+    public ResponseEntity<AgendamentoResponseDto> create(@RequestBody @Valid AgendamentoCreateDto agendamentoCreateDto){
         logger.info("Criando Agendamento");
         AgendamentoResponseDto ag = service.create(agendamentoCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(ag);
@@ -61,7 +62,7 @@ public class AgendamentoController {
         @ApiResponse(responseCode = "dados inválidos"),
         @ApiResponse(responseCode = "403", description = "Acesso proibido")})
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@Parameter(description = "Id do agendamento que deseja editar", example = "1")@PathVariable Long id, @RequestBody AgendamentoUpdateDto ag){
+    public ResponseEntity update(@Parameter(description = "Id do agendamento que deseja editar", example = "1")@PathVariable Long id, @RequestBody @Valid AgendamentoUpdateDto ag){
         logger.info("Atualizando Agendamento");
         AgendamentoResponseDto agendamentoResponseDto = service.update(id, ag);
         return ResponseEntity.ok().body(agendamentoResponseDto);

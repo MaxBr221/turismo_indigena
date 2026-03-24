@@ -1,4 +1,10 @@
 package com.example.projeto_turismo.dto;
 
-public record PontoTuristicoDtoLocalizacao(Double latitude, Double longitude) {
+import jakarta.validation.constraints.NotNull;
+
+public record PontoTuristicoDtoLocalizacao(
+        @NotNull
+        Double latitude,
+        @NotNull
+        Double longitude) {
 }

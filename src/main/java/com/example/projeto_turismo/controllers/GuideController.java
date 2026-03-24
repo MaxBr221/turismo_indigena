@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class GuideController {
             @ApiResponse(responseCode = "403", description = "Acesso não permitido")
     })
     @PostMapping
-    public ResponseEntity<GuideResponseDto> create(@RequestBody GuideCreateDto guideCreateDto){
+    public ResponseEntity<GuideResponseDto> create(@RequestBody @Valid GuideCreateDto guideCreateDto){
         logger.info("Criando guia");
         GuideResponseDto guide = service.create(guideCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(guide);
@@ -63,7 +64,7 @@ public class GuideController {
 
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<GuideResponseDto> update(@Parameter(description = "Id do Guide que deseja editar", example = "1")@PathVariable Long id, @RequestBody GuideCreateDto guide){
+    public ResponseEntity<GuideResponseDto> update(@Parameter(description = "Id do Guide que deseja editar", example = "1")@PathVariable Long id, @RequestBody @Valid GuideCreateDto guide){
         logger.info("Editando guia");
         GuideResponseDto guideResponseDto = service.update(id, guide);
         return ResponseEntity.ok().body(guideResponseDto);

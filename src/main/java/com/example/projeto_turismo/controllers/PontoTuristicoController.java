@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -41,7 +42,7 @@ public class PontoTuristicoController {
             @ApiResponse(responseCode = "400", description = "Dados incorretos")
     })
     @PostMapping
-    public ResponseEntity<PontoTuristicoResponseDto> create(@RequestBody PontoTuristicoCreateDto pontoTuristicoCreateDto){
+    public ResponseEntity<PontoTuristicoResponseDto> create(@RequestBody @Valid PontoTuristicoCreateDto pontoTuristicoCreateDto){
         logger.info("Criando ponto turistico");
         PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.create(pontoTuristicoCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(pontoTuristicoResponseDto1);
@@ -71,7 +72,7 @@ public class PontoTuristicoController {
             @ApiResponse(responseCode = "400", description = "Dados incorretos")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<PontoTuristicoResponseDto> update(@Parameter(description = "Id do PontoTuristico que deseja editar", example = "1")@PathVariable Long id, @RequestBody PontoTuristicoCreateDto pontoTuristicoCreateDto){
+    public ResponseEntity<PontoTuristicoResponseDto> update(@Parameter(description = "Id do PontoTuristico que deseja editar", example = "1")@PathVariable Long id, @RequestBody @Valid PontoTuristicoCreateDto pontoTuristicoCreateDto){
         logger.info("Atualizando ponto turistico");
         PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.update(id, pontoTuristicoCreateDto);
         return ResponseEntity.ok().body(pontoTuristicoResponseDto1);

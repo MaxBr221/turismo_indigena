@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Acesso proibido")
     })
     @PostMapping
-    public ResponseEntity<UserDto> create(@RequestBody RegisterDto dto){
+    public ResponseEntity<UserDto> create(@RequestBody @Valid RegisterDto dto){
         logger.info("Criando usuário");
         UserDto user = userService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
@@ -65,7 +66,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Edição feita com sucesso")
     })
     @PutMapping(value = "/me")
-    public ResponseEntity<UserDto> update(@RequestBody UserUpdateDto userDto){
+    public ResponseEntity<UserDto> update(@RequestBody @Valid UserUpdateDto userDto){
         logger.info("Atualizando usuário");
         UserDto user = userService.findById();
         userService.update(userDto);

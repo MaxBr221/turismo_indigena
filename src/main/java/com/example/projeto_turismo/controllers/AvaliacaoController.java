@@ -5,6 +5,7 @@ import com.example.projeto_turismo.dto.AvaliacaoDto;
 import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
 import com.example.projeto_turismo.dto.AvaliacaoUpdateDto;
 import com.example.projeto_turismo.services.AvaliacaoService;
+import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class AvaliacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<AvaliacaoResponseDto> create(@RequestBody AvaliacaoDto avaliacaoDto){
+    public ResponseEntity<AvaliacaoResponseDto> create(@RequestBody @Valid AvaliacaoDto avaliacaoDto){
         logger.info("Criando Avaliação");
         AvaliacaoResponseDto avaliacao = avaliacaoService.create(avaliacaoDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(avaliacao);
@@ -43,7 +44,7 @@ public class AvaliacaoController {
         return ResponseEntity.ok().body(avaliacoes);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<AvaliacaoResponseDto> update(@PathVariable Long id, @RequestBody AvaliacaoUpdateDto avaliacaoDto){
+    public ResponseEntity<AvaliacaoResponseDto> update(@PathVariable Long id, @RequestBody @Valid AvaliacaoUpdateDto avaliacaoDto){
         logger.info("Atualizando avaliação");
         AvaliacaoResponseDto avaliacaoResponseDto = avaliacaoService.update(id, avaliacaoDto);
         return ResponseEntity.ok().body(avaliacaoResponseDto);
@@ -54,12 +55,12 @@ public class AvaliacaoController {
         avaliacaoService.delete(id);
     }
     @PostMapping("/avaliarRestaurante")
-    public void avaliarRestaurante(@RequestBody AvaliacaoDto avaliacaoDto){
+    public void avaliarRestaurante(@RequestBody @Valid AvaliacaoDto avaliacaoDto){
         logger.info("Avaliando Restaurante");
         avaliacaoService.avaliarRestaurante(avaliacaoDto);
     }
     @PostMapping("/avaliarPontoTuristico")
-    public void avaliarPontoTuristico(@RequestBody AvaliacaoDto avaliacaoDto){
+    public void avaliarPontoTuristico(@RequestBody @Valid AvaliacaoDto avaliacaoDto){
         logger.info("Avaliando Ponto Turistico");
         avaliacaoService.avaliarPontoTuristico(avaliacaoDto);
     }
