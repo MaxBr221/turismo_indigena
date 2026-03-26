@@ -8,20 +8,20 @@ import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.infra.security.TokenService;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "auth")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+    private org.slf4j.Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
     private AuthenticationManager authenticationManager;
     private UserRepository repository;
     private TokenService tokenService;
@@ -34,6 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated AuthUserDto authUserDto){
+        logger.info("Gerando token através de login e senha");
         var userNamePassword = new UsernamePasswordAuthenticationToken(authUserDto.login(), authUserDto.senha());
         var auth = this.authenticationManager.authenticate(userNamePassword);
         var token = tokenService.generateToken((User)auth.getPrincipal());
@@ -43,6 +44,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Validated RegisterDto registerDto){
+        logger.info("Criando Usuário");
         if (repository.findByLogin(registerDto.login())!= null){
             throw new EventFullException("Login de usuário já existente");
         }
