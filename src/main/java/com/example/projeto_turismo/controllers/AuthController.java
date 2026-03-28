@@ -1,5 +1,6 @@
 package com.example.projeto_turismo.controllers;
 
+import com.example.projeto_turismo.domains.Role;
 import com.example.projeto_turismo.dto.AuthUserDto;
 import com.example.projeto_turismo.dto.LoginDto;
 import com.example.projeto_turismo.dto.RegisterDto;
@@ -49,7 +50,7 @@ public class AuthController {
             throw new EventFullException("Login de usuário já existente");
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.senha());
-        User user = new User(registerDto.nome(), registerDto.telefone(), registerDto.login(), encryptedPassword, registerDto.role());
+        User user = new User(registerDto.nome(), registerDto.telefone(), registerDto.login(), encryptedPassword, Role.USER);
         repository.save(user);
         return ResponseEntity.ok().build();
     }
