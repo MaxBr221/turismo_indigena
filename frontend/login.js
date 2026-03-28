@@ -1,15 +1,19 @@
-async function login() {
-    const email = document.querySelector("#email").value;
+async function login(){
+    const login = document.querySelector("#email").value;
     const senha = document.querySelector("#senha").value;
+
+    console.log("indo pra fetch");
 
     const response = await fetch("http://localhost:8080/auth/login",{
         method: "POST",
         headers: {
             "content-type": "application/json"
+            
         
         },
+        
         body: JSON.stringify({
-            email: email,
+            login: login,
             senha: senha
 
         })
