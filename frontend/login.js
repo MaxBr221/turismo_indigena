@@ -3,8 +3,8 @@ async function login(){
     const senha = document.querySelector("#senha").value;
 
     console.log("indo pra fetch");
-
-    const response = await fetch("http://localhost:8080/auth/login",{
+    try{
+        const response = await fetch("http://localhost:8080/auth/login",{
         method: "POST",
         headers: {
             "content-type": "application/json"
@@ -23,9 +23,23 @@ async function login(){
     const data = await response.text();
 
     if(response.ok){
-        alert("Login feito com sucesso!");
+        window.location.href = "painelPrincipal";
+    
     }else{
         alert("Erro" + data);
+    }  
+    }catch(error){
+        console.error("Erro na requesição de login:", error);
+        alert("Não foi possivel conectar ao servidor");
     }
     
+    
 }
+
+console.log("Arquivo login.js carregado com sucesso!");
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.querySelector("#btnLogin");
+    if(btn){
+        btn.addEventListener('click', login);
+    }
+});
