@@ -1,1 +1,0 @@
-document.getElementById("ponto").style.position.toLowerCase;
