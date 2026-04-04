@@ -1,11 +1,11 @@
-package com.example.projeto_turismo.domains;
+package com.example.projeto_turismo.service;
 
 import static com.example.projeto_turismo.common.UserConstants.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
+import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.UserRepository;
@@ -15,8 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
 
 
 @ExtendWith(MockitoExtension.class)

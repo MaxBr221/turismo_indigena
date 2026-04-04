@@ -2,6 +2,7 @@ package com.example.projeto_turismo.domains;
 
 import com.example.projeto_turismo.dto.RegisterDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,14 +24,19 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
     @Column(name = "nome", nullable = false)
     private String nome;
+    @NotEmpty
     @Column(name = "telefone", nullable = false)
     private String telefone;
+    @NotEmpty
     @Column(name = "login", nullable = false, unique = true)
     private String login;
+    @NotEmpty
     @Column(name = "senha", nullable = false)
     private String senha;
+    @NotEmpty
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
