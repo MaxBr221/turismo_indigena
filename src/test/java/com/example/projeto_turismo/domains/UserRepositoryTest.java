@@ -22,9 +22,9 @@ public class UserRepositoryTest {
         String login = "maxsue.lima@gmail";
         RegisterDto registerDto = new RegisterDto("Maxsuel Lima", "83991710731", login, "maxbr22", Role.USER);
         this.createUser_withValidData_ReturnsUser(registerDto);
-        User userEncotrado = this.userRepository.findByLogin(registerDto.login());
+        User userEncotrado = this.userRepository.findByLogin(login);
 
-        assertThat(userEncotrado).isEqualTo(login);
+        assertThat(userEncotrado.getLogin()).isEqualTo(login);
 
     }
 
@@ -32,7 +32,5 @@ public class UserRepositoryTest {
         User user = new User(register);
         this.testEntityManager.persist(user);
         return user;
-
-
     }
 }
