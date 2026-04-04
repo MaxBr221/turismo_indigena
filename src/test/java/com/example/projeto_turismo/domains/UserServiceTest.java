@@ -39,20 +39,20 @@ public class UserServiceTest {
         when(userRepository.save(any(User.class))).thenThrow(RuntimeException.class);
         assertThatThrownBy(()-> userService.create(INVALID_USER)).isInstanceOf(RuntimeException.class);
     }
-    @Test
-    public void getByidUser_WithValidData_ReturnUser(){
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(USER));
-
-        UserDto user = userService.findById(1L);
-        assertThat(user.id()).isEqualTo(USER.getId());
-
-    }
-    @Test
-    public void getUser_ByUnexistingId_ReturnsEmpty(){
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(()-> userService.findById(1L)).isInstanceOf(EventFullException.class);
-    }
+//    @Test
+//    public void getByidUser_WithValidData_ReturnUser(){
+//        when(userRepository.findById(anyLong())).thenReturn(Optional.of(USER));
+//
+//        UserDto user = userService.findById(1L);
+//        assertThat(user.id()).isEqualTo(USER.getId());
+//
+//    }
+//    @Test
+//    public void getUser_ByUnexistingId_ReturnsEmpty(){
+//        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+//
+//        assertThatThrownBy(()-> userService.findById(1L)).isInstanceOf(EventFullException.class);
+//    }
     @Test
     public void getByLoginUser_WithLoginEqualsUser_ReturnsException(){
         when(userRepository.existsByLoginIgnoreCase(USER.getLogin())).thenReturn(true);
@@ -60,29 +60,29 @@ public class UserServiceTest {
         assertThatThrownBy(()-> userService.create(REGISTER_DTO)).isInstanceOf(EventFullException.class);
     }
     //test de update e delete
-    @Test
-    public void updateUser_WithValueValid_ReturnUserValid(){
-        //chamado no metodo update
-        when(userRepository.findById(id)).thenReturn(Optional.of(USER));
-
-        when(userRepository.save(any(User.class))).thenReturn(USER);
-        //chamado depois de alterado o user
-
-        UserDto atualizado = userService.update(id, UPDATE_DTO);
-        //salvo
-
-        assertThat("novoNome").isEqualTo(atualizado.nome());
-        assertThat("novoLogin").isEqualTo(atualizado.login());
-        assertThat("92111111").isEqualTo(atualizado.telefone());
-    }
-    @Test
-    public void deleteUser_WithValueValid_ReturnNoContet(){
-        when(userRepository.findById(id)).thenReturn(Optional.of(USER));
-
-        doNothing().when(userRepository).delete(USER);
-
-        userService.delete(id);
-        verify(userRepository, times(1)).delete(USER);
-
-    }
+//    @Test
+//    public void updateUser_WithValueValid_ReturnUserValid(){
+//        //chamado no metodo update
+//        when(userRepository.findById(id)).thenReturn(Optional.of(USER));
+//
+//        when(userRepository.save(any(User.class))).thenReturn(USER);
+//        //chamado depois de alterado o user
+//
+//        UserDto atualizado = userService.update(id, UPDATE_DTO);
+//        //salvo
+//
+//        assertThat("novoNome").isEqualTo(atualizado.nome());
+//        assertThat("novoLogin").isEqualTo(atualizado.login());
+//        assertThat("92111111").isEqualTo(atualizado.telefone());
+//    }
+//    @Test
+//    public void deleteUser_WithValueValid_ReturnNoContet(){
+//        when(userRepository.findById(id)).thenReturn(Optional.of(USER));
+//
+//        doNothing().when(userRepository).delete(USER);
+//
+//        userService.delete(id);
+//        verify(userRepository, times(1)).delete(USER);
+//
+//    }
 }

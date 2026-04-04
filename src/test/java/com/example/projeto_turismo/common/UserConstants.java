@@ -3,7 +3,6 @@ package com.example.projeto_turismo.common;
 import com.example.projeto_turismo.domains.Role;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.RegisterDto;
-import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.dto.UserUpdateDto;
 
 public class UserConstants {
