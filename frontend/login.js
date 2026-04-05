@@ -1,6 +1,6 @@
 console.log("Arquivo login.js carregado com sucesso!");
 document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById("btnLogin");
+    const btn = document.getElementById('btnLogin');
     if(btn){
         btn.addEventListener('click', realizarLogin);
     }
