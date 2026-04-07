@@ -36,7 +36,6 @@ public class User implements UserDetails {
     @NotEmpty
     @Column(name = "senha", nullable = false)
     private String senha;
-    @NotEmpty
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;

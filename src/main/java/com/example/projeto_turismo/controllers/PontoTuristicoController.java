@@ -101,6 +101,7 @@ public class PontoTuristicoController {
             @RequestParam(defaultValue = "nome") String sortBy,
             @RequestParam(defaultValue = "asc") String direction
     ) {
+        logger.info("Listando os ponto turisticos paginado");
         var response = service.listaPaginado(page, size, sortBy, direction);
         return ResponseEntity.ok(response);
     }
