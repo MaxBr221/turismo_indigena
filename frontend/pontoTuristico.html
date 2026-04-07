@@ -16,16 +16,20 @@
     </header>
 
     <main>
-        
-        <div id="pontos" class="container">
-            <h2 class="nome">Nome</h2>
-            <h2 class="local">Local</h2>
-            <h2 class="informacoes">Mais informações</h2>
-            <h2 class="avaliacoes">Avaliações</h2>
+        <div id="container-pontos">
+            <table>
+                <thead>
+                    <th>Nome</th>
+                    <th>Local</th>
+                    <th>Informações</th>
+                    <th>Avaliações</th>
+                </thead>
+                <tbody id="lista-pontos"></tbody>
+            </table>
         </div>
 
         <div class="form">
-            <input type="search" id="buscarPonto" onkeyup="pontos()" placeholder="Digite o nome do Ponto Turistico">
+            <input type="search" id="pontos" onkeyup="pontos()" placeholder="Digite o nome do Ponto Turistico">
             <button type="button" id="pontos">Pesquisar</button>
 
         </div>
