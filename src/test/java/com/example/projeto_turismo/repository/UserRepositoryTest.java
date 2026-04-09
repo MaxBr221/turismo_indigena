@@ -7,11 +7,17 @@ import com.example.projeto_turismo.repositorys.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import static org.assertj.core.api.Assertions.*;
+import org.springframework.test.context.ActiveProfiles;
 
-@DataJpaTest
+import static org.assertj.core.api.Assertions.*;
+@DataJpaTest(excludeAutoConfiguration = {
+        org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration.class
+})
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;

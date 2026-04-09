@@ -1,2 +1,3 @@
-alter table pontoturistico
-change telefone informacoes varchar(150) not null
+-- Como a coluna já se chama 'informacoes', apenas alteramos o tipo e tamanho
+ALTER TABLE pontoturistico
+MODIFY COLUMN informacoes VARCHAR(150) NOT NULL;

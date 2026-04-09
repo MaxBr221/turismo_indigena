@@ -1,5 +1,4 @@
-alter table pontoturistico
-modify column latitude DOUBLE;
 
-alter table pontoturistico
-modify column longitude DOUBLE;
+ALTER TABLE pontoturistico
+    ADD COLUMN latitude DOUBLE,
+    ADD COLUMN longitude DOUBLE;

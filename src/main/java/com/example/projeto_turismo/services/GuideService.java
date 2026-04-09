@@ -19,6 +19,9 @@ public class GuideService {
     }
 
     public GuideResponseDto create(GuideCreateDto guideCreateDto){
+        if(repository.findByTelefone(guideCreateDto.telefone()) != null){
+            throw new EventFullException("Guia já cadastrado");
+        }
         Guide guide = new Guide();
         guide.setNome(guideCreateDto.nome());
         guide.setTelefone(guideCreateDto.telefone());

@@ -1,8 +1,4 @@
 ALTER TABLE agendamento
-MODIFY id_users BIGINT NOT NULL;
-
-ALTER TABLE agendamento
-MODIFY id_guide BIGINT NOT NULL;
-
-ALTER TABLE agendamento
-MODIFY id_restaurantes BIGINT NOT NULL;
+    MODIFY COLUMN id_users BIGINT NOT NULL,
+    MODIFY COLUMN id_guide BIGINT NOT NULL,
+    MODIFY COLUMN id_restaurantes BIGINT NOT NULL;
