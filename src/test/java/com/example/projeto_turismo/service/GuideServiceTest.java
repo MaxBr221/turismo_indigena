@@ -1,7 +1,7 @@
 package com.example.projeto_turismo.service;
 
 import com.example.projeto_turismo.domains.Guide;
-import com.example.projeto_turismo.dto.GuideResponseDto;
+import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.GuideRepository;
 import com.example.projeto_turismo.services.GuideService;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +52,11 @@ public class GuideServiceTest {
     @Test
     @DisplayName("Busca por guide com fracasso")
     void findById_WithInvalidData_ThrowByException(){
+        Long id = 1L;
+        when(this.repository.findById(id)).thenReturn(Optional.empty());
+        assertThatThrownBy(()-> service.findById(id)).isInstanceOf(EventFullException.class);
+
+
 
     }
 
