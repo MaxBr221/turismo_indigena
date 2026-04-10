@@ -3,6 +3,7 @@ package com.example.projeto_turismo.repository;
 import com.example.projeto_turismo.domains.Role;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.RegisterDto;
+import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 public class UserRepositoryTest {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -35,20 +37,16 @@ public class UserRepositoryTest {
         assertThat(userEncotrado.getLogin()).isEqualTo(login);
 
     }
-
     private User createUser_withValidData_ReturnsUser(RegisterDto register){
         User user = new User(register);
         this.testEntityManager.persist(user);
         return user;
     }
-
     @Test
     @DisplayName("Usuario não está no Database")
-    void findUserByDocumentFailed(){
-        String login = "maxsue.lima@gmail";
-        User userEncotrado = this.userRepository.findByLogin(login);
-
-        assertThat(userEncotrado).isNull();
+    void findUserByLoginFailed_WithValidData_ThrowByException(){
+        String login = "maxsuel.lima@gmail";
+        assertThat(userRepository.findByLogin(login)).isNull();
 
     }
 

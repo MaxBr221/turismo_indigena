@@ -33,6 +33,5 @@ public class GuideRepositoryTest {
         assertThatThrownBy(()-> repository.save(guide)).isInstanceOf(EventFullException.class);
 
 
-
     }
 }
