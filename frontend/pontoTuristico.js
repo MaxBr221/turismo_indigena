@@ -43,8 +43,12 @@ function exibirPontos(dados) {
             <td>${ponto.local}</td>
             <td>${ponto.informacoes}</td>
             <td>${ponto.avaliacoes || '0'} ⭐</td>
+           
         `;
         tbody.appendChild(linha);
     });
+    
 
 }
+ let atribute = document.getElementById('lista-pontos');
+            atribute.setAttribute('style', 'background-color: blue');

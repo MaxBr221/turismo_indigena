@@ -35,7 +35,7 @@ async function realizarLogin(){
             window.location.href = "painelPrincipal.html";
         
         }else{
-            alert("Erro" + data);
+            alert("Login inválido" + data);
         }  
     }catch(error){
         console.error("Erro na requesição de login:", error);
