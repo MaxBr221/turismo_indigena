@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurantes</title>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Restaurantes</h1>
+        </div>
+    </header>
+
+    <main>
+        <div id="container-restaurantes">
+            <table>
+                <thead>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Localização</th>
+                    <th>Horário</th>
+                    <th>Telefone</th>
+                    <th>Rede Social</th>
+                    <th>Avaliações</th>//ter uma tela aparti daqui para mostrar os comentarios
+                </thead>
+                <tbody id="listarRestaurantes"></tbody>
+            </table>
+        </div>  
+        
+        <div>
+            <input type="search" id="buscar-restaurante" onkeyup="restaurantes()" placeholder="Digite o nome do Restaurante">
+            <button type="button" id="trazer-restaurante">Pesquisar</button>
+        </div>
+    </main>
+
+
+</body>
+</html>
