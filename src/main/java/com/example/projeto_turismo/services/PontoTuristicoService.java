@@ -122,6 +122,9 @@ public class PontoTuristicoService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         Page<PontoTuristico> pageResult = repository.findAll(pageable);
+        if(pageResult.isEmpty()){
+            throw new EventFullException("Não existe ponto turistico ainda.");
+        }
 
         List<PontoTuristicoResponseDto> content = pageResult
                 .getContent()
