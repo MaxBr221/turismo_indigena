@@ -92,8 +92,8 @@ public class RestaurantesService {
         restaurantes.setHorarioFuncionamento(restaurantesDto.horarioFuncionamento());
         restaurantes.setTelefone(restaurantesDto.telefone());
         restaurantes.setRedeSociais(restaurantesDto.redeSociais());
-        restaurantes.setLatitude(restaurantesDto.latitude());
-        restaurantes.setLongitude(restaurantesDto.longitude());
+//        restaurantes.setLatitude(restaurantesDto.latitude());
+//        restaurantes.setLongitude(restaurantesDto.longitude());
         Restaurantes salvos = repository.save(restaurantes);
         return new RestaurantesResponseDto(
                 salvos.getNome(),

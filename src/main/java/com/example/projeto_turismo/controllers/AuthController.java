@@ -50,7 +50,7 @@ public class AuthController {
             throw new EventFullException("Login de usuário já existente");
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.senha());
-        User user = new User(registerDto.nome(), registerDto.telefone(), registerDto.login(), encryptedPassword, Role.USER);
+        User user = new User(registerDto.nome(), registerDto.telefone(), registerDto.login(), encryptedPassword, registerDto.role());
         repository.save(user);
         return ResponseEntity.ok().build();
     }

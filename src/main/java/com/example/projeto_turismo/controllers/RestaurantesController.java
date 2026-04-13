@@ -43,6 +43,8 @@ public class RestaurantesController {
     @PostMapping
     public ResponseEntity<RestaurantesResponseDto> create(@RequestBody @Valid RestaurantesDto restauranteDto) {
         logger.info("Criando Restaurante");
+
+        //colocar um exerção caso um USER tente criar um restaurante
         RestaurantesResponseDto restaurante = service.create(restauranteDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(restaurante);
     }
@@ -90,6 +92,7 @@ public class RestaurantesController {
             @RequestParam(defaultValue = "nome") String sortBy,
             @RequestParam(defaultValue = "asc") String direction){
 
+        logger.info("Listando Restaurantes paginado");
         var response = service.listaPaginada(page, size, sortBy, direction);
         return ResponseEntity.ok(response);
     }

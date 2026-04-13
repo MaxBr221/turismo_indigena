@@ -29,6 +29,7 @@ public class AuthService implements UserDetailsService {
         if(authentication == null || !authentication.isAuthenticated()){
             throw new EventFullException("Usuário não autenticado");
         }
+        //colocar verificação de senha invalida
         String login = authentication.getName();
 
         return repository.findByLogin(login);
