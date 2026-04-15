@@ -43,13 +43,14 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/agendamento").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/guide").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/guide").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/guide").permitAll()
                         .requestMatchers(HttpMethod.POST, "/pontoTuristico").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/pontoTuristico").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/pontoTuristico").permitAll()
                         .requestMatchers(HttpMethod.GET, "/pontoTuristico/pontos").permitAll()
                         .requestMatchers(HttpMethod.POST, "/restaurantes").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/restaurantes").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/restaurantePaginacao").permitAll()
+                        .requestMatchers(HttpMethod.GET, "restaurantes/restaurantePaginacao").permitAll()
                         .requestMatchers(HttpMethod.POST, "/pontoTuristico/{id}/imagem").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui/**",
                                 "/v3/api-docs/**",
