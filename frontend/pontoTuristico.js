@@ -6,9 +6,9 @@ async function pontos() {
 
     try {
         const response = await fetch("http://localhost:8080/pontoTuristico/pontos", {
-        method: 'GET',
-        headers: {
-            'content-type': 'application/json'
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
 
         }
         
@@ -33,8 +33,6 @@ function exibirPontos(dados) {
     const tbody = document.getElementById('lista-pontos');
     tbody.innerHTML = "";
     const pontos = dados.content;
-
-
 
     pontos.forEach(ponto => {
         const linha = document.createElement('tr');

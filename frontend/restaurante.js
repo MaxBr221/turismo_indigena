@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function(){
-        restaurantes();
-    });
+    restaurantes();
+});
 
 async function restaurantes() {
     
@@ -9,17 +9,18 @@ async function restaurantes() {
             method: 'GET',
             headers: {
                 'content-type': 'application/json'
-            }
-        });
+
+        }
+    });
 
         if(response.ok){
             console.log("busca com sucesso!");
         }else{
             console.log("Erro ao buscar");
-            alert("Erro ao fazer a busca");
+            throw new Error('Erro no sistema: ${response.status}');
         }
 
-        const salvos = response.json;
+        const salvos = await response.json();
         console.log("Guardando restaurantes");
         listarRestaurantes(salvos);
 
@@ -36,17 +37,17 @@ function listarRestaurantes(dados){
     const restaurantes = dados.content;
 
 
-    restaurantes.array.forEach(r => {
+    restaurantes.forEach(r => {
         const linha = document.createElement('tr');
         linha.innerHTML = `
-            <td>Nome</td>
-            <td>Descrição</td>
-            <td>Localização</td>
-            <td>Horário</td>
-            <td>Telefone</td>
-            <td>Rede Social</td>
-            <td>Avaliações</td>
-        `
+            <td>${r.nome}</td>
+            <td>${r.descricao}</td>
+            <td>${r.localização}</td>
+            <td>${r.horário}</td>
+            <td>${r.telefone}</td>
+            <td>${r.redeSocial || 'sem no momento'}</td>
+            <td>${r.avaliacoes || '0'} ⭐</td>
+        `;
         tbody.appendChild(linha);
     });
     
