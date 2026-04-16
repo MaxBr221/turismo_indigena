@@ -1,13 +1,11 @@
 package com.example.projeto_turismo.services;
 
-import com.example.projeto_turismo.domains.Avaliacao;
 import com.example.projeto_turismo.domains.PageResponse;
 import com.example.projeto_turismo.domains.Restaurantes;
 import com.example.projeto_turismo.dto.RestauranteMediaDto;
 import com.example.projeto_turismo.dto.RestaurantesDto;
 import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
-import com.example.projeto_turismo.repositorys.AvaliacaoRepository;
 import com.example.projeto_turismo.repositorys.RestaurantesRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

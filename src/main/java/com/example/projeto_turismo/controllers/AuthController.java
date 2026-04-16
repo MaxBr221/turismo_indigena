@@ -1,10 +1,9 @@
 package com.example.projeto_turismo.controllers;
 
-import com.example.projeto_turismo.domains.Role;
+import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.AuthUserDto;
 import com.example.projeto_turismo.dto.LoginDto;
 import com.example.projeto_turismo.dto.RegisterDto;
-import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.infra.security.TokenService;
 import com.example.projeto_turismo.repositorys.UserRepository;

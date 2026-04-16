@@ -1,13 +1,11 @@
 package com.example.projeto_turismo.controllers;
 
-import com.example.projeto_turismo.domains.Avaliacao;
 import com.example.projeto_turismo.dto.AvaliacaoDto;
 import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
 import com.example.projeto_turismo.dto.AvaliacaoUpdateDto;
 import com.example.projeto_turismo.services.AvaliacaoService;
 import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

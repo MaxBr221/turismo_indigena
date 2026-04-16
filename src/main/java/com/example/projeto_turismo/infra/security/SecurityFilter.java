@@ -32,21 +32,26 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             var token = this.recoverToken(request);
+            System.out.println("DEBUG: Token bruto recebido -> " + token);
             if(token != null){
                 var login = tokenService.validateToken(token);
-                UserDetails user = userRepository.findByLogin(login);
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                if(login != null) {
+                    UserDetails user = userRepository.findByLogin(login);
+                    if(user != null) {
+                        var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                var path = request.getRequestURI();
-
-                if(path.startsWith("/v3/api-docs")
-                        || path.startsWith("/swagger-ui.html"));
-            }filterChain.doFilter(request, response);
+                    var path = request.getRequestURI();
+                    if (path.startsWith("/v3/api-docs")
+                            || path.startsWith("/swagger-ui.html")) ;
+                }
+            }
+            filterChain.doFilter(request, response);
 
         } catch (EventFullException e) {
             throw new EventFullException("Erro ao logar no sistema" + e);
-        }
+            }
 
     }
     private String recoverToken(HttpServletRequest request){
