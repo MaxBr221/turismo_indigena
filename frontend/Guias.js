@@ -6,17 +6,27 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 const Guide = async() => {
     try {
+        const token = localStorage.getItem('token');
+
+        if(!token){
+            window.location.href = 'login.html';
+            return;
+        }
         const response = await fetch ("http://localhost:8080/guide", {
         method: 'GET',
         headers: {
-            'content-type': 'application/json'
-
+            'authorization': `Bearer ${token}`
         }
         
     });
         if(response.ok){
             console.log("listagem feita com sucesso!");
         }else{
+            if(response.status == 403 || response.status == 404){
+                console.log("Erro ao buscar");
+                alert("Sessão expirada, faça o login novamente");
+                window.location.href('login.html');
+            }
             throw new Error("Erro na busca de guias")
         }
 

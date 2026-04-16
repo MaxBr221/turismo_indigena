@@ -5,19 +5,33 @@ document.addEventListener('DOMContentLoaded', function(){
 async function restaurantes() {
     
     try {
+        const token = localStorage.getItem('token');
+
+        if(!token){
+            window.location.href = 'login.html';
+            return;
+
+        }
         const response = await fetch("http://localhost:8080/restaurantes/restaurantePaginacao",{
             method: 'GET',
             headers: {
-                'content-type': 'application/json'
+                'authorization': `Bearer ${token}`
 
         }
     });
+    
 
         if(response.ok){
             console.log("busca com sucesso!");
         }else{
-            console.log("Erro ao buscar");
-            throw new Error('Erro no sistema: ${response.status}');
+            if(response.status == 403 || response.status == 401){
+                console.log("Erro ao buscar");
+                alert("Sessão expirada, faça o login novamente");
+                window.location.href('login.html');
+
+            }
+            throw new Error("Erro ao fazer busca no sistema");
+            
         }
 
         const salvos = await response.json();
@@ -26,6 +40,7 @@ async function restaurantes() {
 
 
     } catch (error) {
+        console.log("erro na listagem de restaurante: " + error );
         alert("erro no sistema: " + error);
     }
     
