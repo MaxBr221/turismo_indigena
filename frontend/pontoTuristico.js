@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function pontos() {
     try {
         const token = localStorage.getItem('token');
+        console.log("LOG DE TESTE: O token que vou enviar é: " + token);
         
         if(!token){
             window.location.href = 'login.html';                

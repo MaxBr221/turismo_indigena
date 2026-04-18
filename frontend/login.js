@@ -28,10 +28,12 @@ async function realizarLogin(){
 
         
         });
-        const data = await response.text();
 
         if(response.ok){
-            console.log("tá vndo aqui")
+            const data = await response.json();
+            console.log("token: ", data.token);  
+
+            localStorage.setItem('token', data.token);
             window.location.href = "painelPrincipal.html";
         
         }else{

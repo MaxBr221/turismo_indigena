@@ -21,6 +21,10 @@ const Guide = async() => {
     });
         if(response.ok){
             console.log("listagem feita com sucesso!");
+            const listaDeGuias = await response.json();
+            console.log(listaDeGuias);
+            listarGuias(listaDeGuias);
+
         }else{
             if(response.status == 403 || response.status == 404){
                 console.log("Erro ao buscar");
@@ -30,9 +34,7 @@ const Guide = async() => {
             throw new Error("Erro na busca de guias")
         }
 
-        const listaDeGuias = await response.json();
-        console.log(listaDeGuias);
-        listarGuias(listaDeGuias);
+      
 
         
     } catch (error) {
