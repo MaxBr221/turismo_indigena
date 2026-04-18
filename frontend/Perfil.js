@@ -12,16 +12,20 @@ const perfil = async() =>{
             return;
 
         }
-        const response = await fetch ("http://localhost:8080/meuPerfil/me",{
-        method: 'GET',
-        headers: {
-            'authorization': `Bearer ${token}`
+        const response = await fetch ("http://localhost:8080/users/mePerfil",{
+            method: 'GET',
+            headers: {
+                'authorization': `Bearer ${token}`
         }
 
     });
 
         if(response.ok){
             console.log("busca feita com sucesso");
+            const informacoes = await response.json();
+            console.log(informacoes);
+            listaInfo(informacoes);
+          
         }else{
             if(response.status == 403 || response.status == 404){
                 console.log("Erro ao buscar");
@@ -31,10 +35,7 @@ const perfil = async() =>{
             }
             throw new Error("erro ao fazer busca");
         }
-
-        const informacoes = await response.json();
-        console.log("armazenando informações");
-        listaInfo(informacoes);
+        
 
         
     } catch (error) {
@@ -44,19 +45,19 @@ const perfil = async() =>{
     
 }
 
-const listaInfo = async(dados) =>{
+const listaInfo = (dados) =>{
     const lista = document.getElementById('meu-perfil');
-    lista.innerHTML = "";
-    const informacoes = dados.content;
+    console.log("Entrou pra criar lista");
 
-    informacoes.forEach(info => {
-        const linha = document.createElement('lu');
-        linha.innerHTML = `
-        <li><strong>Nome:</strong>${info.nome}</li>
-        <li><strong>Telefone:</strong>${info.telefone}</li>
-        <li><strong>Nome:</strong>${info.login}</li>
-        `;
-        lista.appendChild(linha);
-        
-    });
+  
+    const linha = document.createElement('ul');
+    linha.innerHTML = `
+        <li><strong>Nome:</strong>${dados.nome}</li>
+        <li><strong>Telefone:</strong>${dados.telefone}</li>
+        <li><strong>Nome:</strong>${dados.login}</li>
+    `;
+    lista.innerHTML = "";
+    lista.appendChild(linha);
+    
+    
 }
