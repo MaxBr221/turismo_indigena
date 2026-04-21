@@ -45,6 +45,7 @@ public class UserService {
     }
     public UserDto findById(){
         User user = usuarioLogadoProvider.pegarUsuarioLogado();
+
         return new UserDto(
                 user.getId(),
                 user.getNome(),

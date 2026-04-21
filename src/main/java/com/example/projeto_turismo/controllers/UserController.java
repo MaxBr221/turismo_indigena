@@ -54,6 +54,7 @@ public class UserController {
         UserDto user = userService.findById();
         return ResponseEntity.ok().body(user);
     }
+
     @Operation(summary = "Editando users")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),

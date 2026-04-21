@@ -141,7 +141,39 @@ public class AvaliacaoService {
     public void avaliarRestaurante(AvaliacaoDto avaliacaoDto){
         avaliar(avaliacaoDto);
     }
+    public void avaliarPontoTuristico(AvaliacaoDto avaliacaoDto){
+        avaliar(avaliacaoDto);
+    }
 
+    public void recalcularMediaRestaurante(Long id){
+        Restaurantes restaurantes = restaurantesRepository.findById(id)
+                .orElseThrow(()-> new EventFullException("Restaurante não existe"));
+
+        restaurantes.setMedia(calculoMedia(restaurantes.getId()));
+        restaurantesRepository.save(restaurantes);
+
+    }
+    public void recalcularMediaPontoTuristico(Long id){
+        PontoTuristico pontoTuristico = pontoTuristicoRepository.findById(id)
+                .orElseThrow(()-> new EventFullException("ponto turistico não existente"));
+
+        pontoTuristico.setMedia(calculoMedia(pontoTuristico.getId()));
+        pontoTuristicoRepository.save(pontoTuristico);
+    }
+
+    private Double calculoMedia(Long id){
+        if (restaurantesRepository.findById(id).isEmpty()){
+            return avaliacaoRepository.findByPontoTuristicoId(id)
+                    .stream().mapToDouble(avaliacao -> avaliacao.getNota())
+                    .average()
+                    .orElse(0.0);
+        }else{
+            return avaliacaoRepository.findByRestauranteId(id)
+                    .stream().mapToDouble(avaliacao -> avaliacao.getNota())
+                    .average()
+                    .orElse(0.0);
+        }
+    }
     private void avaliar(AvaliacaoDto avaliacaoDto){
         Avaliacao avaliacao = new Avaliacao();
         User user = usuarioLogadoProvider.pegarUsuarioLogado();
@@ -192,34 +224,5 @@ public class AvaliacaoService {
             throw new EventFullException("Não é possivel avaliar os dois ao mesmo tempo");
         }
 
-    }
-    public void avaliarPontoTuristico(AvaliacaoDto avaliacaoDto){
-        avaliar(avaliacaoDto);
-    }
-
-    public void recalcularMediaRestaurante(Long id){
-        Restaurantes restaurantes = restaurantesRepository.findById(id)
-                .orElseThrow(()-> new EventFullException("Restaurante não existe"));
-
-        Double media = avaliacaoRepository.findByRestauranteId(restaurantes.getId())
-                .stream().mapToDouble(avaliacao -> avaliacao.getNota())
-                .average()
-                .orElse(0.0);
-
-        restaurantes.setMedia(media);
-        restaurantesRepository.save(restaurantes);
-
-    }
-    public void recalcularMediaPontoTuristico(Long id){
-        PontoTuristico pontoTuristico = pontoTuristicoRepository.findById(id)
-                .orElseThrow(()-> new EventFullException("ponto turistico não existente"));
-
-        Double media = avaliacaoRepository.findByPontoTuristicoId(pontoTuristico.getId())
-                .stream().mapToDouble(avaliacao -> avaliacao.getNota())
-                .average()
-                .orElse(0.0);
-
-        pontoTuristico.setMedia(media);
-        pontoTuristicoRepository.save(pontoTuristico);
     }
 }
