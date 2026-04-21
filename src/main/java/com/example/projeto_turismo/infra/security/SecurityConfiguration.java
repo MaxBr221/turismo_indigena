@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/restaurantes").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "restaurantes/restaurantePaginacao").permitAll()
                         .requestMatchers(HttpMethod.POST, "/pontoTuristico/{id}/imagem").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/meuPerfil/me").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users/mePerfil").permitAll()
                         .requestMatchers("/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html").permitAll()

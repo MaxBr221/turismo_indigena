@@ -1,10 +1,7 @@
 package com.example.projeto_turismo.services;
 
 import com.example.projeto_turismo.domains.Avaliacao;
-import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
-import com.example.projeto_turismo.dto.RegisterDto;
-import com.example.projeto_turismo.dto.UserDto;
-import com.example.projeto_turismo.dto.UserUpdateDto;
+import com.example.projeto_turismo.dto.*;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.repositorys.AvaliacaoRepository;
@@ -115,5 +112,14 @@ public class UserService {
                     avaliacao.getRestaurante().getId(),
                     avaliacao.getDataAvaliacao()))
                 .toList();
+    }
+
+    public UserMeuPerfil meuPerfil(){
+        User user = usuarioLogadoProvider.pegarUsuarioLogado();
+        return new UserMeuPerfil(
+                user.getNome(),
+                user.getTelefone(),
+                user.getLogin()
+        );
     }
 }

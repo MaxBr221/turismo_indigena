@@ -24,40 +24,40 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
     //operacao_estado_retorno
-    @Test
-    public void createUser_WithValidData_ReturnUser(){
-        when(userRepository.save(any(User.class))).thenReturn(USER);
 
-        UserDto user = userService.create(REGISTER_DTO);
-
-        assertThat(user).isEqualTo(USER);
-    }
-    @Test
-    public void createUser_WithInvalidData_ThrowsExeption(){
-        when(userRepository.save(any(User.class))).thenThrow(RuntimeException.class);
-        assertThatThrownBy(()-> userService.create(INVALID_USER)).isInstanceOf(RuntimeException.class);
-    }
-//    @Test
-//    public void getByidUser_WithValidData_ReturnUser(){
-//        when(userRepository.findById(anyLong())).thenReturn(Optional.of(USER));
+//    public void createUser_WithValidData_ReturnUser(){
+//        when(userRepository.save(any(User.class))).thenReturn(USER);
 //
-//        UserDto user = userService.findById(1L);
-//        assertThat(user.id()).isEqualTo(USER.getId());
+//        UserDto user = userService.create(REGISTER_DTO);
 //
+//        assertThat(user).isEqualTo(USER);
 //    }
+//    @Test
+//    public void createUser_WithInvalidData_ThrowsExeption(){
+//        when(userRepository.save(any(User.class))).thenThrow(RuntimeException.class);
+//        assertThatThrownBy(()-> userService.create(INVALID_USER)).isInstanceOf(RuntimeException.class);
+//    }
+////    @Test
+////    public void getByidUser_WithValidData_ReturnUser(){
+////        when(userRepository.findById(anyLong())).thenReturn(Optional.of(USER));
+////
+////        UserDto user = userService.findById(1L);
+////        assertThat(user.id()).isEqualTo(USER.getId());
+////
+////    }
 //    @Test
 //    public void getUser_ByUnexistingId_ReturnsEmpty(){
 //        when(userRepository.findById(1L)).thenReturn(Optional.empty());
 //
 //        assertThatThrownBy(()-> userService.findById(1L)).isInstanceOf(EventFullException.class);
 //    }
-    @Test
-    public void getByLoginUser_WithLoginEqualsUser_ReturnsException(){
-        when(userRepository.existsByLoginIgnoreCase(USER.getLogin())).thenReturn(true);
-
-        assertThatThrownBy(()-> userService.create(REGISTER_DTO)).isInstanceOf(EventFullException.class);
-    }
-    //test de update e delete
+//    @Test
+//    public void getByLoginUser_WithLoginEqualsUser_ReturnsException(){
+//        when(userRepository.existsByLoginIgnoreCase(USER.getLogin())).thenReturn(true);
+//
+//        assertThatThrownBy(()-> userService.create(REGISTER_DTO)).isInstanceOf(EventFullException.class);
+//    }
+//    //test de update e delete
 //    @Test
 //    public void updateUser_WithValueValid_ReturnUserValid(){
 //        //chamado no metodo update

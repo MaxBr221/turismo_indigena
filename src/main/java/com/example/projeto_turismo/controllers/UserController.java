@@ -1,9 +1,6 @@
 package com.example.projeto_turismo.controllers;
 
-import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
-import com.example.projeto_turismo.dto.RegisterDto;
-import com.example.projeto_turismo.dto.UserDto;
-import com.example.projeto_turismo.dto.UserUpdateDto;
+import com.example.projeto_turismo.dto.*;
 import com.example.projeto_turismo.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -81,5 +78,11 @@ public class UserController {
         logger.info("Buscando minhas avaliações");
         List<AvaliacaoResponseDto> avaliacoes = userService.findMyAvaliacao();
         return ResponseEntity.ok().body(avaliacoes);
+    }
+    @GetMapping(value = "/mePerfil")
+    public ResponseEntity<UserMeuPerfil> meuPerfil(){
+        logger.info("Pegando informações do meu perfil");
+        UserMeuPerfil user = userService.meuPerfil();
+        return ResponseEntity.ok(user);
     }
 }
