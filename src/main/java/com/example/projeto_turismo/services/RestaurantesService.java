@@ -141,8 +141,9 @@ public class RestaurantesService {
         }
     }
     public RestauranteMediaDto restauranteMaiorMedia(){
-        List<Restaurantes> restaurantes = repository.findAll();
-        return calculaMedia(restaurantes);
+        return repository.findFirstByMediaIsNotNullOrderByMediaDesc()
+                .map(RestauranteMediaDto::new)
+                .orElseThrow(()-> new EventFullException("nenhum restaurante foi avaliado até o momento"));
     }
 
     public RestaurantesResponseDto buscarLocalizacaoRestaurante(Long id) {
@@ -158,21 +159,6 @@ public class RestaurantesService {
                 restaurante.getRedeSociais(),
                 restaurante.getLatitude(),
                 restaurante.getLongitude());
-    }
-    private RestauranteMediaDto calculaMedia(List<Restaurantes> restaurantes){
-        return restaurantes.stream().filter(restaurantes1 -> restaurantes1.getMedia() != null)
-                .max(Comparator.comparing(Restaurantes:: getMedia))
-                .map(restaurantes1 -> new RestauranteMediaDto(
-                        restaurantes1.getNome(),
-                        restaurantes1.getDescricao(),
-                        restaurantes1.getLocalizacao(),
-                        restaurantes1.getHorarioFuncionamento(),
-                        restaurantes1.getTelefone(),
-                        restaurantes1.getRedeSociais(),
-                        restaurantes1.getMedia(),
-                        restaurantes1.getComentario(),
-                        restaurantes1.getAvaliacoes()))
-                .orElse(null);
     }
 
 }

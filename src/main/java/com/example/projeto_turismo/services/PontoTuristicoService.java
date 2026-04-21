@@ -173,24 +173,9 @@ public class PontoTuristicoService {
                 pontoTuristico.getLongitude());
     }
 
-    public PontoTuristicoMediaDto pontoTuristicoMaiorMedia(){
-        List<PontoTuristico> pontoTuristicos = repository.findAll();
-
-        return pontoTuristicos
-                .stream().filter(pontoTuristico -> pontoTuristico.getMedia() != null)
-                .max(Comparator.comparing(PontoTuristico::getMedia))
-                .map(pontoTuristico -> new PontoTuristicoMediaDto(
-                        pontoTuristico.getNome(),
-                        pontoTuristico.getLocal(),
-                        pontoTuristico.getInformacoes(),
-                        pontoTuristico.getImagem(),
-                        pontoTuristico.getLatitude(),
-                        pontoTuristico.getLongitude(),
-                        pontoTuristico.getMedia(),
-                        pontoTuristico.getComentario(),
-                        pontoTuristico.getAvaliacoes()
-                ))
-                .orElse(null);
+    public PontoTuristicoMediaDto pontoTuristicoMaiorMedia() {
+        return repository.findFirstByMediaIsNotNullOrderByMediaDesc()
+                .map(PontoTuristicoMediaDto::new)
+                .orElseThrow(() -> new EventFullException("Não há Ponto Turistico avaliado ainda"));
     }
-
 }
