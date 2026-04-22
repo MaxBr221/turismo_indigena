@@ -3,6 +3,7 @@ package com.example.projeto_turismo.dto;
 import com.example.projeto_turismo.domains.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import lombok.NoArgsConstructor;
 
 @Schema(description = "Dto de registro do Usuário")
 public record RegisterDto(@Schema(description = "Nome do Usuário", example = "maxsuel") @NotBlank String nome,

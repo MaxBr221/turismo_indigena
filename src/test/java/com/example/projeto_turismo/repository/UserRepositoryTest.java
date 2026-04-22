@@ -3,7 +3,6 @@ package com.example.projeto_turismo.repository;
 import com.example.projeto_turismo.domains.Role;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.RegisterDto;
-import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.assertj.core.api.Assertions.*;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DataJpaTest(excludeAutoConfiguration = {
         org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration.class
 })
@@ -25,6 +27,7 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
     @Autowired
     private TestEntityManager testEntityManager;
+
 
     @Test
     @DisplayName("Usuario está no Database")
@@ -49,7 +52,6 @@ public class UserRepositoryTest {
         assertThat(userRepository.findByLogin(login)).isNull();
 
     }
-
     @Test
     @DisplayName("User dados invalidos")
     public void createUser_WithInvalidData_ThrowException() {
@@ -58,5 +60,20 @@ public class UserRepositoryTest {
 
         assertThatThrownBy(()-> userRepository.save(user));
         assertThatThrownBy(()-> userRepository.save(userInvalid));
+    }
+    @Test
+    public void getUser_ByExistingId_ReturnsUser(){
+        User user1 = new User("max", "9929292", "max@", "222",Role.USER);
+        User user = testEntityManager.persistFlushFind(user1);
+        Optional<User> userOpt = userRepository.findById(user.getId());
+
+        assertThat(userOpt).isNotEmpty();
+        assertThat(userOpt.get()).isEqualTo(user);
+    }
+    @Test
+    public void getUser_ByUnexistingId_ReturnsEmpty(){
+
+        Optional<User> userOpt = userRepository.findById(1L);
+        assertThat(userOpt).isEmpty();
     }
 }
