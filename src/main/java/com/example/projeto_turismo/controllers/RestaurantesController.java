@@ -1,5 +1,6 @@
 package com.example.projeto_turismo.controllers;
 
+import com.example.projeto_turismo.domains.Restaurantes;
 import com.example.projeto_turismo.dto.RestauranteMediaDto;
 import com.example.projeto_turismo.dto.RestaurantesDto;
 import com.example.projeto_turismo.dto.RestaurantesResponseDto;
@@ -15,6 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,6 +42,7 @@ public class RestaurantesController {
             @ApiResponse(responseCode = "400", description = "Dados incorretos")
     })
     @PostMapping
+    @Transactional
     public ResponseEntity<RestaurantesResponseDto> create(@RequestBody @Valid RestaurantesDto restauranteDto) {
         logger.info("Criando Restaurante");
 
@@ -119,5 +122,12 @@ public class RestaurantesController {
         logger.info("Buscando Localização de Restaurante");
         RestaurantesResponseDto restaurantesResponseDto = service.buscarLocalizacaoRestaurante(id);
         return ResponseEntity.ok().body(restaurantesResponseDto);
+    }
+    @GetMapping("/busca")
+    public ResponseEntity<List<Restaurantes>> searchRestaurante(@RequestParam String termo){
+        logger.info("Buscando restaurante de forma dinamica");
+        List<Restaurantes> restaurantes = service.searchRestaurante(termo);
+        return ResponseEntity.ok(restaurantes);
+
     }
 }

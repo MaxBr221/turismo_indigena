@@ -142,7 +142,7 @@ public class RestaurantesService {
     public RestauranteMediaDto restauranteMaiorMedia(){
         return repository.findFirstByMediaIsNotNullOrderByMediaDesc()
                 .map(RestauranteMediaDto::new)
-                .orElseThrow(()-> new EventFullException("nenhum restaurante foi avaliado até o momento"));
+                .orElseThrow(()-> new EventFullException("Nenhum restaurante foi avaliado até o momento"));
     }
 
     public RestaurantesResponseDto buscarLocalizacaoRestaurante(Long id) {
@@ -158,6 +158,11 @@ public class RestaurantesService {
                 restaurante.getRedeSociais(),
                 restaurante.getLatitude(),
                 restaurante.getLongitude());
+    }
+    public List<Restaurantes> searchRestaurante(String termo){
+        return repository.findByTermo(termo);
+
+
     }
 
 }

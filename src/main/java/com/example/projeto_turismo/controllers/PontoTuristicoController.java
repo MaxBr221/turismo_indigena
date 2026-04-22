@@ -130,4 +130,10 @@ public class PontoTuristicoController {
         PontoTuristicoMediaDto pontoTuristicoMediaDto = service.pontoTuristicoMaiorMedia();
         return ResponseEntity.ok().body(pontoTuristicoMediaDto);
     }
+    @GetMapping("/busca")
+    public ResponseEntity<List<PontoTuristico>> search(@RequestParam String termo){
+        logger.info("Buscando de forma dinamica Ponto Turistico");
+        List<PontoTuristico> pontoTuristicos = service.searchPontoTuristico(termo);
+        return ResponseEntity.ok(pontoTuristicos);
+    }
 }

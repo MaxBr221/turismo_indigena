@@ -178,4 +178,8 @@ public class PontoTuristicoService {
                 .map(PontoTuristicoMediaDto::new)
                 .orElseThrow(() -> new EventFullException("Não há Ponto Turistico avaliado ainda"));
     }
+    public List<PontoTuristico> searchPontoTuristico(String termo){
+
+        return repository.findByTermo(termo);
+    }
 }
