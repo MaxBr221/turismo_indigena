@@ -62,7 +62,6 @@ public class AgendamentoService {
                 ag.getGuide().getId(),
                 ag.getRestaurante().getId());
     }
-    @Transactional
     public List<AgendamentoResponseDto> findAll(){
         return repository.findAll()
                 .stream()

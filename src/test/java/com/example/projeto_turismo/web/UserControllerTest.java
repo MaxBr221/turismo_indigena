@@ -90,4 +90,22 @@ public class UserControllerTest {
                 .andExpect(status().isNotFound());
 
     }
+    @Test
+    public void getUser_ByExistingName_ReturnsUser() throws Exception{
+        when(service.findById()).thenReturn(USER);
+
+        mockMvc.perform(get(urlGetId)
+                        .content(objectMapper.writeValueAsString(USER))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value(USER.nome()));
+    }
+
+    @Test
+    public void getUser_ByUnexistingUser_ReturnsNotFound() throws Exception{
+        when(service.findById()).thenThrow(EntityNotFoundException.class);
+        mockMvc.perform(get(urlGetId))
+                .andExpect(status().isNotFound());
+
+    }
 }

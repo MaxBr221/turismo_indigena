@@ -115,12 +115,7 @@ public class AvaliacaoService {
 
     }
     public List<AvaliacaoResponseDto> findAll(){
-        List<Avaliacao> avaliacaos = avaliacaoRepository.findAll();
-
-        if (avaliacaos.isEmpty()){
-            throw new EventFullException("Avaliações inexistente");
-        }
-        return avaliacaos
+        return avaliacaoRepository.findAll()
                 .stream()
                 .map(avaliacao -> new AvaliacaoResponseDto(
                         avaliacao.getNota(),
