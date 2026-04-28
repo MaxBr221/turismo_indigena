@@ -83,9 +83,11 @@ public class RestaurantesController {
     @Operation(summary = "Deletando Restaurante")
     @ApiResponse(responseCode = "200", description = "Deletado com sucesso")
     @DeleteMapping(value = "/{id}")
-    public void delete(@Parameter(description = "Id do Restaurante que deseja deletar", example = "1")@PathVariable Long id){
+    public ResponseEntity delete(@Parameter(description = "Id do Restaurante que deseja deletar", example = "1")@PathVariable Long id){
         logger.info("Apagando Restaurante");
         service.delete(id);
+        return ResponseEntity.noContent().build();
+
     }
     @GetMapping("/restaurantePaginacao")
     public ResponseEntity<?> listarPaginas(

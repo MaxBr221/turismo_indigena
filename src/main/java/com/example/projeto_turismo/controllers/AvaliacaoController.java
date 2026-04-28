@@ -48,9 +48,11 @@ public class AvaliacaoController {
         return ResponseEntity.ok().body(avaliacaoResponseDto);
     }
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id){
         logger.info("deletando avaliação");
         avaliacaoService.delete(id);
+        return ResponseEntity.noContent().build();
+
     }
     @PostMapping("/avaliarRestaurante")
     public void avaliarRestaurante(@RequestBody @Valid AvaliacaoDto avaliacaoDto){

@@ -69,9 +69,11 @@ public class AgendamentoController {
     }
     @Operation(summary = "Deletando Agendamento")
     @DeleteMapping(value = "/{id}")
-    public void delete(@Parameter(description = "Id do agendamento que deseja deletar", example = "1")@PathVariable Long id){
+    public ResponseEntity delete(@Parameter(description = "Id do agendamento que deseja deletar", example = "1")@PathVariable Long id){
         logger.info("Apagando Agendamento");
         service.delete(id);
+        return ResponseEntity.noContent().build();
+
     }
     @Operation(summary = "Buscando Agendamentos do usuário")
     @ApiResponse(responseCode = "200", description = "Busca feita com sucesso")

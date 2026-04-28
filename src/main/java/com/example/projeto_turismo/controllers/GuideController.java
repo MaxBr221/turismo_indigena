@@ -72,9 +72,11 @@ public class GuideController {
     @Operation(summary = "Deletando Guide")
     @ApiResponse(responseCode = "200", description = "Deletando Guide")
     @DeleteMapping(value = "/{id}")
-    public void delete(@Parameter(description = "Id do Guide que deseja deletar", example = "1")@PathVariable Long id){
+    public ResponseEntity delete(@Parameter(description = "Id do Guide que deseja deletar", example = "1")@PathVariable Long id){
         logger.info("Apagando guia");
         service.delete(id);
+        return ResponseEntity.noContent().build();
+
     }
 
 }

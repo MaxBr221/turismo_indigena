@@ -3,6 +3,7 @@ package com.example.projeto_turismo.web;
 import com.example.projeto_turismo.controllers.UserController;
 import com.example.projeto_turismo.domains.Role;
 import com.example.projeto_turismo.domains.User;
+import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.infra.security.SecurityFilter;
 import com.example.projeto_turismo.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,15 +17,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
+import java.util.Collections;
+import java.util.List;
 import static com.example.projeto_turismo.common.UserConstants.REGISTER_DTO;
 import static com.example.projeto_turismo.common.UserConstants.USER;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @WebMvcTest(controllers = UserController.class,
@@ -46,6 +50,7 @@ public class UserControllerTest {
     private UserService service;
     private final String urlPost = "/users";
     private final String urlGetId = "/users/me";
+    private final String urlGetFindAll = "/users";
 
 
     @Test
@@ -107,5 +112,31 @@ public class UserControllerTest {
         mockMvc.perform(get(urlGetId))
                 .andExpect(status().isNotFound());
 
+    }
+    @Test
+    public void listUsers_ReturnsFilteredUsers() throws Exception {
+        UserDto user = new UserDto (1L ,"Maxsuel", "922222", "max@gmail", Role.USER);
+        List<UserDto> users = List.of(user);
+
+
+        when(service.findAll()).thenReturn(users);
+
+        mockMvc.perform(get(urlGetFindAll))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nome").value("Maxsuel"));
+    }
+    @Test
+    public void listUser_ReturnsNoUser() throws Exception {
+        List<UserDto> users = Collections.emptyList();
+        when(service.findAll()).thenReturn(users);
+
+        mockMvc.perform(get(urlGetFindAll))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+    @Test
+    public void removeUser_WithExistingId_ReturnsNoContent() throws Exception{
+        mockMvc.perform(delete(urlGetId))
+                .andExpect(status().isNoContent());
     }
 }

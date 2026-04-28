@@ -4,29 +4,41 @@ import com.example.projeto_turismo.domains.Role;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.RegisterDto;
 import com.example.projeto_turismo.repositorys.UserRepository;
+import com.example.projeto_turismo.repositorys.UsuarioLogadoProvider;
+import com.example.projeto_turismo.services.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+
 @DataJpaTest(excludeAutoConfiguration = {
         org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration.class
 })
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@Import(UserService.class)
+
 public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private TestEntityManager testEntityManager;
+    @Autowired
+    private UserService service;
+    @MockBean
+    private UsuarioLogadoProvider usuarioLogadoProvider;
 
 
     @Test
@@ -76,4 +88,5 @@ public class UserRepositoryTest {
         Optional<User> userOpt = userRepository.findById(1L);
         assertThat(userOpt).isEmpty();
     }
+
 }

@@ -1,6 +1,7 @@
 package com.example.projeto_turismo.common;
 
 import com.example.projeto_turismo.domains.Role;
+import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.RegisterDto;
 import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.dto.UserUpdateDto;
@@ -20,6 +21,7 @@ public class UserConstants {
     public static final RegisterDto REGISTER_DTO = new RegisterDto(NOME_USER, TELEFONE_USER, LOGIN_USER, SENHA_USER, Role.USER);
 
     public static final UserDto USER = new UserDto(ID_USER ,NOME_USER, TELEFONE_USER, LOGIN_USER, Role.USER);
+    public static final User USERENTITY = new User(NOME_USER, TELEFONE_USER, LOGIN_USER, Role.USER);
 
     public static final RegisterDto INVALID_USER = new RegisterDto(" ", " ", " ", " ", Role.USER);
 

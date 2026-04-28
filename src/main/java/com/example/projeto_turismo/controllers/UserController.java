@@ -70,9 +70,11 @@ public class UserController {
     }
     @Operation(summary = "Deletando users")
     @DeleteMapping(value = "/me")
-    public void delete(){
+    public ResponseEntity delete(){
         logger.info("Deletando usuário");
         userService.delete();
+        return ResponseEntity.noContent().build();
+
     }
     @GetMapping(value = "/meAvaliacoes")
     public ResponseEntity<List<AvaliacaoResponseDto>> findMyAvaliacao(){

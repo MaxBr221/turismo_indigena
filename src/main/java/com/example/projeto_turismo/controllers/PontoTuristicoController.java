@@ -79,9 +79,11 @@ public class PontoTuristicoController {
     }
     @Operation(summary = "Deletando PontoTurisitico")
     @DeleteMapping(value = "/{id}")
-    public void delete(@Parameter(description = "Id do PontoTuristico que deseja deletar", example = "1")@PathVariable Long id){
+    public ResponseEntity delete(@Parameter(description = "Id do PontoTuristico que deseja deletar", example = "1")@PathVariable Long id){
         logger.info("Deletando ponto turistico");
         service.delete(id);
+        return ResponseEntity.noContent().build();
+
     }
     @Operation(summary = "Buscando PontoTuristico aparti de local escolhido")
     @ApiResponses({
