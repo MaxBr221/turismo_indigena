@@ -1,0 +1,1 @@
+INSERT INTO users(id, nome, telefone, login, senha, role) values (1L, 'Maxsuel de Lima Barbosa', '83991710731', 'maxsuel.lima@dcx.ufpb.br','$2a$10$ZJi/kKjANkcRGkgrGBgZw./dQYTfcajah8f5JOL9RD7stMAYXl2Cu', 'USER');
