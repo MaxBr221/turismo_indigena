@@ -23,29 +23,11 @@ public class UserService {
         this.avaliacaoRepository = avaliacaoRepository;
     }
 
-    public UserDto create(RegisterDto dto){
-        if(userRepository.existsByLoginIgnoreCase(dto.login())){
-            throw new EventFullException("Já existe usuário com esse login");
-        }
-
-        User user1 = new User();
-        user1.setNome(dto.nome());
-        user1.setTelefone(dto.telefone());
-        user1.setLogin(dto.login());
-        user1.setSenha(dto.senha());
-        user1.setRole(dto.role());
-        User salvo = userRepository.save(user1);
-        return new UserDto(
-                salvo.getId(),
-                salvo.getNome(),
-                salvo.getTelefone(),
-                salvo.getLogin(),
-                salvo.getRole());
-
-    }
     public UserDto findById(){
         User user = usuarioLogadoProvider.pegarUsuarioLogado();
-
+        if(user == null){
+            throw new EventFullException("Usuário não existente");
+        }
         return new UserDto(
                 user.getId(),
                 user.getNome(),

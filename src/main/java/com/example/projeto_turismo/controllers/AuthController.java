@@ -4,15 +4,14 @@ import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.AuthUserDto;
 import com.example.projeto_turismo.dto.LoginDto;
 import com.example.projeto_turismo.dto.RegisterDto;
-import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.infra.security.TokenService;
-import com.example.projeto_turismo.repositorys.UserRepository;
+import com.example.projeto_turismo.services.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,21 +19,22 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
-    private AuthenticationManager authenticationManager;
-    private UserRepository repository;
-    private TokenService tokenService;
+    private final AuthenticationManager authenticationManager;
+    private final AuthService service;
+    private final TokenService tokenService;
 
-    public AuthController(AuthenticationManager authenticationManager, UserRepository repository, TokenService tokenService) {
+    public AuthController(AuthenticationManager authenticationManager, AuthService service, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
-        this.repository = repository;
+        this.service = service;
         this.tokenService = tokenService;
     }
 
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated AuthUserDto authUserDto){
-        logger.info("Gerando token através de login e senha");
+        log.info("Gerando token através de login e senha");
         var userNamePassword = new UsernamePasswordAuthenticationToken(authUserDto.login(), authUserDto.senha());
         var auth = this.authenticationManager.authenticate(userNamePassword);
         var token = tokenService.generateToken((User)auth.getPrincipal());
@@ -44,13 +44,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Validated RegisterDto registerDto){
-        logger.info("Criando Usuário");
-        if (repository.findByLogin(registerDto.login())!= null){
-            throw new EventFullException("Login de usuário já existente");
-        }
-        String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.senha());
-        User user = new User(registerDto.nome(), registerDto.telefone(), registerDto.login(), encryptedPassword, registerDto.role());
-        repository.save(user);
-        return ResponseEntity.ok().build();
+        log.info("Criando Usuário");
+        service.registerUser(registerDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

@@ -5,6 +5,7 @@ import com.example.projeto_turismo.domains.Role;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.UserDto;
 import com.example.projeto_turismo.infra.security.SecurityFilter;
+import com.example.projeto_turismo.services.AuthService;
 import com.example.projeto_turismo.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,8 +23,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 import java.util.List;
-import static com.example.projeto_turismo.common.UserConstants.REGISTER_DTO;
-import static com.example.projeto_turismo.common.UserConstants.USER;
+
+import static com.example.projeto_turismo.common.UserConstants.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -48,6 +49,9 @@ public class UserControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private UserService service;
+    @MockBean
+    private AuthService authService;
+
     private final String urlPost = "/users";
     private final String urlGetId = "/users/me";
     private final String urlGetFindAll = "/users";
@@ -55,7 +59,7 @@ public class UserControllerTest {
 
     @Test
     public void createUser_WithValidData_RetunrCreated() throws Exception {
-        when(service.create(REGISTER_DTO)).thenReturn(USER);
+        when(authService.registerUser(REGISTER_DTO)).thenReturn(USERENTITY);
         mockMvc.perform(post(urlPost).content(objectMapper.writeValueAsString(REGISTER_DTO))    .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(USER.id()));
@@ -70,7 +74,7 @@ public class UserControllerTest {
     }
     @Test
     public void createUser_WithExistingName_RetunrnsConflict() throws Exception{
-        when(service.create(any())).thenThrow(DataIntegrityViolationException.class);
+        when(authService.registerUser(any())).thenThrow(DataIntegrityViolationException.class);
 
         mockMvc.perform(post(urlPost)
                 .content(objectMapper.writeValueAsString(REGISTER_DTO))

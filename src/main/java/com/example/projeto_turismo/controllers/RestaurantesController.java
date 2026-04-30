@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -28,8 +28,8 @@ import java.util.List;
 @Tag(name = "restaurantes", description = "Endpoits Restaurantes")
 @RestController
 @RequestMapping("restaurantes")
+@Slf4j
 public class RestaurantesController {
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(RestaurantesController.class.getName());
     private RestaurantesService service;
 
     public RestaurantesController(RestaurantesService service) {
@@ -44,7 +44,7 @@ public class RestaurantesController {
     @PostMapping
     @Transactional
     public ResponseEntity<RestaurantesResponseDto> create(@RequestBody @Valid RestaurantesDto restauranteDto) {
-        logger.info("Criando Restaurante");
+        log.info("Criando Restaurante");
 
         //colocar um exerção caso um USER tente criar um restaurante
         RestaurantesResponseDto restaurante = service.create(restauranteDto);
@@ -54,7 +54,7 @@ public class RestaurantesController {
     @ApiResponse(responseCode = "200", description = "Listando todos os Restaurantes")
     @GetMapping
     public ResponseEntity<List<RestaurantesResponseDto>> findAll(){
-        logger.info("Listando todos os restaurantes");
+        log.info("Listando todos os restaurantes");
         List<RestaurantesResponseDto> restaurantesResponseDtoList = service.findAll();
         return ResponseEntity.ok().body(restaurantesResponseDtoList);
     }
@@ -65,7 +65,7 @@ public class RestaurantesController {
     })
     @GetMapping(value = "/{id}")
     public ResponseEntity<RestaurantesResponseDto> findById(@Parameter(description = "Id do Restaurante que deseja buscar", example = "1")@PathVariable Long id){
-        logger.info("Buscando Restaurante");
+        log.info("Buscando Restaurante");
         RestaurantesResponseDto restaurantesResponseDto = service.findById(id);
         return ResponseEntity.ok().body(restaurantesResponseDto);
     }
@@ -76,7 +76,7 @@ public class RestaurantesController {
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<RestaurantesResponseDto> update(@Parameter(description = "Id do Restaurante que deseja editar", example = "1")@PathVariable Long id, @RequestBody @Valid RestaurantesDto restauranteDto){
-        logger.info("Atualizando restaurante");
+        log.info("Atualizando restaurante");
         RestaurantesResponseDto restaurante = service.update(id, restauranteDto);
         return ResponseEntity.ok().body(restaurante);
     }
@@ -84,7 +84,7 @@ public class RestaurantesController {
     @ApiResponse(responseCode = "200", description = "Deletado com sucesso")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@Parameter(description = "Id do Restaurante que deseja deletar", example = "1")@PathVariable Long id){
-        logger.info("Apagando Restaurante");
+        log.info("Apagando Restaurante");
         service.delete(id);
         return ResponseEntity.noContent().build();
 
@@ -96,38 +96,38 @@ public class RestaurantesController {
             @RequestParam(defaultValue = "nome") String sortBy,
             @RequestParam(defaultValue = "asc") String direction){
 
-        logger.info("Listando Restaurantes paginado");
+        log.info("Listando Restaurantes paginado");
         var response = service.listaPaginada(page, size, sortBy, direction);
         return ResponseEntity.ok(response);
     }
     @PostMapping("/{id}/imagem")
     public ResponseEntity<?> uploadImagem(@PathVariable Long id, @RequestParam("file") MultipartFile file){
-        logger.info("Criando imagem de Restaurante");
+        log.info("Criando imagem de Restaurante");
         service.salvarImagem(id, file);
         return ResponseEntity.ok("Imagem crianda com sucesso");
     }
     @GetMapping("/imagem/{nome}")
     public ResponseEntity<Resource> buscarImagem(@PathVariable String nome) throws MalformedURLException {
-        logger.info("Buscando imagem de Restaurante");
+        log.info("Buscando imagem de Restaurante");
         Path caminho = Paths.get("uploads/restaurante/").resolve(nome);
         Resource resource = new UrlResource(caminho.toUri());
         return ResponseEntity.ok().body(resource);
     }
     @GetMapping("/melhorAvaliado")
     public ResponseEntity<RestauranteMediaDto> RestauranteMelhorAvaliado(){
-        logger.info("Buscando o Restaurante melhor avaliado");
+        log.info("Buscando o Restaurante melhor avaliado");
         RestauranteMediaDto restauranteMediaDto = service.restauranteMaiorMedia();
         return ResponseEntity.ok().body(restauranteMediaDto);
     }
     @GetMapping("/{id}/localizacao")
     public ResponseEntity<RestaurantesResponseDto> buscarLocalizacao(@PathVariable Long id){
-        logger.info("Buscando Localização de Restaurante");
+        log.info("Buscando Localização de Restaurante");
         RestaurantesResponseDto restaurantesResponseDto = service.buscarLocalizacaoRestaurante(id);
         return ResponseEntity.ok().body(restaurantesResponseDto);
     }
     @GetMapping("/busca")
     public ResponseEntity<List<Restaurantes>> searchRestaurante(@RequestParam String termo){
-        logger.info("Buscando restaurante de forma dinamica");
+        log.info("Buscando restaurante de forma dinamica");
         List<Restaurantes> restaurantes = service.searchRestaurante(termo);
         return ResponseEntity.ok(restaurantes);
 

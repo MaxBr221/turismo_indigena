@@ -1,6 +1,5 @@
 package com.example.projeto_turismo.integration;
 
-import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.UserDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,6 @@ public class UserIT {
         assertThat(sut.getBody().login()).isEqualTo(USER.login());
     }
     @Test
-    @WithMockUser(username = "max@gmail", roles = {"USER"})
     public void getUser_ReturnUser(){
         ResponseEntity<List<UserDto>> sut = restTemplate.exchange("/users",
                 HttpMethod.GET,
@@ -49,6 +47,14 @@ public class UserIT {
         assertThat(sut.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(sut.getBody()).isNotEmpty();
 
+    }
+    @Test
+    @WithMockUser(username = "maxsuel.lima@dcx.ufpb.br")
+    public void getUserById_RetunsUser(){
+        ResponseEntity<UserDto> sut = restTemplate.getForEntity("/users/me", UserDto.class);
+
+        assertThat(sut.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(sut.getBody().login()).isNotNull();
     }
 
 
