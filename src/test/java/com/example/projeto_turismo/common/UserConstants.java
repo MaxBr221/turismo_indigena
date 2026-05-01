@@ -13,7 +13,7 @@ import lombok.Setter;
 public class UserConstants {
     private static final String NOME_USER = "maxsuel";
     private static final String TELEFONE_USER = "83-99171-0731";
-    private static final String LOGIN_USER = "maxsuel.lima@dcx";
+    private static final String LOGIN_USER = "maxsuel.lima@dcx.ufpb.br";
     private static final String SENHA_USER = "max123";
     @Getter
     private static final Long ID_USER = 1L;

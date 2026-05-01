@@ -39,9 +39,9 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Busca feita com sucesso")
     })
     @GetMapping(value = "/me")
-    public ResponseEntity<UserDto> findById(){
+    public ResponseEntity<UserDto> findByUser(){
         log.info("listando usuário selecionado");
-        UserDto user = userService.findById();
+        UserDto user = userService.findByUser();
         return ResponseEntity.ok().body(user);
     }
 
@@ -54,7 +54,7 @@ public class UserController {
     @PutMapping(value = "/me")
     public ResponseEntity<UserDto> update(@RequestBody @Valid UserUpdateDto userDto){
         log.info("Atualizando usuário");
-        UserDto user = userService.findById();
+        UserDto user = userService.findByUser();
         userService.update(userDto);
         return ResponseEntity.ok().body(user);
     }

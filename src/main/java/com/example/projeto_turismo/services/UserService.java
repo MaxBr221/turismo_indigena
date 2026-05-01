@@ -23,7 +23,7 @@ public class UserService {
         this.avaliacaoRepository = avaliacaoRepository;
     }
 
-    public UserDto findById(){
+    public UserDto findByUser(){
         User user = usuarioLogadoProvider.pegarUsuarioLogado();
         if(user == null){
             throw new EventFullException("Usuário não existente");
