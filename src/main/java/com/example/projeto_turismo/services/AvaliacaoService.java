@@ -22,7 +22,6 @@ public class AvaliacaoService {
     private RestaurantesRepository restaurantesRepository;
     private UserRepository userRepository;
     private UsuarioLogadoProvider usuarioLogadoProvider;
-    private RestaurantesService restaurantesService;
 
     public AvaliacaoService(AvaliacaoRepository avaliacaoRepository, PontoTuristicoRepository pontoTuristicoRepository, RestaurantesRepository restaurantesRepository, UserRepository userRepository, UsuarioLogadoProvider usuarioLogadoProvider) {
         this.avaliacaoRepository = avaliacaoRepository;

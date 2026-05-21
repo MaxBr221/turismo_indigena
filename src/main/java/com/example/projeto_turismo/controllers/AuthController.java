@@ -16,7 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "auth")
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/auth")
 @Slf4j

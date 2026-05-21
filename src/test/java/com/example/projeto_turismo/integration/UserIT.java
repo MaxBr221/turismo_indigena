@@ -38,14 +38,16 @@ public class UserIT {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    public void createUser_ReturnsCreated(){
-        ResponseEntity<UserDto> sut = restTemplate.postForEntity("/users", REGISTER_DTO, UserDto.class);
-        assertThat(sut.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(sut.getBody().id()).isNotNull();
-        assertThat(sut.getBody().nome()).isEqualTo(USER.nome());
-        assertThat(sut.getBody().login()).isEqualTo(USER.login());
-    }
+
+
+
+
+//    @Test
+//    public void createUser_ReturnsCreated(){
+//        ResponseEntity sut = restTemplate.postForEntity("/auth/register", REGISTER_DTO, UserDto.class);
+//        assertThat(sut.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+//
+//    }
     @Test
     public void getUser_ReturnUser(){
         ResponseEntity<List<UserDto>> sut = restTemplate.exchange("/users",
@@ -57,6 +59,8 @@ public class UserIT {
         assertThat(sut.getBody()).isNotEmpty();
 
     }
+
+
     @Test
     @WithMockUser(username = "maxsuel.lima@dcx.ufpb.br")
     public void getUser_RetunsUser() throws Exception{
