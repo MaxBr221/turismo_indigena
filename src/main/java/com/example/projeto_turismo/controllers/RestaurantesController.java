@@ -126,9 +126,9 @@ public class RestaurantesController {
         return ResponseEntity.ok().body(restaurantesResponseDto);
     }
     @GetMapping("/busca")
-    public ResponseEntity<List<Restaurantes>> searchRestaurante(@RequestParam String termo){
+    public ResponseEntity<List<Restaurantes>> searchRestaurante(@RequestParam String nome){
         log.info("Buscando restaurante de forma dinamica");
-        List<Restaurantes> restaurantes = service.searchRestaurante(termo);
+        List<Restaurantes> restaurantes = service.searchRestaurante(nome);
         return ResponseEntity.ok(restaurantes);
 
     }

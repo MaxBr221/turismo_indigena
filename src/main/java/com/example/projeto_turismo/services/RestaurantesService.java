@@ -159,8 +159,8 @@ public class RestaurantesService {
                 restaurante.getLatitude(),
                 restaurante.getLongitude());
     }
-    public List<Restaurantes> searchRestaurante(String termo){
-        return repository.findByTermo(termo);
+    public List<Restaurantes> searchRestaurante(String nome){
+        return repository.findByNome(nome);
 
 
     }

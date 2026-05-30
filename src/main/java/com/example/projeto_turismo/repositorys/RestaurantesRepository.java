@@ -14,13 +14,13 @@ import static com.example.projeto_turismo.repositorys.specsRestaurantes.Restaura
 public interface RestaurantesRepository extends JpaRepository<Restaurantes, Long> , JpaSpecificationExecutor<Restaurantes> {
     Optional<Restaurantes> findFirstByMediaIsNotNullOrderByMediaDesc();
 
-    default List<Restaurantes> findByTermo(String termo){
+    default List<Restaurantes> findByNome(String nome){
 
         Specification<Restaurantes> spec = Specification.where(GenerateSpecsRestaurante.conjuction());
-        if (termo != null){
-            spec = spec.and(nomeLike(termo))
-                    .or(descricaoLike(termo))
-                    .or(localizacaoLike(termo));
+        if (nome != null){
+            spec = spec.and(nomeLike(nome))
+                    .or(descricaoLike(nome))
+                    .or(localizacaoLike(nome));
         }
 
         return findAll(spec);

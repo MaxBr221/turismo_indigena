@@ -33,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated AuthUserDto authUserDto){
-        log.info("Gerando token através de login e senha");
+        log.info("usuário logando..");
         var userNamePassword = new UsernamePasswordAuthenticationToken(authUserDto.login(), authUserDto.senha());
         var auth = this.authenticationManager.authenticate(userNamePassword);
         var token = tokenService.generateToken((User)auth.getPrincipal());
