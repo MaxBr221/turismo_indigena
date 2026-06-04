@@ -52,6 +52,10 @@ public class AuthService implements UserDetailsService {
 
         User user= repository.findByLogin(login);
 
+        if(user == null){
+            throw new EventFullException("Usuário não cadastrado!");
+        }
+
         if(!passwordEncoder.matches(senhaDigitada, user.getSenha())){
             throw new EventFullException("Senha incorreta!");
         }
