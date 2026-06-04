@@ -53,6 +53,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/pontoTuristico").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/pontoTuristico").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/pontoTuristico").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/pontoTuristico/busca").permitAll()
                         .requestMatchers(HttpMethod.GET, "/pontoTuristico/pontos").permitAll()
                         .requestMatchers(HttpMethod.POST, "/restaurantes").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/restaurantes").hasRole("ADMIN")
@@ -76,7 +77,6 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-    // Dentro da sua classe de configuração do SecurityFilterChain:
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

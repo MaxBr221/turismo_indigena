@@ -20,7 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -178,8 +177,8 @@ public class PontoTuristicoService {
                 .map(PontoTuristicoMediaDto::new)
                 .orElseThrow(() -> new EventFullException("Não há Ponto Turistico avaliado ainda"));
     }
-    public List<PontoTuristico> searchPontoTuristico(String termo){
+    public List<PontoTuristico> searchPontoTuristico(String nome){
 
-        return repository.findByTermo(termo);
+        return repository.findByNome(nome);
     }
 }

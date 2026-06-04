@@ -16,13 +16,13 @@ public interface PontoTuristicoRepository extends JpaRepository<PontoTuristico, 
     List<PontoTuristico> findByLocal(Local local);
     Optional<PontoTuristico> findFirstByMediaIsNotNullOrderByMediaDesc();
 
-    default List<PontoTuristico> findByTermo(String termo){
+    default List<PontoTuristico> findByNome(String nome){
         Specification<PontoTuristico> spec = Specification.where(GenerateSpecsRestaurante.conjuction());
 
-        if(termo != null){
-            spec = spec.and(nomeLike(termo))
-                    .or(localLike(termo))
-                    .or(informacoesLike(termo));
+        if(nome != null){
+            spec = spec.and(nomeLike(nome))
+                    .or(localLike(nome))
+                    .or(informacoesLike(nome));
         }
         return findAll(spec);
     }

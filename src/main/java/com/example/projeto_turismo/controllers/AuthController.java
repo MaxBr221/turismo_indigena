@@ -23,21 +23,26 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final AuthService service;
     private final TokenService tokenService;
+    private final AuthService authService;
 
-    public AuthController(AuthenticationManager authenticationManager, AuthService service, TokenService tokenService) {
+    public AuthController(AuthenticationManager authenticationManager, AuthService service, TokenService tokenService, AuthService authService) {
         this.authenticationManager = authenticationManager;
         this.service = service;
         this.tokenService = tokenService;
+        this.authService = authService;
     }
 
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated AuthUserDto authUserDto){
-        log.info("usuário logando..");
+        authService.autenticar(authUserDto.login(),authUserDto.senha());
         var userNamePassword = new UsernamePasswordAuthenticationToken(authUserDto.login(), authUserDto.senha());
         var auth = this.authenticationManager.authenticate(userNamePassword);
         var token = tokenService.generateToken((User)auth.getPrincipal());
+        log.info("usuário logando..");
         return ResponseEntity.ok(new LoginDto(token));
+
+
     }
 
 
