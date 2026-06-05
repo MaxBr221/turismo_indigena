@@ -120,7 +120,7 @@ public class AgendamentoService {
                 salvo.getRestaurante().getId());
     }
     public List<AgendamentoResponseDto> findByAgendamentoUser(){
-        User user = authService.getUserLogado();
+        User user = authService.pegarUsuarioLogado();
 
         List<Agendamento> ag = repository.findByUser(user);
 

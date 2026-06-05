@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService implements UserDetailsService {
+public class AuthService implements UserDetailsService, UsuarioLogadoProvider {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
@@ -25,19 +25,9 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         return repository.findByLogin(username);
     }
 
-    public User getUserLogado(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null || !authentication.isAuthenticated()){
-            throw new EventFullException("Usuário não autenticado");
-        }
-        String login = authentication.getName();
-
-        return repository.findByLogin(login);
-    }
     public User registerUser(RegisterDto registerDto){
         if (repository.findByLogin(registerDto.login())!= null){
             throw new EventFullException("Login de usuário já existente");
@@ -59,5 +49,16 @@ public class AuthService implements UserDetailsService {
         if(!passwordEncoder.matches(senhaDigitada, user.getSenha())){
             throw new EventFullException("Senha incorreta!");
         }
+    }
+
+    @Override
+    public User pegarUsuarioLogado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()){
+            throw new EventFullException("Usuário não autenticado");
+        }
+        String login = authentication.getName();
+
+        return repository.findByLogin(login);
     }
 }
