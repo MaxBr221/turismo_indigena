@@ -1,5 +1,6 @@
 package com.example.projeto_turismo.services;
 
+import com.example.projeto_turismo.domains.Role;
 import com.example.projeto_turismo.domains.User;
 import com.example.projeto_turismo.dto.RegisterDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
@@ -28,12 +29,23 @@ public class AuthService implements UserDetailsService, UsuarioLogadoProvider {
         return repository.findByLogin(username);
     }
 
+    @Override
+    public User pegarUsuarioLogado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated()){
+            throw new EventFullException("Usuário não autenticado");
+        }
+        String login = authentication.getName();
+
+        return repository.findByLogin(login);
+    }
+
     public User registerUser(RegisterDto registerDto){
         if (repository.findByLogin(registerDto.login())!= null){
             throw new EventFullException("Login de usuário já existente");
         }
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.senha());
-        User user = new User(registerDto.nome(), registerDto.telefone(), registerDto.login(), encryptedPassword, registerDto.role());
+        User user = new User(registerDto.nome(), registerDto.telefone(), registerDto.login(), encryptedPassword, Role.USER);
         repository.save(user);
         return user;
     }
@@ -49,16 +61,5 @@ public class AuthService implements UserDetailsService, UsuarioLogadoProvider {
         if(!passwordEncoder.matches(senhaDigitada, user.getSenha())){
             throw new EventFullException("Senha incorreta!");
         }
-    }
-
-    @Override
-    public User pegarUsuarioLogado() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null || !authentication.isAuthenticated()){
-            throw new EventFullException("Usuário não autenticado");
-        }
-        String login = authentication.getName();
-
-        return repository.findByLogin(login);
     }
 }

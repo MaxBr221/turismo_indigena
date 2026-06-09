@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize-> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/google").permitAll()
                         .requestMatchers(HttpMethod.POST, "/agendamento").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/agendamento").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/guide").hasRole("ADMIN")
