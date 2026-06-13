@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  api:
+    image: api-turismo:latest
+    build: .
+    container_name: api-turismo
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_URL=jdbc:mysql://host.docker.internal:3306/turismo?useSSL=false&allowPublicKeyRetrieval=true&connectTimeout=10000
+      - DB_USER=root
+      - DB_PASSWORD=12345678
+      - JWT_SECRET=my-secret-key
+      - SPRING_FLYWAY_ENABLED=false
