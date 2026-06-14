@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,7 +15,7 @@ spring:
     show-sql: true
 
   flyway:
-    enabled: true
+    enabled: false
     repair-on-migrate: true
     locations: classpath:db/migration
 

@@ -1,6 +1,23 @@
 version: '3.8'
 
 services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-turismo
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=turismo
+      - MYSQL_ROOT_PASSWORD=12345678
+    # 🛡️ O HEALTHCHECK: O Docker vai testar o banco a cada 5 segundos
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p12345678"]
+      interval: 5s
+
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
   api:
     image: api-turismo:latest
     build: .
@@ -8,8 +25,10 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - DB_URL=jdbc:mysql://host.docker.internal:3306/turismo?useSSL=false&allowPublicKeyRetrieval=true&connectTimeout=10000
+      - DB_URL=jdbc:mysql://db:3306/turismo?useSSL=false&allowPublicKeyRetrieval=true
       - DB_USER=root
       - DB_PASSWORD=12345678
       - JWT_SECRET=my-secret-key
-      - SPRING_FLYWAY_ENABLED=false
+    depends_on:
+      db:
+        condition: service_healthy
