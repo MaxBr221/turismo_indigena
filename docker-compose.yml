@@ -5,7 +5,7 @@ services:
     image: mysql:8.0
     container_name: mysql-turismo
     ports:
-      - "3307:3306"
+      - "3306:3306"
     environment:
       - MYSQL_DATABASE=turismo
       - MYSQL_ROOT_PASSWORD=12345678
