@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/avaliacao")
 @Slf4j
-public class AvaliacaoController {
+public class  AvaliacaoController {
 
     private AvaliacaoService avaliacaoService;
 

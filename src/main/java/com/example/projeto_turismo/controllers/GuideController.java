@@ -1,5 +1,6 @@
 package com.example.projeto_turismo.controllers;
 
+import com.example.projeto_turismo.domains.Guide;
 import com.example.projeto_turismo.dto.GuideCreateDto;
 import com.example.projeto_turismo.dto.GuideResponseDto;
 import com.example.projeto_turismo.services.GuideService;
@@ -77,6 +78,12 @@ public class GuideController {
         service.delete(id);
         return ResponseEntity.noContent().build();
 
+    }
+    @GetMapping("/busca")
+    public ResponseEntity<List<Guide>> buscaDinamica(@RequestParam String nome){
+         List<Guide> guiasEncotrado = service.buscarPorNome(nome);
+         log.info("listando guias através de busca dinâmica!");
+         return ResponseEntity.ok(guiasEncotrado);
     }
 
 }

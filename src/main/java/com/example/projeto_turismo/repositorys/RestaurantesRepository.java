@@ -22,7 +22,6 @@ public interface RestaurantesRepository extends JpaRepository<Restaurantes, Long
                     .or(descricaoLike(nome))
                     .or(localizacaoLike(nome));
         }
-
         return findAll(spec);
     }
 

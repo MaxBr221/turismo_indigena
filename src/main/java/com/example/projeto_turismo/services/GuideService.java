@@ -72,4 +72,7 @@ public class GuideService {
                 .orElseThrow(()-> new EventFullException("Guia não encontrado."));
         repository.delete(guide);
     }
+    public List<Guide> buscarPorNome(String nome){
+        return repository.findByNome(nome);
+    }
 }

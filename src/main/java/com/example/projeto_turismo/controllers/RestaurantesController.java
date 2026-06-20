@@ -44,10 +44,9 @@ public class RestaurantesController {
     @PostMapping
     @Transactional
     public ResponseEntity<RestaurantesResponseDto> create(@RequestBody @Valid RestaurantesDto restauranteDto) {
-        log.info("Criando Restaurante");
-
         //colocar um exerção caso um USER tente criar um restaurante
         RestaurantesResponseDto restaurante = service.create(restauranteDto);
+        log.info("Criando Restaurante");
         return ResponseEntity.status(HttpStatus.CREATED).body(restaurante);
     }
     @Operation(summary = "Listando Restaurantes")

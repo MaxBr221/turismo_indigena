@@ -3,7 +3,7 @@ package com.example.projeto_turismo.repositorys.specsRestaurantes;
 import com.example.projeto_turismo.domains.Restaurantes;
 import org.springframework.data.jpa.domain.Specification;
 
-public class    RestauranteSpecs {
+public class RestauranteSpecs {
 
     private RestauranteSpecs(){}
 
