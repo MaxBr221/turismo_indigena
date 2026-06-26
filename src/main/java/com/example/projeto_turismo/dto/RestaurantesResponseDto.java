@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 @Setter
 @Schema(description = "Dto de Saida de dados do Restaurante")
 public class RestaurantesResponseDto {
+    private Long id;
     @Schema(description = "Nome do Restaurante", example = "Restaurante do Tingo")
     private String nome;
     @Schema(description = "Descrição do Restaurante", example = "Restaurante com comidas tipicas e etc")
@@ -29,7 +30,8 @@ public class RestaurantesResponseDto {
     private String latitude;
     private String longitude;
 
-    public RestaurantesResponseDto(String nome, String descricao, String localizacao, String horarioFuncionamento, String telefone, String redeSociais) {
+    public RestaurantesResponseDto(Long id, String nome, String descricao, String localizacao, String horarioFuncionamento, String telefone, String redeSociais) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.localizacao = localizacao;

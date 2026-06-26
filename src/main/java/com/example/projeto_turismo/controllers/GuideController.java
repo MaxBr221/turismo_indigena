@@ -35,8 +35,8 @@ public class GuideController {
     })
     @PostMapping
     public ResponseEntity<GuideResponseDto> create(@RequestBody @Valid GuideCreateDto guideCreateDto){
-        log.info("Criando guia");
         GuideResponseDto guide = service.create(guideCreateDto);
+        log.info("Criando guia");
         return ResponseEntity.status(HttpStatus.CREATED).body(guide);
     }
     @Operation(summary = "Buscando guide")
@@ -45,16 +45,16 @@ public class GuideController {
             @ApiResponse(responseCode = "400", description = "Dados Inválidos")})
     @GetMapping(value = "/{id}")
     public ResponseEntity<GuideResponseDto> findById(@Parameter(description = "Id do Guide que deseja Buscar", example = "1")@PathVariable Long id){
-        log.info("Buscando guia");
         GuideResponseDto guide = service.findById(id);
+        log.info("Buscando guia");
         return ResponseEntity.ok().body(guide);
     }
     @Operation(summary = "listando todos os guides")
     @ApiResponse(responseCode = "200", description = "Listando guides")
     @GetMapping
     public ResponseEntity<List<GuideResponseDto>> findAll(){
-        log.info("Listando todos os guias");
         List<GuideResponseDto> list = service.findAll();
+        log.info("Listando todos os guias");
         return ResponseEntity.ok().body(list);
     }
     @Operation(summary = "Editando Guide")
@@ -66,16 +66,16 @@ public class GuideController {
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<GuideResponseDto> update(@Parameter(description = "Id do Guide que deseja editar", example = "1")@PathVariable Long id, @RequestBody @Valid GuideCreateDto guide){
-        log.info("Editando guia");
         GuideResponseDto guideResponseDto = service.update(id, guide);
+        log.info("Editando guia");
         return ResponseEntity.ok().body(guideResponseDto);
     }
     @Operation(summary = "Deletando Guide")
     @ApiResponse(responseCode = "200", description = "Deletando Guide")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@Parameter(description = "Id do Guide que deseja deletar", example = "1")@PathVariable Long id){
-        log.info("Apagando guia");
         service.delete(id);
+        log.info("Apagando guia");
         return ResponseEntity.noContent().build();
 
     }

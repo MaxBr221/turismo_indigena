@@ -7,6 +7,7 @@ import com.example.projeto_turismo.dto.RestaurantesDto;
 import com.example.projeto_turismo.dto.RestaurantesResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.RestaurantesRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,75 +33,30 @@ public class RestaurantesService {
 
     public RestaurantesResponseDto create(RestaurantesDto restaurantesDto){
         Restaurantes restaurante = new Restaurantes();
-        //adicionar o atributo de imagem (em um dto também talvez)
-        restaurante.setNome(restaurantesDto.nome());
-        restaurante.setDescricao(restaurantesDto.descricao());
-        restaurante.setLocalizacao(restaurantesDto.localizacao());
-        restaurante.setHorarioFuncionamento(restaurantesDto.horarioFuncionamento());
-        restaurante.setTelefone(restaurantesDto.telefone());
-        restaurante.setRedeSociais(restaurantesDto.redeSociais());
+        BeanUtils.copyProperties(restaurantesDto, restaurante);
         Restaurantes salvo = repository.save(restaurante);
-
-        return new RestaurantesResponseDto(
-                salvo.getNome(),
-                salvo.getDescricao(),
-                salvo.getLocalizacao(),
-                salvo.getHorarioFuncionamento(),
-                salvo.getTelefone(),
-                salvo.getRedeSociais(),
-                salvo.getLatitude(),
-                salvo.getLongitude());
+        return new RestaurantesResponseDto(salvo);
     }
     public RestaurantesResponseDto findById(Long id){
         Restaurantes restaurante = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Restaurante não encontrado."));
 
-        return new RestaurantesResponseDto(
-                restaurante.getNome(),
-                restaurante.getDescricao(),
-                restaurante.getLocalizacao(),
-                restaurante.getHorarioFuncionamento(),
-                restaurante.getTelefone(),
-                restaurante.getRedeSociais(),
-                restaurante.getLatitude(),
-                restaurante.getLongitude());
+        return new RestaurantesResponseDto(restaurante);
+
     }
     public List<RestaurantesResponseDto> findAll(){
         return repository.findAll()
                 .stream()
-                .map(restaurantes -> new RestaurantesResponseDto(
-                        restaurantes.getNome(),
-                        restaurantes.getDescricao(),
-                        restaurantes.getLocalizacao(),
-                        restaurantes.getHorarioFuncionamento(),
-                        restaurantes.getTelefone(),
-                        restaurantes.getRedeSociais(),
-                        restaurantes.getLatitude(),
-                        restaurantes.getLongitude()
-                ))
+                .map(restaurantes -> new RestaurantesResponseDto(restaurantes))
                 .toList();
     }
     public RestaurantesResponseDto update(Long id, RestaurantesDto restaurantesDto){
         Restaurantes restaurantes = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Restaurante não encontrado"));
-        restaurantes.setNome(restaurantesDto.nome());
-        restaurantes.setDescricao(restaurantesDto.descricao());
-        restaurantes.setLocalizacao(restaurantesDto.localizacao());
-        restaurantes.setHorarioFuncionamento(restaurantesDto.horarioFuncionamento());
-        restaurantes.setTelefone(restaurantesDto.telefone());
-        restaurantes.setRedeSociais(restaurantesDto.redeSociais());
-//        restaurantes.setLatitude(restaurantesDto.latitude());
-//        restaurantes.setLongitude(restaurantesDto.longitude());
+
+        BeanUtils.copyProperties(restaurantesDto, restaurantes);
         Restaurantes salvos = repository.save(restaurantes);
-        return new RestaurantesResponseDto(
-                salvos.getNome(),
-                salvos.getDescricao(),
-                salvos.getLocalizacao(),
-                salvos.getHorarioFuncionamento(),
-                salvos.getTelefone(),
-                salvos.getRedeSociais(),
-                salvos.getLatitude(),
-                salvos.getLongitude());
+        return new RestaurantesResponseDto(salvos);
     }
     public void delete(Long id){
         Restaurantes restaurante = repository.findById(id)
@@ -149,15 +105,7 @@ public class RestaurantesService {
         Restaurantes restaurante = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Restaurante não existente"));
 
-        return new RestaurantesResponseDto(
-                restaurante.getNome(),
-                restaurante.getDescricao(),
-                restaurante.getLocalizacao(),
-                restaurante.getHorarioFuncionamento(),
-                restaurante.getTelefone(),
-                restaurante.getRedeSociais(),
-                restaurante.getLatitude(),
-                restaurante.getLongitude());
+        return new RestaurantesResponseDto(restaurante);
     }
     public List<Restaurantes> searchRestaurante(String nome){
         return repository.findByNome(nome);

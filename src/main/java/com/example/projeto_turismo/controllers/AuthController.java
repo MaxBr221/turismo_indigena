@@ -105,11 +105,11 @@ public class AuthController {
 
                     // Salva no banco e joga o resultado na nossa variável de controle
                     usuarioLogado = repository.save(userNovo);
-                    System.out.println("Novo usuário cadastrado via Google: " + login);
+                    log.info("Novo usuário cadastrado via Google: " + login);
                 } else {
                     // 3. Se já existir, a variável de controle recebe o usuário encontrado
                     usuarioLogado = user;
-                    System.out.println("Usuário existente logando via Google: " + login);
+                    log.info("Usuário existente logando via Google: " + login);
                 }
                 String token = tokenService.generateToken(usuarioLogado);
                 return ResponseEntity.ok(new LoginDto(token));

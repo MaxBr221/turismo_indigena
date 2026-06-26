@@ -35,16 +35,16 @@ public class AgendamentoController {
             @ApiResponse(responseCode = "403", description = "Acesso proibido")})
     @PostMapping
     public ResponseEntity<AgendamentoResponseDto> create(@RequestBody @Valid AgendamentoCreateDto agendamentoCreateDto){
-        log.info("Criando Agendamento");
         AgendamentoResponseDto ag = service.create(agendamentoCreateDto);
+        log.info("Criando Agendamento");
         return ResponseEntity.status(HttpStatus.CREATED).body(ag);
     }
     @Operation(summary = "Buscando Agendamento")
     @ApiResponse(responseCode = "200", description = "Listagem feita com sucesso")
     @GetMapping
     public ResponseEntity<List<AgendamentoResponseDto>> findAll(){
-        log.info("Listando todos os agendamentos");
         List<AgendamentoResponseDto> ag = service.findAll();
+        log.info("Listando todos os agendamentos");
         return ResponseEntity.ok().body(ag);
     }
     @Operation(summary = "Listando Agendamentos")
@@ -53,8 +53,8 @@ public class AgendamentoController {
             @ApiResponse(responseCode = "200", description = "Busca feita com sucesso")})
     @GetMapping(value = "/{id}")
     public ResponseEntity<AgendamentoResponseDto> findById(@Parameter(description = "Id do Agendamento", example = "1") @PathVariable Long id){
-        log.info("Buscando Agendamento");
         AgendamentoResponseDto ag = service.findById(id);
+        log.info("Buscando Agendamento");
         return ResponseEntity.ok().body(ag);
     }
 
@@ -64,15 +64,15 @@ public class AgendamentoController {
         @ApiResponse(responseCode = "403", description = "Acesso proibido")})
     @PutMapping(value = "/{id}")
     public ResponseEntity update(@Parameter(description = "Id do agendamento que deseja editar", example = "1")@PathVariable Long id, @RequestBody @Valid AgendamentoUpdateDto ag){
-        log.info("Atualizando Agendamento");
         AgendamentoResponseDto agendamentoResponseDto = service.update(id, ag);
+        log.info("Atualizando Agendamento");
         return ResponseEntity.ok().body(agendamentoResponseDto);
     }
     @Operation(summary = "Deletando Agendamento")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@Parameter(description = "Id do agendamento que deseja deletar", example = "1")@PathVariable Long id){
-        log.info("Apagando Agendamento");
         service.delete(id);
+        log.info("Apagando Agendamento");
         return ResponseEntity.noContent().build();
 
     }

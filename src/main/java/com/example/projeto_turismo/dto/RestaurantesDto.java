@@ -9,5 +9,7 @@ public record RestaurantesDto(@Schema(description = "Nome do Restaurante", examp
                               @Schema(description = "Local do Restaurante", example = "Localizado na aldeia Silva")@NotBlank String localizacao,
                               @Schema(description = "Horario de funcionamento do Restaurante", example = "08:00 as 15:00")@NotBlank String horarioFuncionamento,
                               @Schema(description = "Telefone do Restaurante", example = "830029233")@NotBlank String telefone,
-                              @Schema(description = "Redes Sociais do Restaurante", example = "Link da Rede Social")@NotBlank String redeSociais) {
+                              @Schema(description = "Redes Sociais do Restaurante", example = "Link da Rede Social")@NotBlank String redeSociais,
+                              String longitude,
+                              String latitude) {
 }

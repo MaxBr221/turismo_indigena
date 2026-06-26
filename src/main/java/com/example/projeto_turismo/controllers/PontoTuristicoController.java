@@ -43,8 +43,8 @@ public class PontoTuristicoController {
     })
     @PostMapping
     public ResponseEntity<PontoTuristicoResponseDto> create(@RequestBody @Valid PontoTuristicoCreateDto pontoTuristicoCreateDto){
-        log.info("Criando ponto turistico");
         PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.create(pontoTuristicoCreateDto);
+        log.info("Criando ponto turistico");
         return ResponseEntity.status(HttpStatus.CREATED).body(pontoTuristicoResponseDto1);
     }
     @Operation(summary = "Buscando PontoTurisitico")
@@ -55,15 +55,15 @@ public class PontoTuristicoController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<PontoTuristicoResponseDto> findById(@Parameter(description = "Id do PontoTuristico que deseja buscar", example = "1")@PathVariable Long id){
-        log.info("Buscando ponto turistico");
         PontoTuristicoResponseDto pontoTuristicoResponseDto = service.findById(id);
+        log.info("Buscando ponto turistico");
         return ResponseEntity.ok().body(pontoTuristicoResponseDto);
     }
     @Operation(summary = "Listando todos PontoTurisitico")
     @GetMapping
     public ResponseEntity<List<PontoTuristicoResponseDto>> findAll(){
-        log.info("Listando todos os pontos turisticos");
         List<PontoTuristicoResponseDto> pontoTuristicos = service.findAll();
+        log.info("Listando todos os pontos turisticos");
         return ResponseEntity.ok().body(pontoTuristicos);
     }
     @Operation(summary = "Editando PontoTurisitico")
@@ -73,15 +73,15 @@ public class PontoTuristicoController {
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<PontoTuristicoResponseDto> update(@Parameter(description = "Id do PontoTuristico que deseja editar", example = "1")@PathVariable Long id, @RequestBody @Valid PontoTuristicoCreateDto pontoTuristicoCreateDto){
-        log.info("Atualizando ponto turistico");
         PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.update(id, pontoTuristicoCreateDto);
+        log.info("Atualizando ponto turistico");
         return ResponseEntity.ok().body(pontoTuristicoResponseDto1);
     }
     @Operation(summary = "Deletando PontoTurisitico")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@Parameter(description = "Id do PontoTuristico que deseja deletar", example = "1")@PathVariable Long id){
-        log.info("Deletando ponto turistico");
         service.delete(id);
+        log.info("Deletando ponto turistico");
         return ResponseEntity.noContent().build();
 
     }
@@ -92,8 +92,8 @@ public class PontoTuristicoController {
     })
     @GetMapping("/locais")
     public ResponseEntity<List<PontoTuristicoResponseDto>> findByLocal(@RequestParam Local local){
-        log.info("Buscando Ponto turistico a parti do local");
         List<PontoTuristicoResponseDto> dto = service.findByLocal(local);
+        log.info("Buscando Ponto turistico a parti do local");
         return ResponseEntity.ok().body(dto);
     }
     @GetMapping("/pontos")
@@ -103,39 +103,39 @@ public class PontoTuristicoController {
             @RequestParam(defaultValue = "nome") String sortBy,
             @RequestParam(defaultValue = "asc") String direction
     ) {
-        log.info("Listando os ponto turisticos paginado");
         var response = service.listaPaginado(page, size, sortBy, direction);
+        log.info("Listando os ponto turisticos paginado");
         return ResponseEntity.ok(response);
     }
     @PostMapping("/{id}/imagem")
     public ResponseEntity<?> uploadImagem(@PathVariable Long id, @RequestParam("file")MultipartFile file){
-        log.info("Criando Imagem de Ponto Turistico");
         service.salvarImagem(id, file);
+        log.info("Criando Imagem de Ponto Turistico");
         return ResponseEntity.ok("Imagem criada com sucesso!");
     }
     @GetMapping("/imagem/{nome}")
     public ResponseEntity<Resource> carregarImagem(@PathVariable String nome) throws MalformedURLException {
-        log.info("Buscando Imagem de Ponto Turistico");
         Path caminho = Paths.get("uploads/pontoTuristico/").resolve(nome);
         Resource resource = new UrlResource(caminho.toUri());
+        log.info("Buscando Imagem de Ponto Turistico");
         return ResponseEntity.ok().body(resource);
     }
     @PostMapping("/{id}/localizacao")
     public ResponseEntity<PontoTuristicoResponseDto> buscarLocalizacao(@PathVariable Long id){
-        log.info("Buscando Localização");
         PontoTuristicoResponseDto dto = service.buscarLocalizacaoPonto(id);
+        log.info("Buscando Imagem de Ponto Turistico");
         return ResponseEntity.ok().body(dto);
     }
     @GetMapping("/melhorAvaliados")
     public ResponseEntity<PontoTuristicoMediaDto> maiorMedia(){
-        log.info("Buscando o melhor avaliado");
         PontoTuristicoMediaDto pontoTuristicoMediaDto = service.pontoTuristicoMaiorMedia();
+        log.info("Buscando o melhor avaliado");
         return ResponseEntity.ok().body(pontoTuristicoMediaDto);
     }
     @GetMapping("/busca")
     public ResponseEntity<List<PontoTuristico>> search(@RequestParam String nome){
-        log.info("Buscando de forma dinamica Ponto Turistico");
         List<PontoTuristico> pontoTuristicos = service.searchPontoTuristico(nome);
+        log.info("Buscando de forma dinamica Ponto Turistico");
         return ResponseEntity.ok(pontoTuristicos);
     }
 }

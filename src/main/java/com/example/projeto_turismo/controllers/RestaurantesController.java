@@ -53,8 +53,8 @@ public class RestaurantesController {
     @ApiResponse(responseCode = "200", description = "Listando todos os Restaurantes")
     @GetMapping
     public ResponseEntity<List<RestaurantesResponseDto>> findAll(){
-        log.info("Listando todos os restaurantes");
         List<RestaurantesResponseDto> restaurantesResponseDtoList = service.findAll();
+        log.info("Listando todos os restaurantes");
         return ResponseEntity.ok().body(restaurantesResponseDtoList);
     }
     @Operation(summary = "Buscando Restaurante")
@@ -64,8 +64,8 @@ public class RestaurantesController {
     })
     @GetMapping(value = "/{id}")
     public ResponseEntity<RestaurantesResponseDto> findById(@Parameter(description = "Id do Restaurante que deseja buscar", example = "1")@PathVariable Long id){
-        log.info("Buscando Restaurante");
         RestaurantesResponseDto restaurantesResponseDto = service.findById(id);
+        log.info("Buscando Restaurante");
         return ResponseEntity.ok().body(restaurantesResponseDto);
     }
     @Operation(summary = "Editando Restaurante")
@@ -75,16 +75,16 @@ public class RestaurantesController {
     })
     @PutMapping(value = "/{id}")
     public ResponseEntity<RestaurantesResponseDto> update(@Parameter(description = "Id do Restaurante que deseja editar", example = "1")@PathVariable Long id, @RequestBody @Valid RestaurantesDto restauranteDto){
-        log.info("Atualizando restaurante");
         RestaurantesResponseDto restaurante = service.update(id, restauranteDto);
+        log.info("Atualizando restaurante");
         return ResponseEntity.ok().body(restaurante);
     }
     @Operation(summary = "Deletando Restaurante")
     @ApiResponse(responseCode = "200", description = "Deletado com sucesso")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@Parameter(description = "Id do Restaurante que deseja deletar", example = "1")@PathVariable Long id){
-        log.info("Apagando Restaurante");
         service.delete(id);
+        log.info("Apagando Restaurante");
         return ResponseEntity.noContent().build();
 
     }
@@ -95,39 +95,39 @@ public class RestaurantesController {
             @RequestParam(defaultValue = "nome") String sortBy,
             @RequestParam(defaultValue = "asc") String direction){
 
-        log.info("Listando Restaurantes paginado");
         var response = service.listaPaginada(page, size, sortBy, direction);
+        log.info("Listando Restaurantes paginado");
         return ResponseEntity.ok(response);
     }
     @PostMapping("/{id}/imagem")
     public ResponseEntity<?> uploadImagem(@PathVariable Long id, @RequestParam("file") MultipartFile file){
-        log.info("Criando imagem de Restaurante");
         service.salvarImagem(id, file);
+        log.info("Criando imagem de Restaurante");
         return ResponseEntity.ok("Imagem crianda com sucesso");
     }
     @GetMapping("/imagem/{nome}")
     public ResponseEntity<Resource> buscarImagem(@PathVariable String nome) throws MalformedURLException {
-        log.info("Buscando imagem de Restaurante");
         Path caminho = Paths.get("uploads/restaurante/").resolve(nome);
         Resource resource = new UrlResource(caminho.toUri());
+        log.info("Buscando imagem de Restaurante");
         return ResponseEntity.ok().body(resource);
     }
     @GetMapping("/melhorAvaliado")
     public ResponseEntity<RestauranteMediaDto> RestauranteMelhorAvaliado(){
-        log.info("Buscando o Restaurante melhor avaliado");
         RestauranteMediaDto restauranteMediaDto = service.restauranteMaiorMedia();
+        log.info("Buscando o Restaurante melhor avaliado");
         return ResponseEntity.ok().body(restauranteMediaDto);
     }
     @GetMapping("/{id}/localizacao")
     public ResponseEntity<RestaurantesResponseDto> buscarLocalizacao(@PathVariable Long id){
-        log.info("Buscando Localização de Restaurante");
         RestaurantesResponseDto restaurantesResponseDto = service.buscarLocalizacaoRestaurante(id);
+        log.info("Buscando Localização de Restaurante");
         return ResponseEntity.ok().body(restaurantesResponseDto);
     }
     @GetMapping("/busca")
     public ResponseEntity<List<Restaurantes>> searchRestaurante(@RequestParam String nome){
-        log.info("Buscando restaurante de forma dinamica");
         List<Restaurantes> restaurantes = service.searchRestaurante(nome);
+        log.info("Buscando restaurante de forma dinamica");
         return ResponseEntity.ok(restaurantes);
 
     }

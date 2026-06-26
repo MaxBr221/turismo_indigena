@@ -29,8 +29,8 @@ public class UserController {
     @Operation(summary = "Buscando users")
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll(){
-        log.info("Listando todos os usuários");
         List<UserDto> listaUsers = userService.findAll();
+        log.info("Listando todos os usuários");
         return ResponseEntity.ok().body(listaUsers);
     }
     @Operation(summary = "Buscando users")
@@ -40,8 +40,8 @@ public class UserController {
     })
     @GetMapping(value = "/me")
     public ResponseEntity<UserDto> findByUser(){
-        log.info("listando usuário selecionado");
         UserDto user = userService.findByUser();
+        log.info("listando usuário selecionado");
         return ResponseEntity.ok().body(user);
     }
 
@@ -53,29 +53,29 @@ public class UserController {
     })
     @PutMapping(value = "/me")
     public ResponseEntity<UserDto> update(@RequestBody @Valid UserUpdateDto userDto){
-        log.info("Atualizando usuário");
         UserDto user = userService.findByUser();
         userService.update(userDto);
+        log.info("Atualizando usuário");
         return ResponseEntity.ok().body(user);
     }
     @Operation(summary = "Deletando users")
     @DeleteMapping(value = "/me")
     public ResponseEntity delete(){
-        log.info("Deletando usuário");
         userService.delete();
+        log.info("Deletando usuário");
         return ResponseEntity.noContent().build();
 
     }
     @GetMapping(value = "/meAvaliacoes")
     public ResponseEntity<List<AvaliacaoResponseDto>> findMyAvaliacao(){
-        log.info("Buscando minhas avaliações");
         List<AvaliacaoResponseDto> avaliacoes = userService.findMyAvaliacao();
+        log.info("Buscando minhas avaliações");
         return ResponseEntity.ok().body(avaliacoes);
     }
     @GetMapping(value = "/mePerfil")
     public ResponseEntity<UserMeuPerfil> meuPerfil(){
-        log.info("Pegando informações do meu perfil");
         UserMeuPerfil user = userService.meuPerfil();
+        log.info("Pegando informações do meu perfil");
         return ResponseEntity.ok(user);
     }
 }

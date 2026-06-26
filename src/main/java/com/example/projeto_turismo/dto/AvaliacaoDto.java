@@ -2,22 +2,21 @@ package com.example.projeto_turismo.dto;
 
 import com.example.projeto_turismo.domains.Avaliacao;
 import com.example.projeto_turismo.exceptions.EventFullException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-//o postman mapea de acordo com o nome do dto
 public record AvaliacaoDto(
-        @NotNull
         @Min(0)
         @Max(10)
+        @JsonProperty("notaEmNumero")
         Integer nota,
-        @NotBlank
+        @JsonProperty("comentarioDigitado")
         String comentario,
-        @NotNull
         Long idPonto,
-        @NotNull
+        @JsonProperty("id")
         Long idRestaurante) {
 
 

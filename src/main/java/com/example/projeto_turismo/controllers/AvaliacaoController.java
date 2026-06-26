@@ -25,37 +25,37 @@ public class  AvaliacaoController {
 
     @PostMapping
     public ResponseEntity<AvaliacaoResponseDto> create(@RequestBody @Valid AvaliacaoDto avaliacaoDto){
-        log.info("Criando Avaliação");
         AvaliacaoResponseDto avaliacao = avaliacaoService.create(avaliacaoDto);
+        log.info("Criando Avaliação");
         return ResponseEntity.status(HttpStatus.CREATED).body(avaliacao);
     }
     @GetMapping("/{id}")
     public ResponseEntity<AvaliacaoResponseDto> findById(@PathVariable Long id){
-        log.info("Buscando Avaliação");
         AvaliacaoResponseDto avaliacao = avaliacaoService.findById(id);
+        log.info("Buscando Avaliação");
         return ResponseEntity.ok().body(avaliacao);
     }
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<AvaliacaoResponseDto>> findAll(){
-        log.info("Listando avaliações");
         List<AvaliacaoResponseDto> avaliacoes = avaliacaoService.findAll();
+        log.info("Listando avaliações");
         return ResponseEntity.ok().body(avaliacoes);
     }
     @PutMapping("/{id}")
     public ResponseEntity<AvaliacaoResponseDto> update(@PathVariable Long id, @RequestBody @Valid AvaliacaoUpdateDto avaliacaoDto){
-        log.info("Atualizando avaliação");
         AvaliacaoResponseDto avaliacaoResponseDto = avaliacaoService.update(id, avaliacaoDto);
+        log.info("Atualizando avaliação");
         return ResponseEntity.ok().body(avaliacaoResponseDto);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id){
-        log.info("deletando avaliação");
         avaliacaoService.delete(id);
+        log.info("deletando avaliação");
         return ResponseEntity.noContent().build();
 
     }
     @PostMapping("/avaliarRestaurante")
-    public void avaliarRestaurante(@RequestBody @Valid AvaliacaoDto avaliacaoDto){
+    public void avaliarRestaurante(@RequestBody AvaliacaoDto avaliacaoDto){
         log.info("Avaliando Restaurante");
         avaliacaoService.avaliarRestaurante(avaliacaoDto);
     }

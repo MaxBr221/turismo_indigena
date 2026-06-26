@@ -10,6 +10,7 @@ import com.example.projeto_turismo.dto.AvaliacaoResponseDto;
 import com.example.projeto_turismo.dto.AvaliacaoUpdateDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,22 +50,13 @@ public class AvaliacaoService {
                     .orElseThrow(()-> new EventFullException("Restaurante não existente para avaliação"));
         }
 
-        User user = usuarioLogadoProvider.pegarUsuarioLogado();
+      //  User user = usuarioLogadoProvider.pegarUsuarioLogado();
 
         Avaliacao avaliacao = new Avaliacao();
-        avaliacao.setNota(avaliacaoDto.nota());
-        avaliacao.setComentario(avaliacaoDto.comentario());
-        avaliacao.setUser(user);
-        avaliacao.setPontoTuristico(ponto);
-        avaliacao.setRestaurante(restaurante);
+        BeanUtils.copyProperties(avaliacaoDto, avaliacao);
+        Avaliacao salvo = avaliacaoRepository.save(avaliacao);
+        return new AvaliacaoResponseDto(salvo);
 
-        return new AvaliacaoResponseDto(
-                avaliacao.getNota(),
-                avaliacao.getComentario(),
-                avaliacao.getUser().getId(),
-                avaliacao.getPontoTuristico().getId(),
-                avaliacao.getRestaurante().getId(),
-                avaliacao.getDataAvaliacao());
     }
     public AvaliacaoResponseDto update(Long id, AvaliacaoUpdateDto avaliacaoUpdateDto){
         Avaliacao avaliacao = avaliacaoRepository.findById(id)
@@ -84,45 +76,22 @@ public class AvaliacaoService {
             restaurantes = restaurantesRepository.findById(avaliacaoUpdateDto.restauranteId())
                     .orElseThrow(() -> new EventFullException("Esse restaurante não existe"));
         }
-        avaliacao.setNota(avaliacaoUpdateDto.nota());
-        avaliacao.setComentario(avaliacaoUpdateDto.comentario());
-        avaliacao.setPontoTuristico(ponto);
-        avaliacao.setRestaurante(restaurantes);
-
+        BeanUtils.copyProperties(avaliacaoUpdateDto, avaliacao);
         Avaliacao salvo = avaliacaoRepository.save(avaliacao);
 
-        return new AvaliacaoResponseDto(
-                salvo.getNota(),
-                salvo.getComentario(),
-                salvo.getUser().getId(),
-                salvo.getPontoTuristico().getId(),
-                salvo.getRestaurante().getId(),
-                salvo.getDataAvaliacao());
+        return new AvaliacaoResponseDto(salvo);
     }
     public AvaliacaoResponseDto findById(Long id){
         Avaliacao avaliacao = avaliacaoRepository.findById(id)
                 .orElseThrow(()-> new EventFullException("Avaliação desse Ponto Turistico não existente"));
 
-
-        return new AvaliacaoResponseDto(
-                avaliacao.getNota(),
-                avaliacao.getComentario(),
-                avaliacao.getUser().getId(),
-                avaliacao.getPontoTuristico().getId(),
-                avaliacao.getRestaurante().getId(),
-                avaliacao.getDataAvaliacao());
+        return new AvaliacaoResponseDto(avaliacao);
 
     }
     public List<AvaliacaoResponseDto> findAll(){
         return avaliacaoRepository.findAll()
                 .stream()
-                .map(avaliacao -> new AvaliacaoResponseDto(
-                        avaliacao.getNota(),
-                        avaliacao.getComentario(),
-                        avaliacao.getUser().getId(),
-                        avaliacao.getPontoTuristico().getId(),
-                        avaliacao.getRestaurante().getId(),
-                        avaliacao.getDataAvaliacao()))
+                .map(avaliacao -> new AvaliacaoResponseDto(avaliacao))
                 .toList();
     }
 
@@ -172,7 +141,6 @@ public class AvaliacaoService {
         Avaliacao avaliacao = new Avaliacao();
         User user = usuarioLogadoProvider.pegarUsuarioLogado();
 
-        //finalizar funcionalidade de localização quando estiver fazendo o front
         if(avaliacaoDto.idRestaurante() != null && avaliacaoDto.idPonto() == null){
 
             Avaliacao avaliacao1 = avaliacaoRepository.findByUserAndRestauranteId(user, avaliacaoDto.idRestaurante());

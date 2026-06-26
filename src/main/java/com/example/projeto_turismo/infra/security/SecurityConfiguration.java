@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -57,14 +56,17 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/pontoTuristico").permitAll()
                         .requestMatchers(HttpMethod.GET, "/pontoTuristico/busca").permitAll()
                         .requestMatchers(HttpMethod.GET, "/pontoTuristico/pontos").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/restaurantes").hasRole("ADMIN")
+                       // .requestMatchers(HttpMethod.POST, "/restaurantes").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/restaurantes").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/restaurantes/restaurantePaginacao").permitAll()
                         .requestMatchers(HttpMethod.GET, "/restaurantes/busca").permitAll()
-                        //.requestMatchers(HttpMethod.POST, "/restaurantes").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/restaurantes").permitAll()
                         .requestMatchers(HttpMethod.POST, "/pontoTuristico/{id}/imagem").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/users/mePerfil").permitAll()
                         .requestMatchers(HttpMethod.GET, "/restaurantes/dina").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/avaliacao/avaliarRestaurante").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/avaliacao/avaliarPontoTuristico").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/avaliacao/id").permitAll()
                         .requestMatchers("/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html").permitAll()

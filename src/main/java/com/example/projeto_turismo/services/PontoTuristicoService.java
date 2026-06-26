@@ -8,6 +8,7 @@ import com.example.projeto_turismo.dto.PontoTuristicoMediaDto;
 import com.example.projeto_turismo.dto.PontoTuristicoResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.PontoTuristicoRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,22 +32,11 @@ public class PontoTuristicoService {
         this.repository = repository;
     }
 
-    public PontoTuristicoResponseDto create(PontoTuristicoCreateDto pontoTuristico){
-
+    public PontoTuristicoResponseDto create(PontoTuristicoCreateDto pontoTuristicoDto){
         PontoTuristico turistico = new PontoTuristico();
-        turistico.setNome(pontoTuristico.nome());
-        turistico.setLocal(pontoTuristico.local());
-        turistico.setInformacoes(pontoTuristico.informacoes());
-        turistico.setLatitude(pontoTuristico.latitude());
-        turistico.setLongitude(pontoTuristico.longitude());
-
+        BeanUtils.copyProperties(pontoTuristicoDto, turistico);
         PontoTuristico salvo = repository.save(turistico);
-        return new PontoTuristicoResponseDto(
-                salvo.getNome(),
-                salvo.getLocal(),
-                salvo.getInformacoes(),
-                salvo.getLatitude(),
-                salvo.getLongitude());
+        return new PontoTuristicoResponseDto(salvo);
     }
     public List<PontoTuristicoResponseDto> findAll(){
         return repository.findAll()
