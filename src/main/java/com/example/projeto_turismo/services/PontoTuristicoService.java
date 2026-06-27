@@ -41,44 +41,23 @@ public class PontoTuristicoService {
     public List<PontoTuristicoResponseDto> findAll(){
         return repository.findAll()
                 .stream()
-                .map((pontoTuristico1 -> new PontoTuristicoResponseDto(
-                        pontoTuristico1.getNome(),
-                        pontoTuristico1.getLocal(),
-                        pontoTuristico1.getInformacoes(),
-                        pontoTuristico1.getLatitude(),
-                        pontoTuristico1.getLongitude())
-
-                ))
+                .map(pontoTuristico1 -> new PontoTuristicoResponseDto(pontoTuristico1))
                 .toList();
 
     }
     public PontoTuristicoResponseDto findById(Long id){
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto turistico não encotrado."));
-        return new PontoTuristicoResponseDto(
-                pontoTuristico.getNome(),
-                pontoTuristico.getLocal(),
-                pontoTuristico.getInformacoes(),
-                pontoTuristico.getLatitude(),
-                pontoTuristico.getLongitude());
+        return new PontoTuristicoResponseDto(pontoTuristico);
     }
     public PontoTuristicoResponseDto update(Long id, PontoTuristicoCreateDto dto){
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto turistico não encotrado."));
 
-        //colocar opção de editar latitude e longitude
-        pontoTuristico.setNome(dto.nome());
-        pontoTuristico.setLocal(dto.local());
-        pontoTuristico.setInformacoes(dto.informacoes());
-
+        BeanUtils.copyProperties(dto, pontoTuristico);
         PontoTuristico pontoTuristico1 = repository.save(pontoTuristico);
 
-        return new PontoTuristicoResponseDto(
-                pontoTuristico1.getNome(),
-                pontoTuristico1.getLocal(),
-                pontoTuristico1.getInformacoes(),
-                pontoTuristico1.getLatitude(),
-                pontoTuristico1.getLongitude());
+        return new PontoTuristicoResponseDto(pontoTuristico1);
     }
     public void delete(Long id){
         PontoTuristico pontoTuristico = repository.findById(id)
@@ -94,13 +73,7 @@ public class PontoTuristicoService {
         }
         return pontoTuristico
                 .stream()
-                .map(ponto -> new PontoTuristicoResponseDto(
-                        ponto.getNome(),
-                        ponto.getLocal(),
-                        ponto.getInformacoes(),
-                        ponto.getLatitude(),
-                        ponto.getLongitude()
-                ))
+                .map(ponto -> new PontoTuristicoResponseDto(ponto))
                 .toList();
     }
     public PageResponse<PontoTuristicoResponseDto> listaPaginado(int page, int size, String sortBy, String direction){
@@ -154,12 +127,7 @@ public class PontoTuristicoService {
         PontoTuristico pontoTuristico = repository.findById(id)
                 .orElseThrow(()-> new EventFullException("Ponto Turistico não existente"));
 
-        return new PontoTuristicoResponseDto(
-                pontoTuristico.getNome(),
-                pontoTuristico.getLocal(),
-                pontoTuristico.getInformacoes(),
-                pontoTuristico.getLatitude(),
-                pontoTuristico.getLongitude());
+        return new PontoTuristicoResponseDto(pontoTuristico);
     }
 
     public PontoTuristicoMediaDto pontoTuristicoMaiorMedia() {
@@ -168,7 +136,6 @@ public class PontoTuristicoService {
                 .orElseThrow(() -> new EventFullException("Não há Ponto Turistico avaliado ainda"));
     }
     public List<PontoTuristico> searchPontoTuristico(String nome){
-
         return repository.findByNome(nome);
     }
 }

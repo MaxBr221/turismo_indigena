@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.projeto_turismo.domains.User;
+import com.example.projeto_turismo.dto.DadosTokenJwt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +17,18 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public String generateToken(User user){
+    public DadosTokenJwt generateToken(User user){
         try{
             Algorithm algorithm =  Algorithm.HMAC256(secret);
+            var dadosToken = genExpirationDate();
             String token = JWT.create()
                     .withIssuer("turismo-api")
                     .withSubject(user.getLogin())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
-            return token;
+
+            Long segundosExpiracao = dadosToken.getEpochSecond();
+            return new DadosTokenJwt(token, segundosExpiracao);
 
         }catch (JWTCreationException e){
             throw new RuntimeException("Erro ao gerar token", e);
@@ -45,6 +49,6 @@ public class TokenService {
         }
     }
     private Instant genExpirationDate(){
-        return  Instant.now().plus(10, ChronoUnit.MINUTES);
+        return Instant.now().plus(10, ChronoUnit.MINUTES);
     }
 }

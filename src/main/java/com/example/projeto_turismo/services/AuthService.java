@@ -38,6 +38,7 @@ public class AuthService implements UserDetailsService, UsuarioLogadoProvider {
         String login = authentication.getName();
 
         return repository.findByLogin(login);
+
     }
 
     public User registerUser(RegisterDto registerDto){

@@ -5,6 +5,7 @@ import com.example.projeto_turismo.dto.GuideCreateDto;
 import com.example.projeto_turismo.dto.GuideResponseDto;
 import com.example.projeto_turismo.exceptions.EventFullException;
 import com.example.projeto_turismo.repositorys.GuideRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,49 +24,32 @@ public class GuideService {
             throw new EventFullException("Guia já cadastrado");
         }
         Guide guide = new Guide();
-        guide.setNome(guideCreateDto.nome());
-        guide.setTelefone(guideCreateDto.telefone());
-        guide.setDescricao(guideCreateDto.descricao());
-        Guide guide1 = repository.save(guide);
+        BeanUtils.copyProperties(guideCreateDto, guide);
+        Guide salvo = repository.save(guide);
 
-        return new GuideResponseDto(guide1.getId(), guide1.getNome(), guide1.getTelefone(), guide1.getDescricao());
+        return new GuideResponseDto(salvo);
 
     }
     public List<GuideResponseDto> findAll(){
         return repository.findAll()
                 .stream()
-                .map(guide -> new GuideResponseDto(
-                        guide.getId(),
-                        guide.getNome(),
-                        guide.getTelefone(),
-                        guide.getDescricao()))
+                .map(guide -> new GuideResponseDto(guide))
                 .toList();
     }
     public GuideResponseDto findById(Long id){
         Guide guide = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Id não encontrado."));
 
-        return new GuideResponseDto(
-                guide.getId(),
-                guide.getNome(),
-                guide.getTelefone(),
-                guide.getDescricao());
+        return new GuideResponseDto(guide);
     }
     public GuideResponseDto update(Long id, GuideCreateDto guideCreateDto){
         Guide guide = repository.findById(id)
                 .orElseThrow(() -> new EventFullException("Id não encontrado."));
 
-        guide.setNome(guideCreateDto.nome());
-        guide.setTelefone(guideCreateDto.telefone());
-        guide.setDescricao(guideCreateDto.descricao());
+        BeanUtils.copyProperties(guideCreateDto, guide);
+        Guide salvo = repository.save(guide);
 
-        Guide guide1 = repository.save(guide);
-
-        return new GuideResponseDto(
-                guide1.getId(),
-                guide1.getNome(),
-                guide1.getTelefone(),
-                guide1.getDescricao());
+        return new GuideResponseDto(salvo);
     }
     public void delete(Long id){
         Guide guide = repository.findById(id)

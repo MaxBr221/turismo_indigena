@@ -2,9 +2,7 @@ package com.example.projeto_turismo.controllers;
 
 import com.example.projeto_turismo.domains.Role;
 import com.example.projeto_turismo.domains.User;
-import com.example.projeto_turismo.dto.AuthUserDto;
-import com.example.projeto_turismo.dto.LoginDto;
-import com.example.projeto_turismo.dto.RegisterDto;
+import com.example.projeto_turismo.dto.*;
 import com.example.projeto_turismo.infra.security.TokenService;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import com.example.projeto_turismo.services.AuthService;
@@ -53,10 +51,15 @@ public class AuthController {
         authService.autenticar(authUserDto.login(),authUserDto.senha());
         var userNamePassword = new UsernamePasswordAuthenticationToken(authUserDto.login(), authUserDto.senha());
         var auth = this.authenticationManager.authenticate(userNamePassword);
-        var token = tokenService.generateToken((User)auth.getPrincipal());
+        User userLogado = (User) auth.getPrincipal();
+        DadosTokenJwt dadosToken = tokenService.generateToken(userLogado);
         log.info("usuário logando..");
-        return ResponseEntity.ok(new LoginDto(token));
 
+        return ResponseEntity.ok(new UserMeuPerfil(userLogado.getNome(),
+                userLogado.getTelefone(),
+                userLogado.getLogin(),
+                dadosToken.token(),
+                dadosToken.expiracao()));
 
     }
 
@@ -82,7 +85,7 @@ public class AuthController {
                 GoogleIdToken.Payload payload = idToken.getPayload();
 
                 String login = payload.getEmail();
-                String nome = (String) payload.get("name");
+                String nome = (String) payload.get("nome");
 
                 // 1. Busca se o usuário já existe
                 var user = repository.findByLogin(login);
@@ -92,7 +95,7 @@ public class AuthController {
                     // 2. Se não existir, cria o usuário novo
                     User userNovo = new User();
                     userNovo.setLogin(login);
-                    userNovo.setNome(nome);
+                    userNovo.setNome(nome != null ? nome : "Usuário Google");
                     userNovo.setRole(Role.USER);
 
                     if (telefoneVindoDoFront != null && !telefoneVindoDoFront.isEmpty()) {
@@ -107,12 +110,24 @@ public class AuthController {
                     usuarioLogado = repository.save(userNovo);
                     log.info("Novo usuário cadastrado via Google: " + login);
                 } else {
-                    // 3. Se já existir, a variável de controle recebe o usuário encontrado
                     usuarioLogado = user;
-                    log.info("Usuário existente logando via Google: " + login);
+
+                    if (usuarioLogado.getNome() == null || usuarioLogado.getNome().isEmpty()) {
+                        usuarioLogado.setNome(nome);
+                        repository.save(usuarioLogado); // Salva a atualização no banco
+                    }
+                   log.info("Usuário existente logando via Google: " + login);
                 }
-                String token = tokenService.generateToken(usuarioLogado);
-                return ResponseEntity.ok(new LoginDto(token));
+                DadosTokenJwt dadosToken = tokenService.generateToken(usuarioLogado);
+
+                String nomeFinal = (usuarioLogado.getNome() != null) ? usuarioLogado.getNome() : nome;
+                return ResponseEntity.ok(new UserMeuPerfil(
+                        nomeFinal,
+                        usuarioLogado.getTelefone(),
+                        usuarioLogado.getLogin(),
+                        dadosToken.token(),
+                        dadosToken.expiracao()
+                ));
 
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token Google Inválido");

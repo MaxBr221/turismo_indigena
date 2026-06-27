@@ -28,25 +28,13 @@ public class UserService {
         if(user == null){
             throw new EventFullException("Usuário não existente");
         }
-        return new UserDto(
-                user.getId(),
-                user.getNome(),
-                user.getTelefone(),
-                user.getLogin(),
-                user.getRole()
-        );
+        return new UserDto(user);
 
     }
     public List<UserDto> findAll(){
         return userRepository.findAll()
                 .stream()
-                .map(user -> new UserDto(
-                        user.getId(),
-                        user.getNome(),
-                        user.getTelefone(),
-                        user.getLogin(),
-                        user.getRole()
-                ))
+                .map(user -> new UserDto(user))
                 .toList();
     }
     public void delete(){
@@ -68,13 +56,7 @@ public class UserService {
 
         }
         User user1 = userRepository.save(user);
-        return new UserDto(
-                user1.getId(),
-                user1.getNome(),
-                user1.getTelefone(),
-                user1.getLogin(),
-                user1.getRole()
-        );
+        return new UserDto(user1);
 
     }
     public List<AvaliacaoResponseDto> findMyAvaliacao(){
@@ -87,22 +69,8 @@ public class UserService {
         }
         return avaliacoes
                 .stream()
-                .map(avaliacao -> new AvaliacaoResponseDto(
-                    avaliacao.getNota(),
-                    avaliacao.getComentario(),
-                    avaliacao.getUser().getId(),
-                    avaliacao.getPontoTuristico().getId(),
-                    avaliacao.getRestaurante().getId(),
-                    avaliacao.getDataAvaliacao()))
+                .map(avaliacao -> new AvaliacaoResponseDto(avaliacao))
                 .toList();
     }
 
-    public UserMeuPerfil meuPerfil(){
-        User user = usuarioLogadoProvider.pegarUsuarioLogado();
-        return new UserMeuPerfil(
-                user.getNome(),
-                user.getTelefone(),
-                user.getLogin()
-        );
-    }
 }

@@ -72,10 +72,5 @@ public class UserController {
         log.info("Buscando minhas avaliações");
         return ResponseEntity.ok().body(avaliacoes);
     }
-    @GetMapping(value = "/mePerfil")
-    public ResponseEntity<UserMeuPerfil> meuPerfil(){
-        UserMeuPerfil user = userService.meuPerfil();
-        log.info("Pegando informações do meu perfil");
-        return ResponseEntity.ok(user);
-    }
+
 }

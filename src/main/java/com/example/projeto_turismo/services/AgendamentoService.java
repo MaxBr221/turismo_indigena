@@ -10,7 +10,6 @@ import com.example.projeto_turismo.repositorys.GuideRepository;
 import com.example.projeto_turismo.repositorys.RestaurantesRepository;
 import com.example.projeto_turismo.repositorys.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -1,4 +1,4 @@
 package com.example.projeto_turismo.dto;
 
-public record UserMeuPerfil(String nome, String telefone, String login) {
+public record UserMeuPerfil(String nome, String telefone, String login, String token, Long expiracao) {
 }
