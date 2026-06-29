@@ -61,6 +61,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/restaurantes/restaurantePaginacao").permitAll()
                         .requestMatchers(HttpMethod.GET, "/restaurantes/busca").permitAll()
                         .requestMatchers(HttpMethod.POST, "/restaurantes").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/restaurantes/melhorAvaliado").permitAll()
                         .requestMatchers(HttpMethod.POST, "/pontoTuristico/{id}/imagem").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/users/mePerfil").permitAll()
                         .requestMatchers(HttpMethod.GET, "/restaurantes/dina").permitAll()
