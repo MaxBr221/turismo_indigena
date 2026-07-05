@@ -1,100 +1,132 @@
 package com.example.projeto_turismo.infra.security;
 
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.*;
 
-import java.util.Arrays;
+import java.util.List;
 
-@SecurityScheme(
-        name = "bearerAuth",
-        type = SecuritySchemeType.HTTP,
-        scheme = "bearer",
-        bearerFormat = "JWT"
-)
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    private SecurityFilter securityFilter;
+
+    private final SecurityFilter securityFilter;
 
     public SecurityConfiguration(SecurityFilter securityFilter) {
         this.securityFilter = securityFilter;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-        return httpSecurity
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        return http
+                // 🌍 CORS
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf->csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize-> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/google").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/agendamento").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/agendamento").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/guide").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/guide").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/guide").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/guide/busca").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/pontoTuristico").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/pontoTuristico").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/pontoTuristico").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/pontoTuristico/busca").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/pontoTuristico/pontos").permitAll()
-                       // .requestMatchers(HttpMethod.POST, "/restaurantes").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/restaurantes").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/restaurantes/restaurantePaginacao").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/restaurantes/busca").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/restaurantes").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/restaurantes/melhorAvaliado").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/pontoTuristico/{id}/imagem").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/users/mePerfil").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/restaurantes/dina").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/avaliacao/avaliarRestaurante").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/avaliacao/avaliarPontoTuristico").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/avaliacao/id").permitAll()
-                        .requestMatchers("/swagger-ui/**",
+
+                // 🧨 CSRF desativado (API stateless)
+                .csrf(csrf -> csrf.disable())
+
+                // 🧠 SEM sessão (JWT)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+
+                // 🔐 regras de acesso
+                .authorizeHttpRequests(auth -> auth
+
+                        // 🔓 AUTH SEMPRE LIBERADO
+                        .requestMatchers("/auth/**").permitAll()
+
+                        // 🔓 SWAGGER LIBERADO
+                        .requestMatchers(
+                                "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/swagger-ui.html").permitAll()
-                        .anyRequest().authenticated())
+                                "/swagger-ui.html"
+                        ).permitAll()
+
+                        // 🔓 GETs públicos (ajuste conforme regra real do teu sistema)
+                        .requestMatchers(HttpMethod.GET,
+                                "/guide/**",
+                                "/pontoTuristico/**",
+                                "/restaurantes/**",
+                                "/avaliacao/**"
+                        ).permitAll()
+
+                        // 🔐 ADMIN ONLY
+                        .requestMatchers(HttpMethod.POST,
+                                "/guide/**",
+                                "/pontoTuristico/**"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/guide/**",
+                                "/pontoTuristico/**"
+                        ).hasRole("ADMIN")
+
+                        // 🔐 USER + ADMIN
+                        .requestMatchers(HttpMethod.POST,
+                                "/agendamento/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/agendamento/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        // 🔐 resto fechado
+                        .anyRequest().authenticated()
+                )
+
+                // ⚠️ IMPORTANTE: filtro JWT
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .build();
     }
+
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
-        return authenticationConfiguration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config
+    ) throws Exception {
+        return config.getAuthenticationManager();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // 🌍 CORS LIMPO E GLOBAL
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        // Libera a porta do React/Next.js
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "http://localhost:3001"
+        ));
+
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"
+        ));
+
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 }
