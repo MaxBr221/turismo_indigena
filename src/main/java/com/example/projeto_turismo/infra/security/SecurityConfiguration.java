@@ -112,7 +112,9 @@ public class SecurityConfiguration {
 
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
-                "http://localhost:3001"
+                "http://localhost:3001",
+                "https://turismo-indigena-frontend.vercel.app",
+                "https://turismo-indigena-frontend-pqow2qss0-front-end-turismo-indigena.vercel.app"
         ));
 
         config.setAllowedMethods(List.of(
