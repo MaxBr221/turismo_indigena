@@ -75,7 +75,8 @@ public class SecurityConfiguration {
 
                         // 🔐 USER + ADMIN
                         .requestMatchers(HttpMethod.POST,
-                                "/agendamento/**"
+                                "/agendamento/**",
+                                "/pontoTuristico/**"
                         ).hasAnyRole("USER", "ADMIN")
 
                         .requestMatchers(HttpMethod.DELETE,
