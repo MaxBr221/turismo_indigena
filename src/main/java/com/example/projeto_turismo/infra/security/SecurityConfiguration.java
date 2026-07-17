@@ -38,7 +38,7 @@ public class SecurityConfiguration {
 
                 // 🧠 SEM sessão (JWT)
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS         )
                 )
 
                 // 🔐 regras de acesso

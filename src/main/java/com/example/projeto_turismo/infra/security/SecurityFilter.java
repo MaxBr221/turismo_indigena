@@ -70,13 +70,13 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String recoverToken(HttpServletRequest request) {
+    private String  recoverToken(HttpServletRequest request) {
         String authHeader = request.getHeader("authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return null;
         }
 
-        return authHeader.substring(7);
+        return authHeader.substring(    7);
     }
 }

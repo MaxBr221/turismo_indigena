@@ -48,7 +48,7 @@ public class TokenService {
 
         }
     }
-    private Instant genExpirationDate(){
+        private Instant genExpirationDate(){
         return Instant.now().plus(10, ChronoUnit.MINUTES);
     }
 }
