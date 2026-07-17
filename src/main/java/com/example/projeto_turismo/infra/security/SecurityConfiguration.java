@@ -62,11 +62,11 @@ public class SecurityConfiguration {
                                 "/avaliacao/**"
                         ).permitAll()
 
-                        // 🔐 ADMIN ONLY
-                        .requestMatchers(HttpMethod.POST,
-                                "/guide/**",
-                                "/pontoTuristico/**"
-                        ).hasRole("ADMIN")
+//                        // 🔐 ADMIN ONLY
+//                        .requestMatchers(HttpMethod.POST,
+//                                "/guide/**",
+//                                "/pontoTuristico/**"
+//                        ).hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.DELETE,
                                 "/guide/**",
@@ -76,7 +76,8 @@ public class SecurityConfiguration {
                         // 🔐 USER + ADMIN
                         .requestMatchers(HttpMethod.POST,
                                 "/agendamento/**",
-                                "/pontoTuristico/**"
+                                "/pontoTuristico/**",
+                                "/guide/**"
                         ).hasAnyRole("USER", "ADMIN")
 
                         .requestMatchers(HttpMethod.DELETE,
