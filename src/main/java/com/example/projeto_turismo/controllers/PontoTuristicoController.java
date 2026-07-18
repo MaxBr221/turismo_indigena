@@ -17,6 +17,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,8 +43,11 @@ public class PontoTuristicoController {
             @ApiResponse(responseCode = "400", description = "Dados incorretos")
     })
     @PostMapping
-    public ResponseEntity<PontoTuristicoResponseDto> create(@RequestBody @Valid PontoTuristicoCreateDto pontoTuristicoCreateDto){
+    public ResponseEntity<PontoTuristicoResponseDto> create(@RequestBody @Valid PontoTuristicoCreateDto pontoTuristicoCreateDto, Authentication authentication){
         PontoTuristicoResponseDto pontoTuristicoResponseDto1 = service.create(pontoTuristicoCreateDto);
+        System.out.println("AUTH = " + authentication);
+        System.out.println("USER = " + authentication.getName());
+
         log.info("Criando ponto turistico");
         return ResponseEntity.status(HttpStatus.CREATED).body(pontoTuristicoResponseDto1);
     }
