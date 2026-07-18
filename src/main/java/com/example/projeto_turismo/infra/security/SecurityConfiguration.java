@@ -78,7 +78,7 @@ public class SecurityConfiguration {
                                 "/agendamento/**",
                                 "/pontoTuristico/**",
                                 "/guide/**"
-                        ).hasAnyRole("USER", "ADMIN")
+                        ).permitAll()//hasAnyRole("USER", "ADMIN")
 
                         .requestMatchers(HttpMethod.DELETE,
                                 "/agendamento/**"
