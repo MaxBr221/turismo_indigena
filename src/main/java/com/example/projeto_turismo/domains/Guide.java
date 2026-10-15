@@ -24,6 +24,8 @@ public class Guide{
     private String telefone;
     @Column(name = "descricao")
     private String descricao;
+    @Column(name = "imagem")
+    private String imagem;
 
 
     public Guide(GuideResponseDto guideResponseDto) {

@@ -15,14 +15,18 @@ import org.springframework.beans.BeanUtils;
 @Setter
 @Schema(description = "Saida de dados de PontoTuristico")
 public class PontoTuristicoResponseDto {
+    private Long id;
     @Schema(description = "Nome do PontoTuristico", example = "Praia das Valas")
     private String nome;
     @Schema(description = "Tipo de Local do PontoTuristico", example = "PRAIA")
     private Local local;
     @Schema(description = "Mais informações do PontoTuristico", example = "Vistas linda dos mar com área ventilada")
     private String informacoes;
+    private String imagem;
     private Double latitude;
     private Double longitude;
+    private Double media;
+    private int avaliacoes;
 
     public PontoTuristicoResponseDto(PontoTuristico pontoTuristico){
         BeanUtils.copyProperties(pontoTuristico, this);

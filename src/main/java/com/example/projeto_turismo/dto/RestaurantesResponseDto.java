@@ -29,6 +29,9 @@ public class RestaurantesResponseDto {
     private String redeSociais;
     private String latitude;
     private String longitude;
+    private String imagem;
+    private Double media;
+    private int avaliacoes;
 
     public RestaurantesResponseDto(Long id, String nome, String descricao, String localizacao, String horarioFuncionamento, String telefone, String redeSociais) {
         this.id = id;
