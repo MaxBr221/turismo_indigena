@@ -1,21 +1,84 @@
 -- V20: Manter exatamente 4 Restaurantes, 4 Pontos Turisticos e 4 Guias com imagens e localizacoes corretas
 
+-- Desativar verificacao de chaves estrangeiras para operacoes seguras
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- =======================================================
+-- 0. GARANTIR QUE AS COLUNAS DE IMAGEM EXISTEM NAS TABELAS
+-- =======================================================
+
+-- Adicionar coluna imagem em guide se nao existir
+SET @col_guide = (
+    SELECT COUNT(*) 
+    FROM information_schema.COLUMNS 
+    WHERE TABLE_SCHEMA = DATABASE() 
+      AND TABLE_NAME = 'guide' 
+      AND COLUMN_NAME = 'imagem'
+);
+SET @sql_guide = IF(@col_guide = 0, 'ALTER TABLE guide ADD COLUMN imagem VARCHAR(500)', 'SELECT 1');
+PREPARE stmt_guide FROM @sql_guide;
+EXECUTE stmt_guide;
+DEALLOCATE PREPARE stmt_guide;
+
+-- Adicionar coluna imagem em restaurantes se nao existir
+SET @col_rest = (
+    SELECT COUNT(*) 
+    FROM information_schema.COLUMNS 
+    WHERE TABLE_SCHEMA = DATABASE() 
+      AND TABLE_NAME = 'restaurantes' 
+      AND COLUMN_NAME = 'imagem'
+);
+SET @sql_rest = IF(@col_rest = 0, 'ALTER TABLE restaurantes ADD COLUMN imagem VARCHAR(500)', 'SELECT 1');
+PREPARE stmt_rest FROM @sql_rest;
+EXECUTE stmt_rest;
+DEALLOCATE PREPARE stmt_rest;
+
+-- Adicionar coluna imagem em pontoturistico se nao existir
+SET @col_ponto = (
+    SELECT COUNT(*) 
+    FROM information_schema.COLUMNS 
+    WHERE TABLE_SCHEMA = DATABASE() 
+      AND TABLE_NAME = 'pontoturistico' 
+      AND COLUMN_NAME = 'imagem'
+);
+SET @sql_ponto = IF(@col_ponto = 0, 'ALTER TABLE pontoturistico ADD COLUMN imagem VARCHAR(500)', 'SELECT 1');
+PREPARE stmt_ponto FROM @sql_ponto;
+EXECUTE stmt_ponto;
+DEALLOCATE PREPARE stmt_ponto;
+
+
 -- =======================================================
 -- 1. RESTAURANTES (Apenas os 4 principais com fotos reais)
 -- =======================================================
 
--- Remover avaliacoes de restaurantes que serao excluidos
+-- Limpar avaliacoes de restaurantes que serao removidos
 DELETE FROM avaliacao 
-WHERE restaurante_id IN (
+WHERE restaurante_id IS NOT NULL 
+  AND restaurante_id NOT IN (
     SELECT id FROM (
         SELECT id FROM restaurantes 
-        WHERE nome NOT IN (
+        WHERE nome IN (
             'Mirante Potiguara Bar e Restaurante',
             'Bar e Restaurante Trincheiras',
             'Bar e Restaurante Beira Mar',
             'Restaurante Pousada Tubarão'
         )
-    ) AS tmp_rest_del
+    ) AS tmp_rest_valid
+);
+
+-- Limpar agendamentos de restaurantes que serao removidos
+DELETE FROM agendamento 
+WHERE id_restaurantes IS NOT NULL 
+  AND id_restaurantes NOT IN (
+    SELECT id FROM (
+        SELECT id FROM restaurantes 
+        WHERE nome IN (
+            'Mirante Potiguara Bar e Restaurante',
+            'Bar e Restaurante Trincheiras',
+            'Bar e Restaurante Beira Mar',
+            'Restaurante Pousada Tubarão'
+        )
+    ) AS tmp_rest_agend
 );
 
 -- Excluir restaurantes excedentes
@@ -88,18 +151,19 @@ WHERE nome = 'Restaurante Pousada Tubarão';
 -- 2. PONTOS TURISTICOS (Apenas os 4 principais com fotos reais)
 -- =======================================================
 
--- Remover avaliacoes de pontos turisticos que serao excluidos
+-- Limpar avaliacoes de pontos que serao removidos (coluna correta: ponto_id)
 DELETE FROM avaliacao 
-WHERE ponto_turistico_id IN (
+WHERE ponto_id IS NOT NULL 
+  AND ponto_id NOT IN (
     SELECT id FROM (
         SELECT id FROM pontoturistico 
-        WHERE nome NOT IN (
+        WHERE nome IN (
             'Praia do Forte e Canhoes Coloniais',
             'Aldeia Sao Francisco',
             'Falesias do Alto do Tamba',
             'Rio do Gozo'
         )
-    ) AS tmp_ponto_del
+    ) AS tmp_ponto_valid
 );
 
 -- Excluir pontos turisticos excedentes
@@ -156,7 +220,22 @@ WHERE nome = 'Rio do Gozo';
 -- 3. GUIAS TURISTICOS (Apenas os 4 principais com fotos)
 -- =======================================================
 
--- Remover guias que estao em agendamentos futuros se houver, ou manter os 4 principais
+-- Limpar agendamentos de guias que serao removidos
+DELETE FROM agendamento 
+WHERE id_guide IS NOT NULL 
+  AND id_guide NOT IN (
+    SELECT id FROM (
+        SELECT id FROM guide 
+        WHERE nome IN (
+            'Ananir Potiguara',
+            'Kaue Silva Potiguara',
+            'Jaciara Potiguara',
+            'Mestre Moacir dos Santos'
+        )
+    ) AS tmp_guide_agend
+);
+
+-- Remover guias excedentes
 DELETE FROM guide 
 WHERE nome NOT IN (
     'Ananir Potiguara',
@@ -192,3 +271,6 @@ SET telefone = '(83) 99321-4455',
     descricao = 'Guia experiente com 15 anos de atuacao em ecoturismo, historia colonial dos canhoes e passeios nos manguezais.',
     imagem = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80'
 WHERE nome = 'Mestre Moacir dos Santos';
+
+-- Reativar verificacao de chaves estrangeiras
+SET FOREIGN_KEY_CHECKS = 1;
