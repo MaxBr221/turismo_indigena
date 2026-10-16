@@ -1,4 +1,4 @@
--- V20: Manter exatamente 4 Restaurantes, 4 Pontos Turisticos e 4 Guias com imagens e localizacoes corretas
+-- V20: Manter exatamente 4 Restaurantes, 4 Pontos Turisticos e 4 Guias (fotos em Restaurantes e Pontos Turisticos)
 
 -- Desativar verificacao de chaves estrangeiras para operacoes seguras
 SET FOREIGN_KEY_CHECKS = 0;
@@ -6,19 +6,6 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- =======================================================
 -- 0. GARANTIR QUE AS COLUNAS DE IMAGEM EXISTEM NAS TABELAS
 -- =======================================================
-
--- Adicionar coluna imagem em guide se nao existir
-SET @col_guide = (
-    SELECT COUNT(*) 
-    FROM information_schema.COLUMNS 
-    WHERE TABLE_SCHEMA = DATABASE() 
-      AND TABLE_NAME = 'guide' 
-      AND COLUMN_NAME = 'imagem'
-);
-SET @sql_guide = IF(@col_guide = 0, 'ALTER TABLE guide ADD COLUMN imagem VARCHAR(500)', 'SELECT 1');
-PREPARE stmt_guide FROM @sql_guide;
-EXECUTE stmt_guide;
-DEALLOCATE PREPARE stmt_guide;
 
 -- Adicionar coluna imagem em restaurantes se nao existir
 SET @col_rest = (
@@ -151,7 +138,7 @@ WHERE nome = 'Restaurante Pousada Tubarão';
 -- 2. PONTOS TURISTICOS (Apenas os 4 principais com fotos reais)
 -- =======================================================
 
--- Limpar avaliacoes de pontos que serao removidos (coluna correta: ponto_id)
+-- Limpar avaliacoes de pontos que serao removidos
 DELETE FROM avaliacao 
 WHERE ponto_id IS NOT NULL 
   AND ponto_id NOT IN (
@@ -217,7 +204,7 @@ WHERE nome = 'Rio do Gozo';
 
 
 -- =======================================================
--- 3. GUIAS TURISTICOS (Apenas os 4 principais com fotos)
+-- 3. GUIAS TURISTICOS (Apenas os 4 principais sem fotos)
 -- =======================================================
 
 -- Limpar agendamentos de guias que serao removidos
@@ -247,29 +234,25 @@ WHERE nome NOT IN (
 -- Atualizar Ananir Potiguara
 UPDATE guide 
 SET telefone = '(83) 98834-1290',
-    descricao = 'Guia nativo da Aldeia Sao Francisco, especialista em vivencia comunitaria, rituais do Tore e trilhas sagradas ancestrais.',
-    imagem = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80'
+    descricao = 'Guia nativo da Aldeia Sao Francisco, especialista em vivencia comunitaria, rituais do Tore e trilhas sagradas ancestrais.'
 WHERE nome = 'Ananir Potiguara';
 
 -- Atualizar Kaue Silva Potiguara
 UPDATE guide 
 SET telefone = '(83) 98145-6721',
-    descricao = 'Condutor ambiental de buggy credenciado pelas Falesias do Tamba, Praia de Coqueirinho e banhos no Rio do Gozo.',
-    imagem = 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80'
+    descricao = 'Condutor ambiental de buggy credenciado pelas Falesias do Tamba, Praia de Coqueirinho e banhos no Rio do Gozo.'
 WHERE nome = 'Kaue Silva Potiguara';
 
 -- Atualizar Jaciara Potiguara
 UPDATE guide 
 SET telefone = '(83) 99678-2234',
-    descricao = 'Especialista em turismo comunitario, oficinas de artesanato em palha na Aldeia Galego e culinaria tipica Potiguara.',
-    imagem = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'
+    descricao = 'Especialista em turismo comunitario, oficinas de artesanato em palha na Aldeia Galego e culinaria tipica Potiguara.'
 WHERE nome = 'Jaciara Potiguara';
 
 -- Atualizar Mestre Moacir dos Santos
 UPDATE guide 
 SET telefone = '(83) 99321-4455',
-    descricao = 'Guia experiente com 15 anos de atuacao em ecoturismo, historia colonial dos canhoes e passeios nos manguezais.',
-    imagem = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80'
+    descricao = 'Guia experiente com 15 anos de atuacao em ecoturismo, historia colonial dos canhoes e passeios nos manguezais.'
 WHERE nome = 'Mestre Moacir dos Santos';
 
 -- Reativar verificacao de chaves estrangeiras

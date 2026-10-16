@@ -24,9 +24,6 @@ public class Guide{
     private String telefone;
     @Column(name = "descricao")
     private String descricao;
-    @Column(name = "imagem")
-    private String imagem;
-
 
     public Guide(Long id, String nome, String telefone, String descricao) {
         this.id = id;

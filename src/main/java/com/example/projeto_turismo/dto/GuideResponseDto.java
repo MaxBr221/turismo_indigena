@@ -21,7 +21,6 @@ public class GuideResponseDto {
     private String telefone;
     @Schema(description = "Descricão do Guide", example = "Sou Max, resido na aldeia são miguel, sou guia turista á 10 anos")
     private String descricao;
-    private String imagem;
 
 
 
