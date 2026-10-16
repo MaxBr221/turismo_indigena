@@ -1,71 +1,21 @@
--- V20: Manter exatamente 4 Restaurantes, 4 Pontos Turisticos e 4 Guias (fotos em Restaurantes e Pontos Turisticos)
-
--- Desativar verificacao de chaves estrangeiras para operacoes seguras
-SET FOREIGN_KEY_CHECKS = 0;
-
--- =======================================================
--- 0. GARANTIR QUE AS COLUNAS DE IMAGEM EXISTEM NAS TABELAS
--- =======================================================
-
--- Adicionar coluna imagem em restaurantes se nao existir
-SET @col_rest = (
-    SELECT COUNT(*) 
-    FROM information_schema.COLUMNS 
-    WHERE TABLE_SCHEMA = DATABASE() 
-      AND TABLE_NAME = 'restaurantes' 
-      AND COLUMN_NAME = 'imagem'
-);
-SET @sql_rest = IF(@col_rest = 0, 'ALTER TABLE restaurantes ADD COLUMN imagem VARCHAR(500)', 'SELECT 1');
-PREPARE stmt_rest FROM @sql_rest;
-EXECUTE stmt_rest;
-DEALLOCATE PREPARE stmt_rest;
-
--- Adicionar coluna imagem em pontoturistico se nao existir
-SET @col_ponto = (
-    SELECT COUNT(*) 
-    FROM information_schema.COLUMNS 
-    WHERE TABLE_SCHEMA = DATABASE() 
-      AND TABLE_NAME = 'pontoturistico' 
-      AND COLUMN_NAME = 'imagem'
-);
-SET @sql_ponto = IF(@col_ponto = 0, 'ALTER TABLE pontoturistico ADD COLUMN imagem VARCHAR(500)', 'SELECT 1');
-PREPARE stmt_ponto FROM @sql_ponto;
-EXECUTE stmt_ponto;
-DEALLOCATE PREPARE stmt_ponto;
-
+-- V20: Manter exatamente 4 Restaurantes, 4 Pontos Turisticos e 4 Guias com imagens e localizacoes corretas
 
 -- =======================================================
 -- 1. RESTAURANTES (Apenas os 4 principais com fotos reais)
 -- =======================================================
 
--- Limpar avaliacoes de restaurantes que serao removidos
+-- Remover avaliacoes de restaurantes que serao excluidos
 DELETE FROM avaliacao 
-WHERE restaurante_id IS NOT NULL 
-  AND restaurante_id NOT IN (
+WHERE restaurante_id IN (
     SELECT id FROM (
         SELECT id FROM restaurantes 
-        WHERE nome IN (
+        WHERE nome NOT IN (
             'Mirante Potiguara Bar e Restaurante',
             'Bar e Restaurante Trincheiras',
             'Bar e Restaurante Beira Mar',
             'Restaurante Pousada Tubarão'
         )
-    ) AS tmp_rest_valid
-);
-
--- Limpar agendamentos de restaurantes que serao removidos
-DELETE FROM agendamento 
-WHERE id_restaurantes IS NOT NULL 
-  AND id_restaurantes NOT IN (
-    SELECT id FROM (
-        SELECT id FROM restaurantes 
-        WHERE nome IN (
-            'Mirante Potiguara Bar e Restaurante',
-            'Bar e Restaurante Trincheiras',
-            'Bar e Restaurante Beira Mar',
-            'Restaurante Pousada Tubarão'
-        )
-    ) AS tmp_rest_agend
+    ) AS tmp_rest_del
 );
 
 -- Excluir restaurantes excedentes
@@ -138,19 +88,18 @@ WHERE nome = 'Restaurante Pousada Tubarão';
 -- 2. PONTOS TURISTICOS (Apenas os 4 principais com fotos reais)
 -- =======================================================
 
--- Limpar avaliacoes de pontos que serao removidos
+-- Remover avaliacoes de pontos turisticos que serao excluidos
 DELETE FROM avaliacao 
-WHERE ponto_id IS NOT NULL 
-  AND ponto_id NOT IN (
+WHERE ponto_turistico_id IN (
     SELECT id FROM (
         SELECT id FROM pontoturistico 
-        WHERE nome IN (
+        WHERE nome NOT IN (
             'Praia do Forte e Canhoes Coloniais',
             'Aldeia Sao Francisco',
             'Falesias do Alto do Tamba',
             'Rio do Gozo'
         )
-    ) AS tmp_ponto_valid
+    ) AS tmp_ponto_del
 );
 
 -- Excluir pontos turisticos excedentes
@@ -204,25 +153,10 @@ WHERE nome = 'Rio do Gozo';
 
 
 -- =======================================================
--- 3. GUIAS TURISTICOS (Apenas os 4 principais sem fotos)
+-- 3. GUIAS TURISTICOS (Apenas os 4 principais com fotos)
 -- =======================================================
 
--- Limpar agendamentos de guias que serao removidos
-DELETE FROM agendamento 
-WHERE id_guide IS NOT NULL 
-  AND id_guide NOT IN (
-    SELECT id FROM (
-        SELECT id FROM guide 
-        WHERE nome IN (
-            'Ananir Potiguara',
-            'Kaue Silva Potiguara',
-            'Jaciara Potiguara',
-            'Mestre Moacir dos Santos'
-        )
-    ) AS tmp_guide_agend
-);
-
--- Remover guias excedentes
+-- Remover guias que estao em agendamentos futuros se houver, ou manter os 4 principais
 DELETE FROM guide 
 WHERE nome NOT IN (
     'Ananir Potiguara',
@@ -234,26 +168,27 @@ WHERE nome NOT IN (
 -- Atualizar Ananir Potiguara
 UPDATE guide 
 SET telefone = '(83) 98834-1290',
-    descricao = 'Guia nativo da Aldeia Sao Francisco, especialista em vivencia comunitaria, rituais do Tore e trilhas sagradas ancestrais.'
+    descricao = 'Guia nativo da Aldeia Sao Francisco, especialista em vivencia comunitaria, rituais do Tore e trilhas sagradas ancestrais.',
+    imagem = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80'
 WHERE nome = 'Ananir Potiguara';
 
 -- Atualizar Kaue Silva Potiguara
 UPDATE guide 
 SET telefone = '(83) 98145-6721',
-    descricao = 'Condutor ambiental de buggy credenciado pelas Falesias do Tamba, Praia de Coqueirinho e banhos no Rio do Gozo.'
+    descricao = 'Condutor ambiental de buggy credenciado pelas Falesias do Tamba, Praia de Coqueirinho e banhos no Rio do Gozo.',
+    imagem = 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80'
 WHERE nome = 'Kaue Silva Potiguara';
 
 -- Atualizar Jaciara Potiguara
 UPDATE guide 
 SET telefone = '(83) 99678-2234',
-    descricao = 'Especialista em turismo comunitario, oficinas de artesanato em palha na Aldeia Galego e culinaria tipica Potiguara.'
+    descricao = 'Especialista em turismo comunitario, oficinas de artesanato em palha na Aldeia Galego e culinaria tipica Potiguara.',
+    imagem = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'
 WHERE nome = 'Jaciara Potiguara';
 
 -- Atualizar Mestre Moacir dos Santos
 UPDATE guide 
 SET telefone = '(83) 99321-4455',
-    descricao = 'Guia experiente com 15 anos de atuacao em ecoturismo, historia colonial dos canhoes e passeios nos manguezais.'
+    descricao = 'Guia experiente com 15 anos de atuacao em ecoturismo, historia colonial dos canhoes e passeios nos manguezais.',
+    imagem = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80'
 WHERE nome = 'Mestre Moacir dos Santos';
-
--- Reativar verificacao de chaves estrangeiras
-SET FOREIGN_KEY_CHECKS = 1;
