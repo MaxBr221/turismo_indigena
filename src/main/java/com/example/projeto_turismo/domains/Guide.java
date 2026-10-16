@@ -25,13 +25,6 @@ public class Guide{
     @Column(name = "descricao")
     private String descricao;
 
-    public Guide(Long id, String nome, String telefone, String descricao) {
-        this.id = id;
-        this.nome = nome;
-        this.telefone = telefone;
-        this.descricao = descricao;
-    }
-
     public Guide(GuideResponseDto guideResponseDto) {
         BeanUtils.copyProperties(guideResponseDto, this);
     }
